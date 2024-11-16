@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+
+
+import './TailwindCss/output.css';
+import './Css/App.css';
+
+import { Rough } from './Pages/rough';
+import { HomeWithoutLogin } from './Pages/HomeWithoutLogin';
+import { Nothing } from './Pages/Nothing';
+
+
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+   <>
+    
+
+      <BrowserRouter>
+      <Routes>
+      
+        <Route path='/' element={<HomeWithoutLogin/>}></Route>
+        <Route path='/rough' element={<Rough></Rough>}></Route>
+       
+       <Route path='*' element={<Nothing/>}></Route>
+      
+      </Routes>
+      </BrowserRouter>
+   </>
   );
 }
 

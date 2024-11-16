@@ -1,13 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import './Css/index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById('body'));
 root.render(
   <React.StrictMode>
+    <div id="root" className='bg-gradient-to-r
+     from-green-950  to-green-800  h-[300vh]'>
     <App />
+    </div>
   </React.StrictMode>
 );
 
