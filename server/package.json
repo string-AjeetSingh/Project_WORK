@@ -10,5 +10,11 @@
   "license": "MIT",
   "devDependencies": {
     "jest": "^29.7.0"
+  },
+  "dependencies": {
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "mongo-connect": "^0.0.6",
+    "mongodb": "^6.10.0"
   }
 }
