@@ -1,0 +1,14 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "server for Project_WORK",
+  "main": "main.server.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Ajeet Singh",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}

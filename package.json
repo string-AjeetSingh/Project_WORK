@@ -1,0 +1,18 @@
+{
+  "name": "project_work",
+  "version": "1.0.0",
+  "description": "Parent directory for client and server of the project",
+  "main": "\"\"",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "\"\""
+  },
+  "keywords": [
+    "\"\""
+  ],
+  "author": "Ajeet Singh",
+  "license": "MIT"
+}
