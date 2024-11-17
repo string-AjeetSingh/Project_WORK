@@ -2,15 +2,22 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './Css/index.css';
 import App from './App';
+
 import reportWebVitals from './reportWebVitals';
 
-const root = ReactDOM.createRoot(document.getElementById('body'));
+
+const ReactContainer = document.getElementsByTagName('ReactContainer');
+console.log(ReactContainer);
+
+const root = ReactDOM.createRoot(ReactContainer[0]);
+
 root.render(
   <React.StrictMode>
-    <div id="root" className='bg-gradient-to-br
-     from-green-950  to-green-900  h-[100vh]'>
-    <App />
-    </div>
+   <div className='bg-gradient-to-br from-green-950  to-green-900'>
+
+    <App/>
+   </div>
+   
   </React.StrictMode>
 );
 
