@@ -7,8 +7,8 @@ import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(document.getElementById('body'));
 root.render(
   <React.StrictMode>
-    <div id="root" className='bg-gradient-to-r
-     from-green-950  to-green-800  h-[300vh]'>
+    <div id="root" className='bg-gradient-to-br
+     from-green-950  to-green-900  h-[100vh]'>
     <App />
     </div>
   </React.StrictMode>
