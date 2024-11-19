@@ -1,6 +1,6 @@
 import './animation.css'
 async function fade(elem, speed, updateCountValue, startFrom,
-    endAt, type = 'left', flow = 'plus', opacityValues = 1, terminate = false) {
+    endAt, type = 'left', flow = 'plus', opacityValues = 1, terminate = [false]) {
    
 
         if (!(type.toLowerCase() === 'left' || type.toLowerCase() === 'right' ||
@@ -33,8 +33,10 @@ async function fade(elem, speed, updateCountValue, startFrom,
                 
                 let inter = setInterval(() => {
                     try {
-                        
-                        if(terminate){
+                      
+                        if(terminate[0]){
+                            
+                            terminate[1] = true;
                             clearInterval(inter);
                             resolve();
                         }

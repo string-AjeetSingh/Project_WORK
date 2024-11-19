@@ -26,7 +26,7 @@ function Footer({children}){
                 <Buttons>Be A Member</Buttons>
             </div>
             <img className="w-[50%] opacity-50 rotate-90 "
-            src="./stock/leaf.png" alt="stock img">
+            src="./stock/tree.png" alt="stock img">
 
             </img>
         </div>

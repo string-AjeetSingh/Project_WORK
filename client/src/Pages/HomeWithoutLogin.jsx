@@ -1,6 +1,7 @@
 import { Header } from "../Components/Header/header";
 import { Footer } from "../Components/Footer/footer";
 import { fade, ButtonAnimation } from '../MyLib/Animation/animation';
+import { sAnimation } from "../MyLib/ScrollAnimation/sAnimation";
 
 import { useEffect, useRef, useState } from 'react';
 
@@ -46,12 +47,12 @@ function Section1({ children }) {
 
 
     useEffect(() => {
-      
+
         window.addEventListener('resize', () => {
             setsize([window.innerWidth, window.innerHeight]);
         });
 
-      
+
 
         theAnimation();
 
@@ -69,12 +70,20 @@ function Section1({ children }) {
             items-center m-1 mb-5 mt-2 p-1 relative opacity-0 " >
 
                         <div
-                            className="font-serif text-5xl 
+                            className="font-serif text-5xl  relative
                         text-center font-semibold m-2 
                         text-green-800 ">
 
+                            <div className="absolute opacity-50
+                            w-12 rotate-90 top-[-25px] left-[240px]">
+                                <img className="w-full"
+                                    alt="stock image"
+                                    src="./stock/leaf.png"></img>
+                            </div>
+
                             To <br></br>Your Destination
                         </div>
+
 
                         <h3
                             className="font-normal font-serif">Do <span className=" text-green-800 font-serif
@@ -115,9 +124,14 @@ function Section1({ children }) {
     border-green-950  ">
 
                         <div className="font-serif text-7xl w-[500px] 
-    text-left font-semibold m-2 
+    text-left font-semibold m-2 relative 
     text-green-800 ">
-
+                            <div className="absolute opacity-50
+                            w-14 rotate-90 left-[90px] top-[-20px]">
+                                <img className="w-full"
+                                    alt="stock image"
+                                    src="./stock/leaf.png"></img>
+                            </div>
                             To <br></br>Your Destination
 
 
@@ -150,97 +164,99 @@ function Section1({ children }) {
 }
 
 function Section2({ children }) {
-    const [astr, setastr] = useState(null);
+
     const [size, setsize] = useState([window.innerWidth, window.innerHeight]);
     const headingref = useRef(null);
-    const [headingOn, setheadingOn] = useState(null);
 
-    async function theHeadingAnimation(elem, mode) {
+
+    function handleSize() {
+        setsize([window.innerWidth, window.innerHeight]);
+    }
+
+    async function theHeadingAnimation(elem, mode, terminate = [false]) {
         //fade(elem, )
-        if(mode){
-            await fade(elem, 15, 0.5, -30, 0, 'right', 'plus', 1);
+
+        if (mode) {
+            await fade(elem, 15, 0.5, -30, 0, 'left', 'plus', 1, terminate);
         }
-        else if(!mode){
-            await fade(elem, 15, 0.5, 0, -30, 'left', 'minus', -1);
+        else if (!mode) {
+            await fade(elem, 15, 0.5, 0, -30, 'left', 'minus', -1, terminate);
         }
     }
 
-    useEffect(()=>{
-        let posofit = null;
-        let headingswitch = false;
-        window.addEventListener('resize', ()=>{
-            setsize([window.innerWidth, window.innerHeight]);
-        })
-        window.addEventListener('scroll', ()=>{
-            posofit = headingref.current.getBoundingClientRect();
-            console.log(posofit.bottom);
-            
-            if(posofit.bottom >= 30 && !headingswitch){
-             
-                    setheadingOn(true);
-                    headingswitch=true;
-       
-            }
-            else if(posofit.bottom < 30 && headingswitch){
 
-               
-                 setheadingOn(false);
-                 headingswitch=false;
 
-             }
-            
-        })
+    useEffect(() => {
 
+        let startProperties = {
+            timerMillisecond: 15, updatingVal: 0.5, startPos: -30,
+            stopPos: 0, direction: 'left', type: 'plus',
+            opacityOperation: 1
+        };
+
+        let stopProperties = {
+            timerMillisecond: 15, updatingVal: 0.5, startPos: 0,
+            stopPos: -30, direction: 'left', type: 'minus',
+            opacityOperation: -1
+        }
+
+        let aScrollAnimationObject = new sAnimation(headingref.current,
+            startProperties, stopProperties
+        );
+
+        function wrapper() {
+            aScrollAnimationObject.theLogin();
+        }
+
+        window.addEventListener('resize', handleSize);
+
+        window.addEventListener('scroll', wrapper);
+
+
+
+        return () => {
+
+            window.removeEventListener('scroll', wrapper);
+            window.removeEventListener('resize', handleSize);
+            aScrollAnimationObject = null;
+        }
 
     }, [])
 
-    useEffect(()=>{
-        if(headingOn != null){
-
-            if(headingOn){
-                theHeadingAnimation(headingref.current, headingOn);
-            }
-            else if(!headingOn){
-              
-                theHeadingAnimation(headingref.current, headingOn);
-            }
-        }
-    }, [headingOn])
-    
-    if(size[0] <= 664){
+    if (size[0] <= 664) {
         return (
             <>
                 <section className="m-4">
-    
+
                     <div className="flex flex-row  
                     font-serif font-bold text-green-900
                     items-center justify-start mb-[2px] ">
-                        <h2 ref={headingref} 
-                        className="text-[2.9rem]" >Unemployed</h2>
+                        <h2 ref={headingref}
+                            className="text-[2.9rem]" >Unemployed</h2>
                         <h1 className="text-8xl">?</h1>
                     </div>
-            
+
                     <div className="relative 
                     bottom-6 font-serif text-[1.2rem] 
                     sm:text-2xl md:text-3xl
                     ml-2 text-slate-950 ">
-                            Find the <br/>Best For You <br>
-                            </br>With Very Simple Steps ...
-                            <p className="text-slate-950 text-sm ml-2">
-                                <ul className="list-disc">
-                                    <li>Login In</li>
-                                    <li>Set Profile</li>
-                                    <li>Build Resume</li>
-                                    <li>finally - Apply </li>
-                                </ul>
-                            </p>
-                        </div>
-                 
+                        Find the <br />Best For You <br>
+                        </br>With Very Simple Steps ...
+                        <p className="text-slate-950 text-sm ml-2">
+                            <ul className="list-disc">
+                                <li>Login In</li>
+                                <li>Set Profile</li>
+                                <li>Build Resume</li>
+                                <li>finally - Apply </li>
+                            </ul>
+                        </p>
+                    </div>
+
                     <div className="flex flex-row flex-wrap justify-center 
                     items-center rounded-2xl pt-4
                     relative border-2 border-green-900">
-    
-    
+
+
                         <BigButton
                             AddOnClassName="font-bold absolute
                         bottom-7 left-5 
@@ -254,37 +270,37 @@ function Section2({ children }) {
                         relative ml-5 border-b-2 border-black "
                             src='./stock/bussinessman1.png'
                             alt="stock img"></img>
-    
+
                     </div>
-    
+
                 </section><hr className="border-[1px] 
             border-green-950"></hr>
-    
+
             </>
         );
     }
-    else{
+    else {
         return (
             <>
                 <section className="m-4">
-    
+
                     <div className="flex flex-row  
                     font-serif font-bold text-green-900
                     items-center justify-start mb-[2px] ">
                         <h2 ref={headingref} className="text-6xl opacity-0 relative">Unemployed</h2>
                         <h1 className="text-9xl">?</h1>
                     </div>
-    
-                 
+
+
                     <div className="flex flex-row flex-wrap justify-center 
                     items-center rounded-2xl pt-4
                     relative border-2 border-green-900">
-    
+
                         <div className="relative 
                     bottom-0 font-serif text-[1.2rem] 
                     sm:text-2xl md:text-3xl
                     ml-2 text-slate-900 ">
-                            Find the <br/>Best For You <br>
+                            Find the <br />Best For You <br>
                             </br>With Very Simple Steps ...
                             <p className="text-slate-950 text-sm ml-2">
                                 <ul className="list-disc">
@@ -295,7 +311,7 @@ function Section2({ children }) {
                                 </ul>
                             </p>
                         </div>
-    
+
                         <BigButton
                             AddOnClassName="font-bold absolute
                         bottom-1 left-5 
@@ -309,36 +325,36 @@ function Section2({ children }) {
                         relative ml-5 border-b-2 border-black"
                             src='./stock/bussinessman1.png'
                             alt="stock img"></img>
-    
+
                     </div>
-    
+
                 </section><hr className="border-[1px] 
             border-green-950"></hr>
-    
+
             </>
         );
     }
-   
+
 }
 
 
 function Section3({ children }) {
-  
+
     const [size, setsize] = useState([window.innerWidth, window.innerHeight]);
 
-    useEffect(()=>{
-        window.addEventListener('resize', ()=>{
+    useEffect(() => {
+        window.addEventListener('resize', () => {
             setsize([window.innerWidth, window.innerHeight]);
         })
 
 
     }, [])
-    
-    if(size[0] <= 664){
+
+    if (size[0] <= 664) {
         return (
             <>
                 <section className="m-4">
-    
+
                     <div className="flex flex-row  
                      overflow-hidden 
                     font-serif font-bold text-green-900
@@ -346,29 +362,29 @@ function Section3({ children }) {
                         <h2 className="text-[2.9rem]" >Provide Work</h2>
                         <h1 className="text-8xl"></h1>
                     </div>
-            
+
                     <div className="relative 
                     bottom-6 font-serif text-[1.2rem] 
                     sm:text-2xl md:text-3xl
                     ml-2 text-slate-950 ">
-                            Give Opportunities, <br/>Trust People <br>
-                            </br>On WORK Platform ...
-                            <p className="text-slate-950 text-sm ml-2">
-                                <ul className="list-disc">
-                                    <li>Login As 'Provider'</li>
-                                    <li>Set Profile</li>
-                                    <li>Create Job</li>
-                                    <li>finally - Post It </li>
-                                </ul>
-                            </p>
-                        </div>
-                 
+                        Give Opportunities, <br />Trust People <br>
+                        </br>On WORK Platform ...
+                        <p className="text-slate-950 text-sm ml-2">
+                            <ul className="list-disc">
+                                <li>Login As 'Provider'</li>
+                                <li>Set Profile</li>
+                                <li>Create Job</li>
+                                <li>finally - Post It </li>
+                            </ul>
+                        </p>
+                    </div>
+
                     <div className="flex flex-row flex-wrap justify-right 
                     items-center rounded-2xl pt-4 overflow-hidden
                     relative border-2 border-green-900 
                     border-l-2 border-l-slate-950">
-    
-    
+
+
                         <BigButton
                             AddOnClassName="font-bold absolute
                         bottom-7 right-5 
@@ -382,33 +398,33 @@ function Section3({ children }) {
                         relative ml-5 -left-20 "
                             src='./stock/bussinessman2.png'
                             alt="stock img"></img>
-    
+
                     </div>
-    
+
                 </section><hr className="border-[1px] 
             border-green-950"></hr>
-    
+
             </>
         );
     }
-    else{
+    else {
         return (
             <>
                 <section className="m-4">
-    
+
                     <div className="flex flex-row  
                     font-serif font-bold text-green-900
                     items-center justify-start mb-[2px] ">
                         <h2 className="text-6xl">Provide Work</h2>
                         <h1 className="text-9xl"></h1>
                     </div>
-    
-                 
+
+
                     <div className="flex flex-row flex-wrap justify-center 
                     items-center rounded-2xl pt-4 overflow-hidden
                     relative border-2 border-green-900
                   ">
-    
+
                         <img className="size-[50%]
                         max-w-[450px] min-w-[280px]
                         relative ml-5 border-b-2 border-black "
@@ -419,18 +435,18 @@ function Section3({ children }) {
                     bottom-0 font-serif text-[1.2rem] 
                     sm:text-2xl md:text-3xl
                     ml-2 text-slate-900 ">
-                            Give Opportunities, <br/>Trust People <br>
+                            Give Opportunities, <br />Trust People <br>
                             </br>On WORK Platform ...
                             <p className="text-slate-950 text-sm ml-2">
                                 <ul className="list-disc">
-                                <li>Login As 'Provider'</li>
+                                    <li>Login As 'Provider'</li>
                                     <li>Set Profile</li>
                                     <li>Create Job</li>
                                     <li>finally - Post It </li>
                                 </ul>
                             </p>
                         </div>
-    
+
                         <BigButton
                             AddOnClassName="font-bold absolute
                         bottom-1 right-5 
@@ -439,24 +455,24 @@ function Section3({ children }) {
                          "
                         >
                             Provide </BigButton>
-    
+
                     </div>
-    
+
                 </section><hr className="border-[1px] 
             border-green-950"></hr>
-    
+
             </>
         );
     }
-   
+
 }
 
 
 
 
 function HomeWithoutLogin({ children }) {
-    
- 
+
+
 
     return (
         <>
