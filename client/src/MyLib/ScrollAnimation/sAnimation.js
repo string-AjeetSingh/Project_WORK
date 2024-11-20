@@ -1,4 +1,4 @@
-import { fade } from "../Animation/animation";
+import { fade, pleaseWait } from "../Animation/animation";
 
 class sAnimation {
 
@@ -49,12 +49,11 @@ class sAnimation {
 
             if (this.boolRunning[0] && !this.iAmRunning) {
                 this.iAmRunning = true;
-                console.log('am i running multiple tinmes');
 
                 await sAnimation.terminateRunningAnimationAndConfirm(this.boolTerminate);
-                console.log(`val of the terminates before reset = ${this.boolTerminate}`);
-
-                sAnimation.resetTerminateVariable(this.boolTerminate);
+                this.boolTerminate[0] = false;
+                this.boolTerminate[1] = false;
+               
 
                 this.iAmRunning = false;
             }
@@ -68,29 +67,27 @@ class sAnimation {
         }
         else if (this.posofit.top > this.unAppear[0] && this.posofit.top >= 0 && this.headingswitch) {
 
-
+            
             if (this.boolRunning[0] && !this.iAmRunning) {
                 this.iAmRunning = true;
-                console.log('am i running multiple tinmes');
-
                 await sAnimation.terminateRunningAnimationAndConfirm(this.boolTerminate);
-                console.log(`val of the terminates before reset = ${this.boolTerminate}`);
-
-                sAnimation.resetTerminateVariable(this.boolTerminate);
-
-                this.iAmRunning = false;
-            }
-
+                this.boolTerminate[0] = false;
+                this.boolTerminate[1] = false;
+                /* 
+                
+    console.log('am i running multiple tinmes');
+    
+    await sAnimation.terminateRunningAnimationAndConfirm(this.boolTerminate);
+    console.log(`val of the terminates before reset = ${this.boolTerminate}`);
+    
+    sAnimation.resetTerminateVariable(this.boolTerminate);
+    // sAnimation.resetElemOpacity(this.elem);
+    */
+    this.iAmRunning = false;
+}
 
             this.headingswitch = false;
-            /* 
-            
-            sAnimation.animation(this.boolRunning,
-            this.recivedAnimation, this.elem, false, this.boolTerminate);
-
-            sAnimation.theHeadingAnimation(this.boolRunning,
-            this.recivedAnimation, this.elem, false, this.boolTerminate);
-            */
+         
                 sAnimation.animation(this.boolRunning,
                     this.startAnimationProperties, this.endAnimationProperties,
                      this.elem, false, this.boolTerminate);
@@ -103,30 +100,22 @@ class sAnimation {
         console.log('waiting');
         boolswitch[0] = true;
 
-        /* 
-        
-        await givenAnimation(elem, mode, terminate);
-          if (mode) {
-            await fade(elem, 15, 0.5, -30, 0, 'left', 'plus', 1, terminate);
-        }
-        else if (!mode) {
-            await fade(elem, 15, 0.5, 0, -30, 'left', 'minus', -1, terminate);
-        }
-        */
-
-        if (mode) {
-            console.log(start);
-           
+        if (mode) {    
+            console.log('waiting to complete animation start --');
             await fade(elem, start.timerMillisecond, start.updatingVal,
             start.startPos, start.stopPos, 
             start.direction, start.type, start.opacityOperation, terminate);
-            
+            console.log('Finally animation start closed --');
         }
+     
+        
         else if (!mode) {
             await fade(elem, end.timerMillisecond, end.updatingVal,
                 end.startPos, end.stopPos, 
-               end.direction, end.type, end.opacityOperation, terminate);
-        }
+                end.direction, end.type, end.opacityOperation, terminate);
+          
+    }
+      
 
         boolswitch[0] = false;
         console.log('done');
@@ -154,6 +143,11 @@ class sAnimation {
 
     static resetTerminateVariable(terminate) {
         terminate = [false, false];
+    }
+
+    static resetElemOpacity(elem){
+      
+        elem.style.opacity = 0;
     }
 
   

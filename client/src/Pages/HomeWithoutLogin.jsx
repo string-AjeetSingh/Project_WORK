@@ -3,14 +3,21 @@ import { Footer } from "../Components/Footer/footer";
 import { fade, ButtonAnimation } from '../MyLib/Animation/animation';
 import { sAnimation } from "../MyLib/ScrollAnimation/sAnimation";
 
-import { useEffect, useRef, useState } from 'react';
+import { forwardRef, useEffect, useRef, useState } from 'react';
 
 
-function BigButton({ children, className, resetClassName = false, AddOnClassName }) {
+function BigButton ({ children, className, resetClassName = false, AddOnClassName, aref }) {
     const bref = useRef(null);
+
+    useEffect(()=>{
+        if(aref){
+
+            aref.current = bref.current;
+        }
+    }, [])
     return (
         <>
-            <button ref={bref} onClick={async () => {
+            <button ref={bref}  onClick={async () => {
                 await ButtonAnimation(bref);
             }}
                 className={resetClassName ? className : `"hover:bg-green-800 hover:text-blue-400 
@@ -34,9 +41,9 @@ function Section1({ children }) {
     async function theAnimation() {
 
         if (size[0] <= 751) {
-            await fade(asectionref.current, 15, 0.5, -30, 0, 'right', 'plus', 1);
-            await fade(iref.current, 5, 0.5, -100, 0, 'top', 'plus', 1);
-            await fade(href.current, 15, 0.5, -30, 0, 'left', 'plus', 1);
+             fade(asectionref.current, 15, 0.5, -30, 0, 'right', 'plus', 1);
+            //await fade(iref.current, 2, 0.5, -100, 0, 'top', 'plus', 1);
+             fade(href.current, 15, 0.5, -30, 0, 'left', 'plus', 1);
         }
         else {
             fade(href.current, 10, 0.5, -60, 0, 'right', 'plus', 1);
@@ -96,7 +103,7 @@ function Section1({ children }) {
                     </div>
 
                     <img
-                        ref={iref} className="size-48 m-2 opacity-0
+                        ref={iref} className="size-48 m-2 
                         relative"
                         src='./logo.png' alt="logo">
                     </img>
@@ -167,24 +174,17 @@ function Section2({ children }) {
 
     const [size, setsize] = useState([window.innerWidth, window.innerHeight]);
     const headingref = useRef(null);
+    const elemRef2 = useRef(null);
+    const elemRef3 = useRef(null);
+    const elemRef4 = useRef(null);
+        
 
 
     function handleSize() {
         setsize([window.innerWidth, window.innerHeight]);
     }
 
-    async function theHeadingAnimation(elem, mode, terminate = [false]) {
-        //fade(elem, )
-
-        if (mode) {
-            await fade(elem, 15, 0.5, -30, 0, 'left', 'plus', 1, terminate);
-        }
-        else if (!mode) {
-            await fade(elem, 15, 0.5, 0, -30, 'left', 'minus', -1, terminate);
-        }
-    }
-
-
+   
 
     useEffect(() => {
 
@@ -200,25 +200,59 @@ function Section2({ children }) {
             opacityOperation: -1
         }
 
+        let startelemRef3 = {
+            timerMillisecond: 10, updatingVal: 0.5, startPos: -20,
+            stopPos: 0, direction: 'bottom', type: 'plus',
+            opacityOperation: 1
+        };
+
+        let stopelemRef3 = {
+            timerMillisecond: 10, updatingVal: 0.5, startPos: 0,
+            stopPos: -20, direction: 'bottom', type: 'minus',
+            opacityOperation: -1
+        }
+
+        let startelemRef2 = {
+            timerMillisecond: 10, updatingVal: 0.5, startPos: -25,
+            stopPos: 10, direction: 'left', type: 'plus',
+            opacityOperation: 1
+        };
+
+        let stopelemRef2 = {
+            timerMillisecond: 10, updatingVal: 0.5, startPos: 10,
+            stopPos: -25, direction: 'left', type: 'minus',
+            opacityOperation: -1
+        }
+
         let aScrollAnimationObject = new sAnimation(headingref.current,
             startProperties, stopProperties
         );
+        let aScrollAnimationObject2 = new sAnimation(elemRef3.current,
+           startelemRef3, stopelemRef3
+        );
+        let aScrollAnimationObject3 = new sAnimation(elemRef2.current,
+            startelemRef2, stopelemRef2
+         );
 
         function wrapper() {
             aScrollAnimationObject.theLogin();
+            aScrollAnimationObject2.theLogin();
+            aScrollAnimationObject3.theLogin();
         }
 
         window.addEventListener('resize', handleSize);
 
         window.addEventListener('scroll', wrapper);
 
-
+       
 
         return () => {
 
             window.removeEventListener('scroll', wrapper);
             window.removeEventListener('resize', handleSize);
             aScrollAnimationObject = null;
+            aScrollAnimationObject2 = null;
+            aScrollAnimationObject3 = null;
         }
 
     }, [])
@@ -228,11 +262,11 @@ function Section2({ children }) {
             <>
                 <section className="m-4">
 
-                    <div className="flex flex-row  
+                    <div className="flex flex-row 
                     font-serif font-bold text-green-900
                     items-center justify-start mb-[2px] ">
                         <h2 ref={headingref}
-                            className="text-[2.9rem]" >Unemployed</h2>
+                            className="text-[2.9rem] relative opacity-0" >Unemployed</h2>
                         <h1 className="text-8xl">?</h1>
                     </div>
 
@@ -257,16 +291,16 @@ function Section2({ children }) {
                     relative border-2 border-green-900">
 
 
-                        <BigButton
+                        <BigButton aref={elemRef2}
                             AddOnClassName="font-bold absolute
                         bottom-7 left-5 
                         w-[50%] z-[1] min-w-[200px]
-                        max-w-[300px]
+                        max-w-[300px] opacity-0 
                          "
                         >
                             Find</BigButton>
-                        <img className="size-[50%]
-                        max-w-[450px] min-w-[280px]
+                        <img ref={elemRef3} className="size-[50%]
+                        max-w-[450px] min-w-[280px] opacity-0
                         relative ml-5 border-b-2 border-black "
                             src='./stock/bussinessman1.png'
                             alt="stock img"></img>
@@ -312,16 +346,16 @@ function Section2({ children }) {
                             </p>
                         </div>
 
-                        <BigButton
+                        <BigButton aref={elemRef2}
                             AddOnClassName="font-bold absolute
-                        bottom-1 left-5 
+                        bottom-1 left-5 opacity-0
                         w-[50%] z-[1] min-w-[200px]
                         max-w-[300px]
                          "
                         >
                             Find</BigButton>
-                        <img className="size-[50%]
-                        max-w-[450px] min-w-[280px]
+                        <img ref={elemRef3} className="size-[50%]
+                        max-w-[450px] min-w-[280px] opacity-0
                         relative ml-5 border-b-2 border-black"
                             src='./stock/bussinessman1.png'
                             alt="stock img"></img>
@@ -341,12 +375,84 @@ function Section2({ children }) {
 function Section3({ children }) {
 
     const [size, setsize] = useState([window.innerWidth, window.innerHeight]);
+    const headingref = useRef(null);
+    const elemRef2 = useRef(null);
+    const elemRef3 = useRef(null);
+
+    function handleSize() {
+        setsize([window.innerWidth, window.innerHeight]);
+    }
 
     useEffect(() => {
-        window.addEventListener('resize', () => {
-            setsize([window.innerWidth, window.innerHeight]);
-        })
 
+        let startProperties = {
+            timerMillisecond: 15, updatingVal: 0.5, startPos: -30,
+            stopPos: 0, direction: 'left', type: 'plus',
+            opacityOperation: 1
+        };
+
+        let stopProperties = {
+            timerMillisecond: 15, updatingVal: 0.5, startPos: 0,
+            stopPos: -30, direction: 'left', type: 'minus',
+            opacityOperation: -1
+        }
+
+        let startelemRef3 = {
+            timerMillisecond: 10, updatingVal: 0.5, startPos: -60,
+            stopPos: -30, direction: 'left', type: 'plus',
+            opacityOperation: 1
+        };
+
+        let stopelemRef3 = {
+            timerMillisecond: 10, updatingVal: 0.5, startPos: -30,
+            stopPos: -60, direction: 'left', type: 'minus',
+            opacityOperation: -1
+        }
+
+        let startelemRef2 = {
+            timerMillisecond: 10, updatingVal: 0.5, startPos: -25,
+            stopPos: 10, direction: 'right', type: 'plus',
+            opacityOperation: 1
+        };
+
+        let stopelemRef2 = {
+            timerMillisecond: 10, updatingVal: 0.5, startPos: 10,
+            stopPos: -25, direction: 'right', type: 'minus',
+            opacityOperation: -1
+        }
+
+        let aScrollAnimationObject = new sAnimation(headingref.current,
+            startProperties, stopProperties
+        );
+
+        let aScrollAnimationObject2 = new sAnimation(elemRef3.current,
+            startelemRef3, stopelemRef3
+         );
+         let aScrollAnimationObject3 = new sAnimation(elemRef2.current,
+             startelemRef2, stopelemRef2
+          );
+ 
+         function wrapper() {
+             aScrollAnimationObject.theLogin();
+             aScrollAnimationObject2.theLogin();
+             aScrollAnimationObject3.theLogin();
+         }
+ 
+         window.addEventListener('resize', handleSize);
+ 
+         window.addEventListener('scroll', wrapper);
+
+
+        window.addEventListener('resize', handleSize());
+
+        return () => {
+
+            window.removeEventListener('scroll', wrapper);
+            window.removeEventListener('resize', handleSize);
+            aScrollAnimationObject = null;
+            aScrollAnimationObject2 = null;
+            aScrollAnimationObject3 = null;
+        }
 
     }, [])
 
@@ -359,7 +465,7 @@ function Section3({ children }) {
                      overflow-hidden 
                     font-serif font-bold text-green-900
                     items-center justify-start mb-[2px] ">
-                        <h2 className="text-[2.9rem]" >Provide Work</h2>
+                        <h2 ref={headingref} className="text-[2.9rem] mb-4 relative opacity-0" >Provide Work</h2>
                         <h1 className="text-8xl"></h1>
                     </div>
 
@@ -385,15 +491,15 @@ function Section3({ children }) {
                     border-l-2 border-l-slate-950">
 
 
-                        <BigButton
+                        <BigButton aref={elemRef2}
                             AddOnClassName="font-bold absolute
                         bottom-7 right-5 
                         w-[50%] z-[1] min-w-[200px]
-                        max-w-[300px]
+                        max-w-[300px] opacity-0
                          "
                         >
                             Provide</BigButton>
-                        <img className="size-[50%]
+                        <img ref={elemRef3} className="size-[50%] opacity-0
                         max-w-[450px] min-w-[280px]
                         relative ml-5 -left-20 "
                             src='./stock/bussinessman2.png'
@@ -415,7 +521,7 @@ function Section3({ children }) {
                     <div className="flex flex-row  
                     font-serif font-bold text-green-900
                     items-center justify-start mb-[2px] ">
-                        <h2 className="text-6xl">Provide Work</h2>
+                        <h2 ref={headingref} className="text-6xl opacity-0 relative">Provide Work</h2>
                         <h1 className="text-9xl"></h1>
                     </div>
 
@@ -425,7 +531,7 @@ function Section3({ children }) {
                     relative border-2 border-green-900
                   ">
 
-                        <img className="size-[50%]
+                        <img ref={elemRef3} className="size-[50%] opacity-0
                         max-w-[450px] min-w-[280px]
                         relative ml-5 border-b-2 border-black "
                             src='./stock/bussinessman2.png'
@@ -447,9 +553,9 @@ function Section3({ children }) {
                             </p>
                         </div>
 
-                        <BigButton
+                        <BigButton aref={elemRef2}
                             AddOnClassName="font-bold absolute
-                        bottom-1 right-5 
+                        bottom-1 right-5 opacity-0
                         w-[50%] z-[1] min-w-[200px]
                         max-w-[300px]
                          "
