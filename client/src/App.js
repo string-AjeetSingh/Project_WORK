@@ -4,7 +4,7 @@ import './TailwindCss/output.css';
 import './Css/App.css';
 
 import { Rough } from './Pages/rough';
-import { HomeWithoutLogin } from './Pages/HomeWithoutLogin';
+import { Home } from './Pages/Home';
 import { Nothing } from './Pages/Nothing';
 
 
@@ -18,7 +18,7 @@ function App() {
       <BrowserRouter>
       <Routes>
       
-        <Route path='/' element={<HomeWithoutLogin/>}></Route>
+        <Route path='/' element={<Home/>}></Route>
         <Route path='/rough' element={<Rough></Rough>}></Route>
        
        <Route path='*' element={<Nothing/>}></Route>
