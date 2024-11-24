@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { AboutJob } from '../Components/Rough/AboutJob';
+import { UserProfile } from '../Components/UserProfile/UserProfile';
 import { JobCards } from '../Components/JobCards/jobCards';
+
+
+
 
 
 
@@ -12,9 +16,10 @@ function Rough({ children }) {
 
             <div>
                {/*<JobCards></JobCards>*/}
-               <AboutJob></AboutJob>
-
+                  {/*<AboutJob></AboutJob>*/}
+                <UserProfile></UserProfile>
             </div>
+            
 
         </>
     );
