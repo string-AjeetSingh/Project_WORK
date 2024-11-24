@@ -1,0 +1,15 @@
+{
+    "docs" : {
+        "Document" : "User",
+        "Name" : "User Name",
+        "ProfileImg" : "src",
+        "ProfessionalTitle" : "status..",
+        "Status" : "status..",
+        "Discription" : "Discription ...",
+        "Skills" : ["skill1", "skill2"],
+        "Accounts": {"Email" : "email@gmail.com", "X" : "@xid", "Github" : "github/userName"}
+
+
+        
+    }
+}
