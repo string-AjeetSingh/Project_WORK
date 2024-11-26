@@ -1,8 +1,8 @@
 
-import { setSelectionRange } from "@testing-library/user-event/dist/utils";
-import { ProfileImageSection } from "../UserProfile/subComponents";
 import { useState, useEffect, useRef } from 'react';
 import { useResizeValue } from "../../MyLib/MyHook/customHook";
+import { useAnimationOnOff } from "../../MyLib/MyHook/customAnimationOnOff";
+
 
 function ProfileImage({ children }) {
 
@@ -26,44 +26,119 @@ function ProfileImage({ children }) {
   if (width <= 550 && width > 380) {
 
     return (<>
-      <div className="bg-slate-700 p-5 flex flex-row
-       rounded-2xl border-2 border-green-800 w-full  ">
-        <div className="size-36 relative top-14
-        border-2 border-green-900
+      <div className="p-1 flex flex-col items-center">
+
+        <div className="size-36 relative 
+        border-2 border-green-700
          rounded-full bg-slate-500 "></div>
 
+        <UploadButton className="relative left-14 flex flex-row 
+        justify-center items-center bg-green-950 rounded-xl p-1 scale-75
+          bottom-10 border border-black"/>
+
+        <div className="text-[0.9rem] font-bold
+relative bottom-5 ">
+          Png/Jpg/Jpeg
+        </div>
+
+        <div className="text-[1.2rem]
+ text-teal-600
+font-bold">
+          Organisation Logo/Icon
+        </div>
+
       </div>
+
+
+
+
     </>);
   }
   else if (width <= 380) {
 
     return (<>
-      <div className="bg-slate-700 p-5 flex flex-row
-       rounded-2xl border-2 border-green-800 w-full  ">
-        <div className="size-28 relative top-12
-        border-2 border-green-900
+
+      <div className="p-1 flex flex-col items-center">
+
+        <div className="size-28 relative 
+        border-2 border-green-700
          rounded-full bg-slate-500 "></div>
 
+        <UploadButton className="relative left-14 flex flex-row 
+        justify-center items-center bg-green-950 rounded-xl p-1 scale-75
+          bottom-10 border border-black"/>
+
+        <div className="text-[0.9rem] font-bold
+        relative bottom-5 ">
+          Png/Jpg/Jpeg
+        </div>
+
+        <div className="text-[1.2rem]
+         text-teal-600
+        font-bold">
+          Organisation Logo/Icon
+        </div>
+
       </div>
+
+
+
     </>);
   }
   else {
     return (<>
-      <div className="bg-slate-700 p-5 flex flex-row w-full
-       rounded-2xl border-2 border-green-800 max-w-[650px] ">
-        <div className="size-40 relative top-16
-        border-2 border-green-900
+
+
+      <div className="p-1 flex flex-col items-center">
+
+
+        <div className="size-40 relative 
+        border-2 border-green-700
          rounded-full bg-slate-500 "></div>
 
+
+        <UploadButton className="relative left-14 flex flex-row 
+        justify-center items-center bg-green-950 rounded-xl p-1 scale-75
+          bottom-10 border border-black"/>
+
+        <div className="text-[0.9rem] font-bold
+relative bottom-5 ">
+          Png/Jpg/Jpeg
+        </div>
+
+        <div className="text-[1.2rem]
+ text-teal-600
+font-bold">
+          Organisation Logo/Icon
+        </div>
+
       </div>
+
+
+
+
     </>);
   }
 }
 
-function CircleNumberNavItem({ children, addOnStyle = "" }) {
+function CircleNumberNavItem({ children, addOnStyle = "",
+  highLight = null, akey }) {
+
+  const [state, setState] = useState('transparent');
+
+  useEffect(() => {
+    if (highLight == akey) {
+      setState(' border-2  border-teal-200 bg-teal-500');
+    }
+    else {
+      setState('border-none');
+    }
+  }, [highLight])
+
   return (
     <>
       <div className={`text-[1.1rem] rounded-full 
+      ${state}
       p-1 size-9 bg-teal-600  text-center font-bold  ${addOnStyle}`}>
         {children}
       </div>
@@ -84,13 +159,30 @@ function LineNavItem({ children }) {
 
 }
 
-function NavShow({ children, containerClass }) {
+
+function NavShow({ children, containerClass, howMuch,
+  highLight = 1
+}) {
+
+  const arr = [];
+  for (let i = 0; i < howMuch; i++) {
+    if (i == (howMuch - 1)) {
+      arr.push(<CircleNumberNavItem akey={i + 1}
+        highLight={highLight}
+        addOnStyle={""}>{i + 1}
+      </CircleNumberNavItem>)
+    } else {
+      arr.push(<><CircleNumberNavItem akey={i + 1}
+        highLight={highLight}
+        addOnStyle={""}>{i + 1}
+      </CircleNumberNavItem>
+        <LineNavItem /></>)
+    }
+  }
   return (
     <>
       <div className="flex flex-row p-1 items-center  ">
-        <CircleNumberNavItem addOnStyle={""}>1</CircleNumberNavItem><LineNavItem />
-        <CircleNumberNavItem>2</CircleNumberNavItem> <LineNavItem />
-        <CircleNumberNavItem>3</CircleNumberNavItem>
+        {arr}
       </div>
     </>
   );
@@ -173,20 +265,25 @@ function GetInput({ name, inputName, totalInputLength = 100
   );
 }
 
-function Button({ children, mode }) {
+function Button({ children, mode, handle }) {
 
 
-  let directionSymbole = '';
-  if (mode === 'next') {
-    directionSymbole = ">";
+  function handleButton() {
+    if (mode === 'next') {
+      handle(1);
+    }
+    else if (mode === 'back') {
+      handle(-1);
+
+    }
   }
-  else if (mode === 'back') {
-    directionSymbole = "<";
 
-  }
+
+
   return (
     <>
-      <button className=" m-1 p-2
+      <button onClick={handleButton}
+        className=" m-1 p-2
       pl-4 pr-4 flex flex-row items-center
       justify-center
        bg-green-950 rounded-xl 
@@ -201,18 +298,77 @@ function Button({ children, mode }) {
 }
 
 
+function UploadButton({ children, className, onClick = null }) {
+  return (
+    <>
+      <button className={className} onClick={() => {
+        if (onClick) {
+          onClick();
+        }
+      }}
+      >
+        <img className="size-8   border-black rounded-full"
+          src="./stock/icon/pencileSmall.gif"
+          alt='Edit Button'>
+        </img>
+        <div className="m-1 font-bold 
+          text-teal-600">Upload</div>
+      </button>
+    </>
+  );
+}
 
-function Section1({ children }) {
 
+function Section1({ children, animation = false,
+  outOn, outOff, buttonHandle1 }) {
+
+  const secElem = useRef(null);
+  const { on, off } = useAnimationOnOff(secElem);
   const windowWidth = useResizeValue(window.innerWidth);
   const [getInputWrapperClassName, setGIWC] = useState("");
   const [getInputSpace, setGIS] = useState('');
 
+
   useEffect(() => {
+    if (animation) {
+      secElem.current.style.opacity = 0;
+
+      outOn(on)
+      outOff(off)
+
+    }
+    else {
+      if (outOn) {
+        outOn(() => {
+          alert('to use on() for section1, set animation to true first');
+          console.error('to use on() for section1, set animation to true first');
+
+        })
+      }
+      if (outOff) {
+        outOff(() => {
+          alert('to use off() for section1, set animation to true first');
+          console.error('to use off() for section1, set animation to true first');
+
+        })
+      }
+
+    }
+  }, [])
+
+  useEffect(() => {
+
     if (windowWidth < 700) {
       setGIWC(`flex flex-col 
           item-start`)
-      setGIS('80%');
+      if (windowWidth <= 465) {
+
+        setGIS('95%');
+      }
+      else {
+        setGIS('80%');
+
+      }
     }
     else {
       setGIWC(`flex flex-row 
@@ -226,8 +382,8 @@ function Section1({ children }) {
   return (
     <>
 
-      <div className=" m-1 p-4 border 
-      border-green-800 rounded-2xl
+      <div ref={secElem} className=" m-1 p-4 border 
+      border-green-800 rounded-2xl relative
       flex flex-col w-full max-w-[800px] " >
         <SectionHeading>Organisation Detail</SectionHeading> <br></br>
 
@@ -261,7 +417,8 @@ function Section1({ children }) {
         <div className="flex flex-row justify-end
         font-bold text-2xl">
 
-          <Button mode={'next'}>
+          <Button handle={buttonHandle1}
+            mode={'next'}>
             Next
           </Button>
         </div>
@@ -271,18 +428,55 @@ function Section1({ children }) {
   );
 }
 
-function Section2({ children }) {
+function Section2({ children, animation = false,
+  outOn, outOff, buttonHandle1 }) {
 
-
+  const secElem = useRef(null);
+  const { on, off } = useAnimationOnOff(secElem);
   const windowWidth = useResizeValue(window.innerWidth);
   const [getInputWrapperClassName, setGIWC] = useState("");
   const [getInputSpace, setGIS] = useState('');
+
+
+  useEffect(() => {
+    if (animation) {
+      secElem.current.style.opacity = 0;
+
+      outOn(on)
+      outOff(off)
+
+    }
+    else {
+      if (outOn) {
+        outOn(() => {
+          alert('to use on() for section1, set animation to true first');
+          console.error('to use on() for section1, set animation to true first');
+
+        })
+      }
+      if (outOff) {
+        outOff(() => {
+          alert('to use off() for section1, set animation to true first');
+          console.error('to use off() for section1, set animation to true first');
+
+        })
+      }
+
+    }
+  }, [])
 
   useEffect(() => {
     if (windowWidth < 700) {
       setGIWC(`flex flex-col 
           item-start`)
-      setGIS('80%');
+      if (windowWidth <= 465) {
+
+        setGIS('95%');
+      }
+      else {
+        setGIS('80%');
+
+      }
     }
     else {
       setGIWC(`flex flex-row 
@@ -295,8 +489,8 @@ function Section2({ children }) {
   return (
     <>
 
-      <div className=" m-1 p-4 border 
-      border-green-800 rounded-2xl
+      <div ref={secElem} className=" m-1 p-4 border 
+      border-green-800 rounded-2xl relative
       flex flex-col w-full max-w-[800px] " >
         <SectionHeading>Job Detail</SectionHeading> <br></br>
 
@@ -324,10 +518,10 @@ function Section2({ children }) {
 
         <div className="flex flex-row justify-between
         font-bold text-2xl">
-          <Button mode={'back'}>
+          <Button handle={buttonHandle1} mode={'back'}>
             Back
           </Button>
-          <Button mode={'next'}>
+          <Button handle={buttonHandle1} mode={'next'}>
             Next
           </Button>
         </div>
@@ -338,17 +532,54 @@ function Section2({ children }) {
   );
 }
 
-function Section3({ children }) {
+function Section3({ children, animation = false,
+  outOn, outOff, buttonHandle1 }) {
 
+  const secElem = useRef(null);
+  const { on, off } = useAnimationOnOff(secElem);
   const windowWidth = useResizeValue(window.innerWidth);
   const [getInputWrapperClassName, setGIWC] = useState("");
   const [getInputSpace, setGIS] = useState('');
 
   useEffect(() => {
+    if (animation) {
+      secElem.current.style.opacity = 0;
+
+      outOn(on)
+      outOff(off)
+
+    }
+    else {
+      if (outOn) {
+        outOn(() => {
+          alert('to use on() for section1, set animation to true first');
+          console.error('to use on() for section1, set animation to true first');
+
+        })
+      }
+      if (outOff) {
+        outOff(() => {
+          alert('to use off() for section1, set animation to true first');
+          console.error('to use off() for section1, set animation to true first');
+
+        })
+      }
+
+    }
+  }, [])
+
+  useEffect(() => {
     if (windowWidth < 700) {
       setGIWC(`flex flex-col 
           item-start`)
-      setGIS('80%');
+      if (windowWidth <= 465) {
+
+        setGIS('95%');
+      }
+      else {
+        setGIS('80%');
+
+      }
     }
     else {
       setGIWC(`flex flex-row 
@@ -361,8 +592,8 @@ function Section3({ children }) {
   return (
     <>
 
-      <div className=" m-1 p-4 border 
-      border-green-800 rounded-2xl
+      <div ref={secElem} className=" m-1 p-4 border 
+      border-green-800 rounded-2xl relative
       flex flex-col w-full max-w-[800px] " >
         <SectionHeading>Social Details</SectionHeading> <br></br>
 
@@ -390,7 +621,7 @@ function Section3({ children }) {
 
         <div className="flex flex-row justify-between
         font-bold text-2xl">
-          <Button mode={'back'}>
+          <Button handle={buttonHandle1} mode={'back'}>
             Back
           </Button>
           <Button mode={'next'}>

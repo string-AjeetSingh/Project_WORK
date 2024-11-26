@@ -1,7 +1,83 @@
+import { useReducer, useState, useRef, useEffect } from "react";
 import { NavShow, Section1, Section2, Section3 } from "./subComponents";
-
+import { flushSync } from "react-dom";
 
 function CreatePost({ }) {
+
+  const [highLightNav, sethighLightNav] = useState(1);
+
+  const initialValues = useRef({
+    noNavShows: 3,
+    currentSection: 1,
+    lastSection: 3,
+    nextSection: null,
+    allSectionsArr: [null,
+      <Section1 animation={true}
+        outOn={setOn}
+        outOff={setOff}
+        buttonHandle1={handleSectionButtons} />,
+
+      <Section2 animation={true}
+        outOn={setOn}
+        outOff={setOff}
+        buttonHandle1={handleSectionButtons} />,
+
+      <Section3 animation={true}
+        outOn={setOn}
+        outOff={setOff}
+        buttonHandle1={handleSectionButtons} />
+    ]
+  });
+
+  const animationSwitch = useRef({
+    on: null,
+    off: null
+  });
+
+  const [sectionArr, setsectionArr] =
+    useState(<Section2 animation={true}
+      outOn={setOn}
+      outOff={setOff}
+      buttonHandle1={handleSectionButtons} />)
+
+  async function handleSectionButtons(val) {
+    let finall = null;
+    finall = initialValues.current.currentSection + val;
+
+    if (finall >= 1 && finall <= initialValues.current.lastSection) {
+
+      initialValues.current.currentSection = finall;
+
+      sethighLightNav(initialValues.current.currentSection);
+
+      await animationSwitch.current.off();
+
+      flushSync(() => {
+        setsectionArr(initialValues.current.allSectionsArr[
+          initialValues.current.currentSection
+        ]);
+      })
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+      await animationSwitch.current.on();
+
+    }
+    console.log(initialValues.current.currentSection);
+  }
+
+  function setOn(params) {
+    animationSwitch.current.on = params;
+  }
+  function setOff(params) {
+    animationSwitch.current.off = params;
+  }
+
+  useEffect(() => {
+    animationSwitch.current.on();
+
+  }, [])
   return (
     <>
       <div className="p-1">
@@ -14,27 +90,15 @@ function CreatePost({ }) {
         </div>
         <div className="flex flex-row 
          justify-center ">
-          <NavShow></NavShow>
+          <NavShow howMuch={3} highLight={highLightNav} ></NavShow>
         </div>
 
         <div className="flex flex-row 
          justify-center w-full  ">
-          <Section1></Section1>
+          {sectionArr}
         </div>
 
-        <hr></hr>
 
-        <div className="flex flex-row 
-         justify-center w-full  ">
-          <Section2></Section2>
-        </div>
-
-        <hr></hr>
-
-        <div className="flex flex-row 
-         justify-center w-full  ">
-          <Section3></Section3>
-        </div>
 
       </div>
     </>
