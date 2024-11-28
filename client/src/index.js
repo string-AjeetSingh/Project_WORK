@@ -13,11 +13,12 @@ const root = ReactDOM.createRoot(ReactContainer[0]);
 
 root.render(
   <React.StrictMode>
-   <div className='bg-gradient-to-br from-green-950  to-green-900'>
+    <div className='bg-gradient-to-br min-h-screen
+    from-green-950  to-green-900'>
 
-    <App/>
-   </div>
-   
+      <App />
+    </div>
+
   </React.StrictMode>
 );
 

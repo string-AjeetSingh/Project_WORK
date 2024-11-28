@@ -35,7 +35,7 @@ function CreatePost({ }) {
   });
 
   const [sectionArr, setsectionArr] =
-    useState(<Section2 animation={true}
+    useState(<Section1 animation={true}
       outOn={setOn}
       outOff={setOff}
       buttonHandle1={handleSectionButtons} />)
