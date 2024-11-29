@@ -2,7 +2,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useResizeValue } from "../../MyLib/MyHook/customHook";
 import { useAnimationOnOff } from "../../MyLib/MyHook/customAnimationOnOff";
-
+import { MyContext } from './myContext';
+import { useContext } from 'react';
 
 function ProfileImage({ children }) {
 
@@ -200,22 +201,82 @@ function SectionHeading({ children }) {
   );
 }
 
-function GetInput({ name, inputName, totalInputLength = 100
+function GetInput({ index, name, inputName, totalInputLength = 100
   , inputHeight = 10, typeToggle = true, placeHolder = '',
-  spaceOccupy = '40%'
+  spaceOccupy = '40%', prevValue,
+  OutReport, isMendatory = false
+
 }) {
 
 
+  let aref = useRef(null);
+  let boolPreviousVal = false;
+  if (prevValue) {
+    if (Object.hasOwn(prevValue, 'inputData')) {
+      boolPreviousVal = true;
+    }
+  }
 
+  const TheReport = useRef({
+    index: index,
+    isMendatory: isMendatory,
+    ok: false,
+    inputData: {
+      name: inputName,
+      data: null,
+      redNotice: redBorder,
+    }
+  });
+
+  const [borderColor, setBorderColor] = useState(["border-teal-500", 'teal']);
   const [string, setString] = useState(['', totalInputLength]);
+
+
 
   function handledChanbg(event) {
     if (string[0].length < totalInputLength) {
       setString([event.target.value, string[1]])
+      TheReport.current.inputData.data = event.target.value;
+      OutReport(TheReport.current);
+
+      if (borderColor[1] === 'red') {
+        normalBorder();
+      }
+
+      if (string[0].length < 1) {
+        TheReport.current.ok = false;
+      } else {
+        TheReport.current.ok = true;
+      }
     }
   }
 
 
+  function redBorder() {
+    setBorderColor(['border-red-600', 'red']);
+    alert('fill mendatory fields, if there is no mendatory field( one with red star), skip by pressing next');
+  }
+
+  function normalBorder() {
+    setBorderColor(['border-teal-500', 'teal']);
+
+  }
+
+  useEffect(() => {
+
+    if (!OutReport) {
+      console.error('please provide Functinoality to the attribute OutReport of the GetInput to get the report of the component');
+    }
+
+    if (boolPreviousVal) {
+      aref.current.value = prevValue.inputData.data;
+    }
+    if (aref.current.value.length < 1) {
+      TheReport.current.ok = false;
+    } else {
+      TheReport.current.ok = true;
+    }
+  }, [])
 
   return (
     <>
@@ -233,9 +294,12 @@ function GetInput({ name, inputName, totalInputLength = 100
 
 
         {typeToggle == 'input' ?
-          <input onChange={(e) => {
-            handledChanbg(e);
-          }}
+          <input
+            ref={aref}
+            name={inputName}
+            onChange={(e) => {
+              handledChanbg(e);
+            }}
             placeholder={placeHolder}
             className={`border border-teal-500
         bg-transparent rounded-md 
@@ -244,9 +308,12 @@ function GetInput({ name, inputName, totalInputLength = 100
 
           </input>
           :
-          <textarea onChange={(e) => {
-            handledChanbg(e);
-          }}
+          <textarea
+            ref={aref}
+            name={inputName}
+            onChange={(e) => {
+              handledChanbg(e);
+            }}
             placeholder={placeHolder}
             className={`border border-teal-500
         bg-transparent rounded-md 
@@ -265,16 +332,19 @@ function GetInput({ name, inputName, totalInputLength = 100
   );
 }
 
-function Button({ children, mode, handle }) {
+function Button({ children, mode, handle, stateVal }) {
 
 
   function handleButton() {
     if (mode === 'next') {
-      handle(1);
+      handle(1, stateVal);
     }
     else if (mode === 'back') {
-      handle(-1);
+      handle(-1, stateVal);
 
+    }
+    else if (mode === 'submit') {
+      handle(stateVal);
     }
   }
 
@@ -285,10 +355,10 @@ function Button({ children, mode, handle }) {
       <button onClick={handleButton}
         className=" m-1 p-2
       pl-4 pr-4 flex flex-row items-center
-      justify-center
-       bg-green-950 rounded-xl 
-       text-teal-700 
-       border border-green-800" >
+      justify-center hover:bg-green-900 active:bg-green-800 active:text-teal-950
+      bg-green-950 rounded-xl 
+      text-teal-700 
+      border border-green-800" >
 
         {children}
 
@@ -298,21 +368,76 @@ function Button({ children, mode, handle }) {
 }
 
 
-function UploadButton({ children, className, onClick = null }) {
+function UploadButton({
+  children, className, onClick = null }) {
+
+  let inputRef = useRef(null);
+  const { index, prevData,
+    OutReportFromInputs } = useContext(MyContext);
+
+  const TheReport = useRef({
+    index: index,
+    isMendatory: null,
+    ok: false,
+    inputData: {
+      name: 'watch in data, it contain two datas files and color as array',
+      data: [],
+      redNotice: null,
+    }
+  });
+
+  function handleClick() {
+    inputRef.current.click();
+
+  }
+
+  function handleChangeFile(e) {
+    console.log('Changing file');
+
+    if (prevData) {
+      TheReport.current.inputData.data = [
+        { files: e.target.files[0] },
+        prevData.inputData.data[1]
+      ]
+    } else {
+      TheReport.current.inputData.data = [
+        { files: e.target.files[0] },
+        null
+      ]
+    }
+    OutReportFromInputs(TheReport.current);
+
+  }
+
+
+  useEffect(() => {
+    console.log("previous data is below");
+    console.log(prevData);
+  }, [prevData])
+
+
   return (
     <>
-      <button className={className} onClick={() => {
-        if (onClick) {
-          onClick();
-        }
-      }}
+
+      <button
+        className={`${className} hover:bg-green-800 active:bg-green-700
+            active:text-teal-950 min-w-24
+             border-green-700`} onClick={() => {
+          handleClick();
+
+        }}
       >
+        <input onChange={(e) => {
+          handleChangeFile(e);
+        }} ref={inputRef}
+          className='absolute opacity-0 -z-10  hidden'
+          type='file'></input>
         <img className="size-8   border-black rounded-full"
           src="./stock/icon/pencileSmall.gif"
           alt='Edit Button'>
         </img>
         <div className="m-1 font-bold 
-          text-teal-600">Upload</div>
+      text-teal-600">Edit</div>
       </button>
     </>
   );
@@ -320,16 +445,19 @@ function UploadButton({ children, className, onClick = null }) {
 
 
 function Section1({ children, animation = false,
-  outOn, outOff, buttonHandle1 }) {
+  outOn, outOff, buttonHandle1, buttonHandle2,
+  OutReportFromInputs }) {
 
   const secElem = useRef(null);
   const { on, off } = useAnimationOnOff(secElem);
   const windowWidth = useResizeValue(window.innerWidth);
   const [getInputWrapperClassName, setGIWC] = useState("");
   const [getInputSpace, setGIS] = useState('');
-
+  const { section1FinalInputReport } = useContext(MyContext);
+  const { tryit } = useContext(MyContext);
 
   useEffect(() => {
+    tryit();
     if (animation) {
       secElem.current.style.opacity = 0;
 
@@ -389,25 +517,42 @@ function Section1({ children, animation = false,
 
         <div className="self-center w-full
           flex flex-row justify-center ">
-          <ProfileImage></ProfileImage>
+          <MyContext.Provider value={{
+            index: 1, OutReportFromInputs,
+            prevData: section1FinalInputReport[1]
+          }}>
+
+            <ProfileImage
+            ></ProfileImage>
+
+          </MyContext.Provider>
         </div><br></br><br></br>
 
         <div className={getInputWrapperClassName}>
 
-          <GetInput inputHeight="10" spaceOccupy={getInputSpace}
+          <GetInput index={2} inputName="companyName"
+            inputHeight="10" spaceOccupy={getInputSpace}
             name={"Company Name"} typeToggle='input'
             placeHolder="Ex : Microsoft"
+            isMendatory={true} totalInputLength={50}
+            prevValue={section1FinalInputReport[2]}
+            OutReport={OutReportFromInputs}
           />
 
-          <GetInput inputHeight="20" spaceOccupy={getInputSpace}
+          <GetInput index={3} inputName="jobTitle"
+            inputHeight="20" spaceOccupy={getInputSpace}
             name={"Job Title"}
             placeHolder="Senior Web Developer"
+            prevValue={section1FinalInputReport[3]}
+            OutReport={OutReportFromInputs}
           />
 
-          <GetInput inputHeight="20" spaceOccupy={getInputSpace}
-            name={"Addresh"}
-            totalInputLength={200}
+          <GetInput index={4} inputName="addresh"
+            inputHeight="20" spaceOccupy={getInputSpace}
+            name={"Addresh"} totalInputLength={200}
             placeHolder="Hoshiarpur, Mohali"
+            OutReport={OutReportFromInputs}
+            prevValue={section1FinalInputReport[4]}
           />
 
         </div>
@@ -418,6 +563,7 @@ function Section1({ children, animation = false,
         font-bold text-2xl">
 
           <Button handle={buttonHandle1}
+            stateVal={section1FinalInputReport}
             mode={'next'}>
             Next
           </Button>
@@ -429,16 +575,19 @@ function Section1({ children, animation = false,
 }
 
 function Section2({ children, animation = false,
-  outOn, outOff, buttonHandle1 }) {
+  outOn, outOff, buttonHandle1, OutReportFromInputs }) {
 
   const secElem = useRef(null);
   const { on, off } = useAnimationOnOff(secElem);
   const windowWidth = useResizeValue(window.innerWidth);
   const [getInputWrapperClassName, setGIWC] = useState("");
   const [getInputSpace, setGIS] = useState('');
+  const { tryit } = useContext(MyContext);
+  const { section2FinalInputReport } = useContext(MyContext);
 
 
   useEffect(() => {
+    tryit();
     if (animation) {
       secElem.current.style.opacity = 0;
 
@@ -496,19 +645,28 @@ function Section2({ children, animation = false,
 
         <div className={getInputWrapperClassName}>
 
-          <GetInput inputHeight="32" spaceOccupy={getInputSpace}
-            name={"About"}
+          <GetInput inputName="about"
+            index={5} OutReport={OutReportFromInputs}
+            prevValue={section2FinalInputReport[5]}
+            inputHeight="32" spaceOccupy={getInputSpace}
+            name={"About"} totalInputLength={500}
             placeHolder="Your Job Discription"
           />
 
-          <GetInput inputHeight="32" spaceOccupy={getInputSpace}
-            name={"Qualifications"}
+          <GetInput inputName="qualifications"
+            index={6} OutReport={OutReportFromInputs}
+            prevValue={section2FinalInputReport[6]}
+            inputHeight="32" spaceOccupy={getInputSpace}
+            name={"Qualifications"} totalInputLength={500}
             placeHolder=" - Qualifications ...."
           />
 
-          <GetInput inputHeight="32" spaceOccupy={getInputSpace}
+          <GetInput inputName="responsibilities"
+            index={7} OutReport={OutReportFromInputs}
+            prevValue={section2FinalInputReport[7]}
+            inputHeight="32" spaceOccupy={getInputSpace}
             name={"Responsibilities"}
-            totalInputLength={200}
+            totalInputLength={500}
             placeHolder="- Responsiblilities ...."
           />
 
@@ -533,15 +691,21 @@ function Section2({ children, animation = false,
 }
 
 function Section3({ children, animation = false,
-  outOn, outOff, buttonHandle1 }) {
+  outOn, outOff, OutReportFromInputs,
+  buttonHandle1, submitButton }) {
 
   const secElem = useRef(null);
   const { on, off } = useAnimationOnOff(secElem);
   const windowWidth = useResizeValue(window.innerWidth);
   const [getInputWrapperClassName, setGIWC] = useState("");
   const [getInputSpace, setGIS] = useState('');
+  const { section1FinalInputReport,
+    section2FinalInputReport,
+    section3FinalInputReport, tryit
+  } = useContext(MyContext);
 
   useEffect(() => {
+    tryit();
     if (animation) {
       secElem.current.style.opacity = 0;
 
@@ -599,19 +763,29 @@ function Section3({ children, animation = false,
 
         <div className={getInputWrapperClassName}>
 
-          <GetInput inputHeight="10" spaceOccupy={getInputSpace}
+          <GetInput inputName="email"
+            index={8} OutReport={OutReportFromInputs}
+            inputHeight="10" spaceOccupy={getInputSpace}
             name={"Email Id"} typeToggle='input' totalInputLength={50}
+            prevValue={section3FinalInputReport[8]}
             placeHolder="email@gmail.com"
           />
 
-          <GetInput inputHeight="10" spaceOccupy={getInputSpace}
+          <GetInput inputName="x"
+            index={9} OutReport={OutReportFromInputs}
+            inputHeight="10" spaceOccupy={getInputSpace}
             name={"X"} typeToggle='input' totalInputLength={50}
+            prevValue={section3FinalInputReport[9]}
             placeHolder="@twitter account"
+
           />
 
-          <GetInput inputHeight="10" spaceOccupy={getInputSpace}
+          <GetInput inputName="github"
+            index={10} OutReport={OutReportFromInputs}
+            inputHeight="10" spaceOccupy={getInputSpace}
             name={"GitHub"} typeToggle='input'
             totalInputLength={100}
+            prevValue={section3FinalInputReport[10]}
             placeHolder="github/UserName/YourRepository"
           />
 
@@ -624,7 +798,13 @@ function Section3({ children, animation = false,
           <Button handle={buttonHandle1} mode={'back'}>
             Back
           </Button>
-          <Button mode={'next'}>
+          <Button handle={submitButton}
+            stateVal={[
+              section1FinalInputReport,
+              section2FinalInputReport,
+              section3FinalInputReport
+            ]}
+            mode={'submit'}>
             Submit
           </Button>
         </div>

@@ -5,9 +5,11 @@ import { useAnimationOnOff } from "../../MyLib/MyHook/customAnimationOnOff";
 import { MyContext } from './myContext';
 import { useContext } from 'react';
 
-function ProfileImage({ children }) {
+function ProfileImage({ children,
+    prevData }) {
 
     const [width, setwidth] = useState(window.innerWidth);
+    const [divColor, setdivColor] = useState('bg-slate-700');
 
     function handleResize() {
         setwidth(window.innerWidth);
@@ -15,6 +17,10 @@ function ProfileImage({ children }) {
     }
 
     useEffect(() => {
+
+        if (prevData) {
+            setdivColor(prevData.inputData.data[1].color);
+        }
         window.addEventListener('resize', handleResize);
 
         return (() => {
@@ -24,13 +30,15 @@ function ProfileImage({ children }) {
     }, [])
 
 
+
+
     if (width <= 550 && width > 380) {
 
         return (<>
             <div className="p-1 flex flex-col items-center w-full">
 
-                <div className="bg-slate-700 p-5 flex flex-row
-           rounded-2xl border-2 border-green-800 w-full  ">
+                <div className={`${divColor} p-5 flex flex-row
+           rounded-2xl border-2 border-green-800 w-full  `}>
                     <div className="size-28 relative top-14
             border-2 border-green-900 
              rounded-full bg-slate-500 "></div>
@@ -38,11 +46,12 @@ function ProfileImage({ children }) {
 
 
 
-                <UploadButton className="relative right-20 flex flex-row 
+                <UploadButton
+                    mode={'pimg'} className="relative right-20 flex flex-row 
         justify-center items-center bg-green-950 rounded-xl p-1 scale-75
           bottom-3 border border-black"/>
 
-                <UploadButton className="relative left-36 flex flex-row 
+                <UploadButton divToHaveEffect={setdivColor} className="relative left-36 flex flex-row 
         justify-center items-center bg-green-950 rounded-xl p-1 scale-75
           bottom-24 border border-black"/>
 
@@ -70,8 +79,8 @@ font-bold">
 
             <div className="p-1 flex flex-col items-center w-full">
 
-                <div className="bg-slate-700 p-5 flex flex-row
-           rounded-2xl border-2 border-green-800 w-full  ">
+                <div className={`${divColor} p-5 flex flex-row
+           rounded-2xl border-2 border-green-800 w-full  `}>
                     <div className="size-28 relative top-12
             border-2 border-green-900
              rounded-full bg-slate-500 "></div>
@@ -79,11 +88,11 @@ font-bold">
 
 
 
-                <UploadButton className="relative right-6 flex flex-row 
+                <UploadButton mode={'pimg'} className="relative right-6 flex flex-row 
         justify-center items-center bg-green-950 rounded-xl p-1 scale-75
           bottom-5 border border-black"/>
 
-                <UploadButton className="relative left-24 flex flex-row 
+                <UploadButton divToHaveEffect={setdivColor} className="relative left-24 flex flex-row 
         justify-center items-center bg-green-950 rounded-xl p-1 scale-75
           bottom-24 border border-black"/>
 
@@ -111,19 +120,19 @@ font-bold">
             <div className="p-1 flex flex-col items-center w-full">
 
 
-                <div className="bg-slate-700 p-5 flex flex-row
-           rounded-2xl border-2 border-green-800 w-full max-w-[600px]  ">
+                <div className={`${divColor} p-5 flex flex-row
+           rounded-2xl border-2 border-green-800 w-full max-w-[600px]  `}>
                     <div className="size-28 relative top-12
             border-2 border-green-900
              rounded-full bg-slate-500 "></div>
                 </div>
 
 
-                <UploadButton className="relative right-36 flex flex-row 
+                <UploadButton mode={'pimg'} className="relative right-36 flex flex-row 
         justify-center items-center bg-green-950 rounded-xl p-1 scale-75
           bottom-3 border border-black"/>
 
-                <UploadButton className="relative left-52 flex flex-row 
+                <UploadButton divToHaveEffect={setdivColor} className="relative left-52 flex flex-row 
         justify-center items-center bg-green-950 rounded-xl p-1 scale-75
           bottom-24 border border-black"/>
 
@@ -234,8 +243,8 @@ function GetInput({ name, inputName, index,
     spaceOccupy = '40%', OutReport, isMendatory = false
 }) {
 
-    let aref = useRef(null);
     const { tryit } = useContext(MyContext);
+    let aref = useRef(null);
     let boolPreviousVal = false;
     if (prevValue) {
         if (Object.hasOwn(prevValue, 'inputData')) {
@@ -260,7 +269,8 @@ function GetInput({ name, inputName, index,
     function handledChanbg(event) {
         if (string[0].length < totalInputLength) {
             setString([event.target.value, string[1]])
-
+            TheReport.current.inputData.data = event.target.value;
+            OutReport(TheReport.current);
 
             if (borderColor[1] === 'red') {
                 normalBorder();
@@ -286,18 +296,15 @@ function GetInput({ name, inputName, index,
 
     useEffect(() => {
 
-        TheReport.current.inputData.data =
-            string[0];
-        if (OutReport) {
-            OutReport(TheReport.current);
-            tryit();
 
-        } else {
-            console.error('please provide Functinoality to the attribute OutReport of the GetInput to get the report of the component');
-        }
     }, [string])
 
     useEffect(() => {
+
+        if (!OutReport) {
+            console.error('please provide Functinoality to the attribute OutReport of the GetInput to get the report of the component');
+        }
+
         if (boolPreviousVal) {
             aref.current.value = prevValue.inputData.data;
         }
@@ -387,10 +394,10 @@ function Button({ children, mode, handle, stateVal }) {
             <button onClick={handleButton}
                 className=" m-1 p-2
       pl-4 pr-4 flex flex-row items-center
-      justify-center
-       bg-green-950 rounded-xl 
-       text-teal-700 
-       border border-green-800" >
+      justify-center hover:bg-green-900 active:bg-green-800 active:text-teal-950
+      bg-green-950 rounded-xl 
+      text-teal-700 
+      border border-green-800" >
 
                 {children}
 
@@ -400,27 +407,162 @@ function Button({ children, mode, handle, stateVal }) {
 }
 
 
-function UploadButton({ children, className, onClick = null, mode }) {
+function UploadButton({
+    children, className, onClick = null, divToHaveEffect, mode }) {
+
+    let inputRef = useRef(null);
+    let bEditRef = useRef(null);
+    const [showDiv, setshowDiv] = useState('none');
+    const { index, prevData,
+        OutReportFromInputs } = useContext(MyContext);
+
+    const TheReport = useRef({
+        index: index,
+        isMendatory: null,
+        ok: false,
+        inputData: {
+            name: 'watch in data, it contain two datas files and color as array',
+            data: [],
+            redNotice: null,
+        }
+    });
 
     function handleClick() {
-        if (mode == 'pimg') {
+        if (mode === 'pimg') {
+            inputRef.current.click();
+        }
 
-        }
-        else if (mode == 'bimg') {
-
-        }
-        else {
-            console.error('Provide mode attribute to the UploadButton Component to have working');
-        }
     }
+
+    function handleChangeFile(e) {
+        console.log('Changing file');
+
+        if (prevData) {
+            TheReport.current.inputData.data = [
+                { files: e.target.files[0] },
+                prevData.inputData.data[1]
+            ]
+        } else {
+            TheReport.current.inputData.data = [
+                { files: e.target.files[0] },
+                null
+            ]
+        }
+
+
+        OutReportFromInputs(TheReport.current);
+
+
+    }
+
+    function handleColorBox(color) {
+
+        if (prevData) {
+            TheReport.current.inputData.data = [
+                prevData.inputData.data[1],
+                { 'color': color }
+
+            ]
+
+        } else {
+            TheReport.current.inputData.data = [
+                null,
+                { 'color': color }
+
+            ]
+
+        }
+
+
+        OutReportFromInputs(TheReport.current);
+        divToHaveEffect(color);
+    }
+
+    function handleFocus() {
+        setshowDiv('flex');
+    }
+    function handleFocusOver() {
+        setshowDiv('none');
+
+    }
+
+    useEffect(() => {
+        console.log("previous data is below");
+        console.log(prevData);
+    }, [prevData])
+
+
+    if (mode === 'pimg') {
+        return (
+            <>
+
+                <button
+                    className={`${className} hover:bg-green-800 active:bg-green-700
+                active:text-teal-950 min-w-24
+                 border-green-700`} onClick={() => {
+                        handleClick();
+
+                    }}
+                >
+                    <input onChange={(e) => {
+                        handleChangeFile(e);
+                    }} ref={inputRef}
+                        className='absolute opacity-0 -z-10  hidden'
+                        type='file'></input>
+                    <img className="size-8   border-black rounded-full"
+                        src="./stock/icon/pencileSmall.gif"
+                        alt='Edit Button'>
+                    </img>
+                    <div className="m-1 font-bold 
+          text-teal-600">Edit</div>
+                </button>
+            </>
+        );
+    }
+
+
 
     return (
         <>
-            <button className={className} onClick={() => {
-                handleClick();
+            <button ref={bEditRef} onBlur={handleFocusOver}
+                onFocus={handleFocus}
+                className={`${className} hover:bg-green-800
+                 min-w-24
+                 border-green-700`} onClick={() => {
+                    handleClick();
 
-            }}
+                }}
             >
+                <div className={`size-52 border border-black absolute 
+                    self-start top-11 right-2 justify-center items-start
+                     bg-slate-500 rounded-2xl
+                     overflow-y-scroll  `}
+                    style={{
+                        display: showDiv,
+                        flexWrap: 'wrap'
+                    }}>
+                    <div className='relative p-1 ' style={{
+                        display: 'flex',
+                        flexWrap: 'wrap'
+                    }}>
+                        <ColorGetDiv onClick={handleColorBox} color={'bg-slate-700'} />
+                        <ColorGetDiv onClick={handleColorBox} color={'bg-slate-800'} />
+                        <ColorGetDiv onClick={handleColorBox} color={'bg-slate-900'} />
+                        <ColorGetDiv onClick={handleColorBox} color={'bg-red-400'} />
+                        <ColorGetDiv onClick={handleColorBox} color={'bg-red-600'} />
+                        <ColorGetDiv onClick={handleColorBox} color={'bg-red-700'} />
+                        <ColorGetDiv onClick={handleColorBox} color={'bg-green-300'} />
+                        <ColorGetDiv onClick={handleColorBox} color={'bg-green-600'} />
+                        <ColorGetDiv onClick={handleColorBox} color={'bg-green-700'} />
+                        <ColorGetDiv onClick={handleColorBox} color={'bg-amber-400'} />
+                        <ColorGetDiv onClick={handleColorBox} color={'bg-amber-500'} />
+                        <ColorGetDiv onClick={handleColorBox} color={'bg-amber-600'} />
+                        <ColorGetDiv onClick={handleColorBox} color={'bg-amber-700'} />
+                        <ColorGetDiv onClick={handleColorBox} color={'bg-amber-800'} />
+
+
+                    </div>
+                </div>
                 <img className="size-8   border-black rounded-full"
                     src="./stock/icon/pencileSmall.gif"
                     alt='Edit Button'>
@@ -429,6 +571,17 @@ function UploadButton({ children, className, onClick = null, mode }) {
           text-teal-600">Edit</div>
             </button>
         </>
+    );
+}
+
+function ColorGetDiv({ color, onClick }) {
+    return (
+
+        <div onClick={() => {
+            onClick(color);
+        }}
+            className={`size-12 border border-black m-1 hover:border-white ${color}`}></div>
+
     );
 }
 
@@ -443,7 +596,7 @@ function Section1({ children, animation = false,
     const [getInputWrapperClassName, setGIWC] = useState("");
     const [getInputSpace, setGIS] = useState('');
     const { section1FinalInputReport } = useContext(MyContext);
-
+    const { tryit } = useContext(MyContext);
 
 
 
@@ -451,6 +604,7 @@ function Section1({ children, animation = false,
 
 
     useEffect(() => {
+        tryit();
         if (animation) {
             secElem.current.style.opacity = 0;
 
@@ -510,7 +664,16 @@ function Section1({ children, animation = false,
 
                 <div className="self-center w-full
           flex flex-row justify-center ">
-                    <ProfileImage></ProfileImage>
+                    <MyContext.Provider value={{
+                        index: 1, OutReportFromInputs,
+                        prevData: section1FinalInputReport[1]
+                    }}>
+                        <ProfileImage
+                            prevData={section1FinalInputReport[1]}>
+
+                        </ProfileImage>
+                    </MyContext.Provider>
+
                 </div><br></br><br></br>
 
                 <div className={getInputWrapperClassName}>
@@ -519,7 +682,7 @@ function Section1({ children, animation = false,
                         inputHeight="10" spaceOccupy={getInputSpace}
                         name={"User Name"} typeToggle='input'
                         placeHolder="Ex : Ajeet Singh"
-                        isMendatory={true}
+                        isMendatory={true} totalInputLength={50}
                         prevValue={section1FinalInputReport[2]}
                         OutReport={OutReportFromInputs}
                     />
@@ -527,7 +690,7 @@ function Section1({ children, animation = false,
                     <GetInput index="3" inputName="title"
                         inputHeight="10" spaceOccupy={getInputSpace}
                         name={"Professional Title"} typeToggle='input'
-                        placeHolder="Ex : Web Developer"
+                        placeHolder="Ex : Web Developer" totalInputLength={50}
                         prevValue={section1FinalInputReport[3]}
                         OutReport={OutReportFromInputs}
                     />
@@ -574,10 +737,12 @@ function Section2({ children, animation = false,
     const windowWidth = useResizeValue(window.innerWidth);
     const [getInputWrapperClassName, setGIWC] = useState("");
     const [getInputSpace, setGIS] = useState('');
-
+    const { tryit } = useContext(MyContext);
     const { section2FinalInputReport } = useContext(MyContext);
 
     useEffect(() => {
+
+        tryit();
         if (animation) {
             secElem.current.style.opacity = 0;
 
@@ -638,7 +803,7 @@ function Section2({ children, animation = false,
                     <GetInput inputName="education"
                         index={6} OutReport={OutReportFromInputs}
                         inputHeight="32" spaceOccupy={getInputSpace}
-                        name={"Education"}
+                        name={"Education"} totalInputLength={250}
                         prevValue={section2FinalInputReport[6]}
                         placeHolder=" Ex: BCA From Punjab University"
                     />
@@ -646,7 +811,7 @@ function Section2({ children, animation = false,
                     <GetInput inputName="skills"
                         index={7} OutReport={OutReportFromInputs}
                         inputHeight="32" spaceOccupy={getInputSpace}
-                        name={"Skills"}
+                        name={"Skills"} totalInputLength={500}
                         prevValue={section2FinalInputReport[7]}
                         placeHolder="Tell About Your Professional Skills"
                     />
@@ -655,7 +820,7 @@ function Section2({ children, animation = false,
                         index={8} OutReport={OutReportFromInputs}
                         inputHeight="32" spaceOccupy={getInputSpace}
                         name={"Experiance"}
-                        totalInputLength={200}
+                        totalInputLength={500}
                         prevValue={section2FinalInputReport[8]}
                         placeHolder="About Your Experiance"
                     />
@@ -694,10 +859,12 @@ function Section3({ children, animation = false,
     const [getInputSpace, setGIS] = useState('');
     const { section1FinalInputReport,
         section2FinalInputReport,
-        section3FinalInputReport
+        section3FinalInputReport, tryit
     } = useContext(MyContext);
 
+
     useEffect(() => {
+        tryit();
         if (animation) {
             secElem.current.style.opacity = 0;
 

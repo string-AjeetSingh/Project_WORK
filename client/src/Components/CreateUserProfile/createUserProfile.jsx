@@ -54,14 +54,16 @@ function CreateUserProfile({ }) {
 
     async function tryit() {
         console.log('from try it function ,below the state');
+        console.log(section1FinalInputReport);
         console.log(section2FinalInputReport);
+        console.log(section3FinalInputReport);
+        console.log('from try it function ,Over ----------------- ');
     }
 
     async function handleSectionButtons1(val, stateVal) {
 
         let runNext = true;
-        console.log('below final report report : ');
-        console.log(stateVal);
+
 
         for (let val of stateVal) {
             if (val) {
