@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './Css/index.css';
 import App from './App';
+import { Auth0Provider } from '@auth0/auth0-react';
 
 import reportWebVitals from './reportWebVitals';
 
@@ -13,11 +14,21 @@ const root = ReactDOM.createRoot(ReactContainer[0]);
 
 root.render(
   <React.StrictMode>
-    <div className='bg-gradient-to-br min-h-screen
+    <Auth0Provider
+      domain='dev-2jpux8rtke6h2fat.us.auth0.com'
+      clientId='jfARQSPc43O0AmlrYatdCbLlJzrd0Pth'
+      authorizationParams={
+        {
+          redirect_uri: 'http://localhost:3000/'
+        }
+      }>
+
+      <div className='bg-gradient-to-br min-h-screen
     from-green-950  to-green-900'>
 
-      <App />
-    </div>
+        <App />
+      </div>
+    </Auth0Provider>
 
   </React.StrictMode>
 );

@@ -4,6 +4,7 @@ import { UserProfile } from '../Components/UserProfile/UserProfile';
 import { CreatePost } from '../Components/CreatePost/CreatePost';
 import { CreateUserProfile } from '../Components/CreateUserProfile/createUserProfile';
 import { JobCards } from '../Components/JobCards/jobCards';
+import { LoginTry } from '../Components/Rough/login';
 
 
 
@@ -22,8 +23,9 @@ function Rough({ children }) {
                 {/*<AboutJob></AboutJob>*/}
 
                 {/*  <CreatePost></CreatePost>*/}
-                <CreatePost></CreatePost>
+
                 {/*   <CreateUserProfile></CreateUserProfile>*/}
+                <LoginTry />
 
             </div>
 
