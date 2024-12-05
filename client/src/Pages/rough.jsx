@@ -25,6 +25,10 @@ function Rough({ children }) {
                 {/*  <CreatePost></CreatePost>*/}
 
                 {/*   <CreateUserProfile></CreateUserProfile>*/}
+                <AboutJob />
+                <hr></hr><br>
+                </br>
+                <CreatePost />
                 <LoginTry />
 
             </div>
