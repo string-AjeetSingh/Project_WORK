@@ -6,6 +6,7 @@ import { CreateUserProfile } from '../Components/CreateUserProfile/createUserPro
 import { JobCards } from '../Components/JobCards/jobCards';
 import { LoginTry } from '../Components/Rough/login';
 import { TryConnection } from '../Components/Rough/tryConnectionServer';
+import { LoadingScreen } from '../Components/TranstitionScreen/LoadingScreen';
 
 
 
@@ -17,7 +18,7 @@ function Rough({ children }) {
 
     return (
         <>
-
+            <LoadingScreen />
             <div>
 
                 {/*<JobCards></JobCards>*/}
@@ -26,12 +27,14 @@ function Rough({ children }) {
                 {/*  <CreatePost></CreatePost>*/}
 
                 {/*   <CreateUserProfile></CreateUserProfile>*/}
-                <AboutJob />
-                <hr></hr><br>
-                </br>
-                <CreatePost />
-                <LoginTry />
-                <TryConnection />
+                {/* <LoginTry /> */}
+                {/* <TryConnection /> */}
+                {/* <LoginTry /> */}
+
+
+
+
+
 
             </div>
 
