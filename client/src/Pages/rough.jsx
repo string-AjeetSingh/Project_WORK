@@ -30,6 +30,7 @@ function Rough({ children }) {
                 {/* <LoginTry /> */}
                 {/* <TryConnection /> */}
                 {/* <LoginTry /> */}
+                <TryConnection />
 
 
 
