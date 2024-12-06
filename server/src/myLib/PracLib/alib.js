@@ -87,52 +87,6 @@ class alib {
 
 }
 
-//let con = new alib('db1');
 
+module.exports = alib;
 
-async function run() {
-    try {
-
-        con.setCollection('users');
-        let data = await con.find({ 'email': 'ajeet@gmail.com' });
-        console.log(data);
-
-        con.setCollection('posts');
-        data = await con.ag([{ $match: { "from": "rough@gmail.com" } }]);
-        console.log(data);
-
-        /* 
-        
-        con.setCollection('posts');
-        data = await con.insertOne
-        ({doc : "dummy"});
-        console.log(data);
-        */
-
-        /* 
-   )
-   data =  await con.updateOne({doc : 'dummy'},
-   {$set : {name : 'Ajeet'}});
-   
-   console.log(data);
-   */
-    } catch (error) {
-        console.error(error);
-    }
-
-}
-
-//run();
-
-exports.alib = alib;
-/* 
-
-con.activate().then(()=>{
-    con.setCollection('users');
-    con.find({'email' : 'ajeet@gmail.com'}).then((data)=>{
-        console.log(data);
-    }).catch((e) =>{
-        console.error(e);
-    })
-})
-*/
