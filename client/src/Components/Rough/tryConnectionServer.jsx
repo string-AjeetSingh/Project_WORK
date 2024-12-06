@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import url from './../../Jsons/url.json';
-import { requestServer, ifDebugging } from "../../MyLib/RequestServer/requestServer";
+import { requestServer } from "../../MyLib/RequestServer/requestServer";
+import { ifDebugging } from "../../MyLib/ifDebugging/ifDebugging";
 
 function TryConnection({ children }) {
     const { isWorking, setisWorking } = useState(null);
@@ -13,14 +14,14 @@ function TryConnection({ children }) {
             process.env.REACT_APP_isDebugging);
 
         let result = await toServer.requestJson();
-        debug.dLog('result here : ', result);
+        debug.console('result here : ', result);
 
     }
 
     useEffect(() => {
 
         let debug = new ifDebugging(process.env.REACT_APP_isDebugging);
-        debug.dLog('from d log');
+        debug.console('from d log');
 
     }, [])
 

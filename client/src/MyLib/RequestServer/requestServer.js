@@ -1,4 +1,5 @@
 
+import { ifDebugging } from "../ifDebugging/ifDebugging";
 
 class requestServer {
     constructor(url,
@@ -34,7 +35,7 @@ class requestServer {
             let result = await fetch(this.url, this.options);
 
             if (result) {
-                this.ifDebug.dLog(`succesfully connected to ${this.url}`);
+                this.ifDebug.console(`succesfully connected to ${this.url}`);
             }
             let resultJson = await result.json();
             return {
@@ -64,32 +65,9 @@ class requestServer {
 
 }
 
-class ifDebugging {
-
-    constructor(isDebugging, level = 'log') {
-        this.isDebugging = isDebugging;
-        this.level = level
-
-    }
-
-    dLog(...message) {
-        if (this.isDebugging) {
-            console[this.level](...message);
-        }
-    }
-
-    dLogCustom(level, ...message) {
-        if (this.isDebugging) {
-            console[level](...message);
-        }
-    }
-
-    setLevel(val = 'log') {
-        this.level = val;
-    }
-}
 
 
 
 
-export { requestServer, ifDebugging };
+
+export { requestServer };
