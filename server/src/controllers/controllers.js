@@ -1,4 +1,6 @@
+const isDebugging = require('./../myLib/ifDebugging/ifDebugging');
 
+const debug = new isDebugging(process.env.IS_DEBUGGING);
 
 module.exports.login = function (req, res, next) {
 
@@ -37,23 +39,40 @@ module.exports.logout = (req, res) => {
 module.exports.token = function (req, res, next) {
 
 
-    let token = req.theJwt.sign({
-        email: req.signedCookies.email
-    }, process.env.SECRATE, { expireIn: '3d' });
+    debug.console('from token control - ');
+    debug.console('data form client body  ', req.body);
 
-    if (req.signedCookies.email) {       //if user exists
+    let token = req.theJwt.sign({
+        userData: {
+            email: req.body.userData.email
+        }
+    }, process.env.SECRATE, { expiresIn: '3d' });
+
+    debug.console('creted token : ', token);
+
+    if (req.signedCookies.token) {       //if user exists
+
+        debug.console('pre exist user ');
 
         res.clearCookie('token');        // clear old one
+        debug.console('cookie must be clean');
+
         res.cookie('token', token, {
+            httpOnly: true,
             signed: true,
             maxAge: 1000 * 60 * 60 * 24 * 2
         });
+
+        debug.console('cookie must be setteed');
 
         res.status(200);
         res.json({
             status: 1, message: 'succesfully have token'
         }).end();
+        return;
     }
+
+    debug.console('pure token call');
 
     res.cookie('token', token, {
         signed: true,

@@ -9,7 +9,6 @@ class ifDebugging {
     console(...message) {
         if (this.isDebugging) {
             console[this.level](...message);
-
         }
 
 
@@ -29,4 +28,4 @@ class ifDebugging {
 }
 
 
-export { ifDebugging }
+module.exports = ifDebugging 

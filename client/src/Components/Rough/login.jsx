@@ -1,38 +1,19 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useRef } from "react";
 import { requestServer } from "../../MyLib/RequestServer/requestServer";
+import { useControlLogin } from "../../MyLib/MyHook/controlLogin";
 
 import { ifDebugging } from "../../MyLib/ifDebugging/ifDebugging";
 
-const toServer = new requestServer('/xtServer/api/logout');
+const toServer = new requestServer('/xtServer/api/token');
 const debug = new ifDebugging(process.env.REACT_APP_isDebugging);
 
 function LoginTry({ }) {
 
     const tokenRef = useRef(null);
-    const { loginWithRedirect, logout, isAuthenticated, user, isLoading,
-        getAccessTokenSilently
-    } = useAuth0();
+    const { loginWithRedirect, nowLogout } = useControlLogin();
 
-    if (isLoading) {
-        return <div>Loading Please Wait ...</div>
-    }
 
-    if (isAuthenticated) {
-        console.log('below user : ', user);
-        console.log('is authenticated : ', isAuthenticated);
-
-        fetchAccesToken();
-        console.log('the acces token : ', tokenRef.current);
-    }
-    else {
-        debug.console('not authorized have token again and also login');
-    }
-
-    async function fetchAccesToken() {
-        let token = await getAccessTokenSilently();
-        tokenRef.current = token;
-    }
 
     async function serverLogout() {
         console.clear();
@@ -40,6 +21,8 @@ function LoginTry({ }) {
 
         let res = await toServer.requestJson();
         console.log('from server logout : ', res);
+
+
 
     }
 
@@ -63,13 +46,7 @@ function LoginTry({ }) {
                 <button className=" font-bold text-2xl p-1 m-2 text-center pl-5 pr-5 
                  bg-pink-400 border-2 border-black rounded-xl active:bg-red-500"
                     onClick={() => {
-                        logout({
-
-                            logoutParams: {
-                                returnTo
-                                    : 'http://localhost:3000/rough'
-                            }
-                        });
+                        nowLogout();
                     }}>
                     Logout
                 </button>
@@ -77,6 +54,7 @@ function LoginTry({ }) {
                 <button className=" font-bold text-2xl p-1 m-2 text-center pl-5 pr-5 
                  bg-pink-400 border-2 border-black rounded-xl active:bg-red-500"
                     onClick={() => {
+                        debug.console('working on it .. ');
                         serverLogout();
                     }}>
                     ServerLogout
