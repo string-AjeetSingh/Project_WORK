@@ -18,20 +18,19 @@ function Rough({ children }) {
 
     return (
         <>
-            <LoadingScreen />
-            <div>
 
+
+            {/*<LoadingScreen />*/}
+            <div>
                 {/*<JobCards></JobCards>*/}
                 {/*<AboutJob></AboutJob>*/}
+                {/*<CreatePost></CreatePost>*/}
+                {/*<CreateUserProfile></CreateUserProfile>*/}
+                {/*<LoginTry /> */}
+                {/*<TryConnection /> */}
 
-                {/*  <CreatePost></CreatePost>*/}
 
-                {/*   <CreateUserProfile></CreateUserProfile>*/}
-                {/* <LoginTry /> */}
-                {/* <TryConnection /> */}
-                {/* <LoginTry /> */}
-                <TryConnection />
-
+                <LoginTry />
 
 
 

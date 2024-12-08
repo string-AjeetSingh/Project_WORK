@@ -33,8 +33,9 @@ class requestServer {
         try {
 
             let result = await fetch(this.url, this.options);
+            this.ifDebug.console('response by server : ', result);
 
-            if (result) {
+            if (result.ok) {
                 this.ifDebug.console(`succesfully connected to ${this.url}`);
             }
             let resultJson = await result.json();
