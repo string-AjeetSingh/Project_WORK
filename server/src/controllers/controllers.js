@@ -1,5 +1,5 @@
 const isDebugging = require('./../myLib/ifDebugging/ifDebugging');
-
+const alib = require('./../myLib/PracLib/alib');
 const debug = new isDebugging(process.env.IS_DEBUGGING);
 
 module.exports.login = function (req, res, next) {
@@ -86,3 +86,59 @@ module.exports.token = function (req, res, next) {
 
 
 }
+
+module.exports.tryConnection = async (req, res, next) => {
+
+    const mongo = new alib('Work', process.env.MONGOSTRING);
+    mongo.setCollection('Jobs');
+    let result = await mongo.find();
+    debug.console('the res is : ', result);
+
+    await mongo.over();
+    res.json({
+        messag: 'must be connected'
+    })
+};
+
+module.exports.createPost = async (req, res, next) => {
+    const mongo = new alib('Work', process.env.MONGOSTRING);
+    mongo.setCollection('Jobs');
+    let result = await mongo.insertOne({
+        "Document": "jobDummy",
+        "jobData": {
+            "title": req.body.data.title,
+            "description": req.body.data.description,
+            "requirements": req.body.data.requirements,
+            "qualifications": req.body.data.qualifications
+        },
+        "jobSocialData": {
+            "github": req.body.data.github,
+            "email": req.body.data.email,
+            "x": req.body.data.x
+        },
+        "companyName": req.body.data.companyName,
+        "img": req.file.src
+
+    });
+
+    debug.console('result from server : ', result);
+    mongo.over();
+    res.json({
+        messag: 'data must be set'
+    })
+
+};
+
+module.exports.fetchPosts = async (req, res, next) => {
+    const mongo = new alib('Work', process.env.MONGOSTRING);
+    mongo.setCollection('Jobs');
+    let result = await mongo.find({});
+
+    debug.console('result from server : ', result);
+    mongo.over();
+    res.json({
+        messag: 'data must be fetched',
+        data: result
+    })
+
+};

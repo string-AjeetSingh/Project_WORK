@@ -21,6 +21,7 @@ function Rough({ children }) {
 
 
             {/*<LoadingScreen />*/}
+            <LoadingScreen />
             <div>
                 {/*<JobCards></JobCards>*/}
                 {/*<AboutJob></AboutJob>*/}
@@ -29,8 +30,9 @@ function Rough({ children }) {
                 {/*<LoginTry /> */}
                 {/*<TryConnection /> */}
 
-
                 <LoginTry />
+
+
 
 
 

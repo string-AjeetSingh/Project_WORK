@@ -1,493 +1,493 @@
 {
-    "docs" : [
+    "docs": [
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Microsoft",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "2 Days",
-            "Tag"        : "Remote",    
-            "JobHeading" : "Software Designer, fresher job posting for Microsoft entry level working batch",
-            "About"      : " - Dummy row about some thing. \n - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n",
-            "Qualifications" : " - Dummy row about some thing. \n - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n",
-            "Responsiblities" : " - Dummy row about some thing. \n - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n"
+            "Document": "Jobs",
+            "CompanyName": "Microsoft",
+            "ImgSrc": "",
+            "TimeAgo": "2 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer",
+            "About": " - Dummy row about some thing. \n - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n",
+            "Qualifications": " - Dummy row about some thing. \n - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n",
+            "Responsiblities": " - Dummy row about some thing. \n - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Infosys",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "4 Days",
-            "Tag"        : "Office",
-            "JobHeading" : "Software Designer, fresher job posting for Infosys entry level working batch",
-            "About"      : " - Dummy row about some thing. \n - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n",
-            "Qualifications" : " - Dummy row about some thing. \n - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n",
-            "Responsiblities" : " - Dummy row about some thing. \n - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n"
+            "Document": "Jobs",
+            "CompanyName": "Infosys",
+            "ImgSrc": "",
+            "TimeAgo": "4 Days",
+            "Tag": "Office",
+            "JobHeading": "Software Designer",
+            "About": " - Dummy row about some thing. \n - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n",
+            "Qualifications": " - Dummy row about some thing. \n - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n",
+            "Responsiblities": " - Dummy row about some thing. \n - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Intel",
-            "ImgSrc"      : "",
-            "TimeAgo"     : " 15 Days",
-            "Tag"        : "Office",
-            "JobHeading" : "Software Designer, fresher job posting for Intel entry level working batch",
-            "About"      : " - Dummy row about some thing. \n - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n",
-            "Qualifications" : " - Dummy row about some thing. \n - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n",
-            "Responsiblities" : " - Dummy row about some thing. \n - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n"
+            "Document": "Jobs",
+            "CompanyName": "Intel",
+            "ImgSrc": "",
+            "TimeAgo": " 15 Days",
+            "Tag": "Office",
+            "JobHeading": "Software Designer ",
+            "About": " - Dummy row about some thing. \n - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n",
+            "Qualifications": " - Dummy row about some thing. \n - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n",
+            "Responsiblities": " - Dummy row about some thing. \n - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n. - Dummy row about some thing \n"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         },
         {
-            "Document" : "Jobs",
-            "CompanyName" : "Google",
-            "ImgSrc"      : "",
-            "TimeAgo"     : "7 Days",
-            "Tag"        : "Remote",
-            "JobHeading" : "Software Designer, fresher job posting for Google entry level working batch"
+            "Document": "Jobs",
+            "CompanyName": "Google",
+            "ImgSrc": "",
+            "TimeAgo": "7 Days",
+            "Tag": "Remote",
+            "JobHeading": "Software Designer, fresher job posting for Google entry level working batch"
         }
     ]
 }

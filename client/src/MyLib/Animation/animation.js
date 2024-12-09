@@ -192,27 +192,33 @@ async function fadeAgainAgain(elem, elemType = "ref",
 
             let interval = setInterval(() => {
 
-                if (shouldTerminate.current) {
+                try {
+
+                    if (shouldTerminate.current) {
+
+                        console.log('closed the fade againagian animation');
+
+                        resolve();
+                        clearInterval(interval);
+                    }
+
+                    if (config.scaleVal >= config.scaleValLimit) {
+
+                        resolve();
+                        clearInterval(interval);
+                    }
+
+                    elem.current.style.transform = `scale(${config.scaleVal})`;
+                    elem.current.style.opacity = config.opacity;
+
+                    config.scaleVal += config.scaleValInc;
+                    config.opacity -= opacityValInc;
 
 
-                    resolve();
-                    clearInterval(interval);
+
+                } catch (error) {
+                    console.log(error);
                 }
-
-                if (config.scaleVal >= config.scaleValLimit) {
-
-                    resolve();
-                    clearInterval(interval);
-                }
-
-                elem.current.style.transform = `scale(${config.scaleVal})`;
-                elem.current.style.opacity = config.opacity;
-
-                config.scaleVal += config.scaleValInc;
-                config.opacity -= opacityValInc;
-
-
-
 
             }, 20)
         })
@@ -225,7 +231,8 @@ async function fadeAgainAgain(elem, elemType = "ref",
     }
 }
 
-async function upDown(elem, elemType = 'ref') {
+async function upDown(elem, elemType = 'ref',
+    shouldTerminate = { current: false }) {
 
     if (elemType === 'ref') {
 
@@ -234,23 +241,48 @@ async function upDown(elem, elemType = 'ref') {
             let counterUpdate = 0.02;
             let inter = setInterval(() => {
 
-                finishInterval(inter, counter, 0.85, resolve, 'minus');
+                try {
 
-                elem.current.style.transform = `scale(${counter})`
-                ///console.log('from button counter = '+counter);
-                counter -= counterUpdate;
+                    console.log('running up down animation');
+                    if (shouldTerminate.current) {
+
+                        console.log('closed the updown animation');
+                        resolve();
+                        clearInterval(inter);
+                    }
+
+                    finishInterval(inter, counter, 0.85, resolve, 'minus');
+
+                    elem.current.style.transform = `scale(${counter})`
+                    ///console.log('from button counter = '+counter);
+                    counter -= counterUpdate;
+                } catch (error) {
+                    console.log(error);
+                }
             }, 10)
         })
         await new Promise((resolve, reject) => {
             let counter = 0.85;
             let counterUpdate = 0.02;
             let inter = setInterval(() => {
+                try {
 
-                finishInterval(inter, counter, 1, resolve, 'plus');
+                    console.log('running up down animation');
+                    if (shouldTerminate.current) {
 
-                elem.current.style.transform = `scale(${counter})`
-                ///console.log('from button counter = '+counter);
-                counter += counterUpdate;
+                        console.log('closed the updown animation');
+                        resolve();
+                        clearInterval(inter);
+                    }
+
+                    finishInterval(inter, counter, 1, resolve, 'plus');
+
+                    elem.current.style.transform = `scale(${counter})`
+                    ///console.log('from button counter = '+counter);
+                    counter += counterUpdate;
+                } catch (error) {
+                    console.log(error);
+                }
             }, 10)
         })
     }
@@ -268,8 +300,8 @@ async function up(elem, elemType = 'ref') {
     if (elemType === 'ref') {
 
         await new Promise((resolve, reject) => {
-            let counter = 0.70;
-            let counterUpdate = 0.02;
+            let counter = 0;
+            let counterUpdate = 0.1;
             let inter = setInterval(() => {
 
                 finishInterval(inter, counter, 1, resolve, 'plus');
@@ -277,7 +309,7 @@ async function up(elem, elemType = 'ref') {
                 elem.current.style.transform = `scale(${counter})`
                 ///console.log('from button counter = '+counter);
                 counter += counterUpdate;
-            }, 10)
+            }, 20)
         })
     }
     else if (elemType === 'normal') {

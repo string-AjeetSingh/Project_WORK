@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 let ifDebugging = require('./../myLib/ifDebugging/ifDebugging');
 
 const debug = new ifDebugging(process.env.IS_DEBUGGING);
+
 module.exports.authorize = (req, res, next) => {
     debug.console('from authorize')
     // debug.console('req.body is ', req.body);
@@ -61,3 +62,24 @@ module.exports.authorize = (req, res, next) => {
 }
 
 
+module.exports.jwtVerification = (req, res, next) => {
+
+    debug.console("from jwtVerification --");
+
+    let token = req.signedCookies.token;
+    debug.console('token we found is : ', token);
+
+    jwt.verify(token, process.env.SECRATE, (err, decode) => {
+        if (err) {
+            debug.console('found error, unverified', err);
+            res.status(403).json({
+                status: -1,
+                message: `Bad Request, unverified token`
+            })
+            return;
+        }
+        req['userData'] = decode.userData;  // setting for next use.
+        debug.console('we found the decoded here it is :', req.userData);
+        next();
+    })
+}

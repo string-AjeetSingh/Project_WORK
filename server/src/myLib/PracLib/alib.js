@@ -83,6 +83,10 @@ class alib {
 
     }
 
+    async over() {
+        await this.client.close();
+    }
+
 
 
 }

@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import { TheLoopAnimation } from "./subComponents";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function LoadingScreen({ }) {
     const [animationFlow, setanimationFlow] = useState('undefined');
@@ -15,6 +15,10 @@ function LoadingScreen({ }) {
 
         }
     }
+
+    useEffect(() => {
+        //    toggleAnimationFlow(false);
+    }, [])
 
     return (
         <>

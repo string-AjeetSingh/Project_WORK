@@ -6,17 +6,18 @@ import { requestServer } from "../RequestServer/requestServer";
 
 let debug = new ifDebugging(process.env.REACT_APP_isDebugging);
 
-//need to think
 
-const toServer = new requestServer('/xtServer/api/token', {
-    method: 'POST',
-    headers: { 'content-Type': 'application/json' }, credentials: 'include'
-});
+const toServer = new requestServer
+    (process.env.REACT_APP_SERVER_URL + '/xtServer/api/token', {
+        method: 'POST',
+        headers: { 'content-Type': 'application/json' }, credentials: 'include'
+    });
 
 
-function useControlLogin() {
+function useControlLogin(isHomePage = false) {
 
     const { loginWithRedirect, logout, isAuthenticated, user, isLoading } = useAuth0();
+
 
     function nowLogout() {
         logout({
@@ -40,6 +41,9 @@ function useControlLogin() {
 
         } else {
 
+            if (isHomePage) {
+
+            }
             toServer.setBody({ authorized: isAuthenticated, userData: user });
             toServer.requestJson().
                 then((res) => {
@@ -52,7 +56,7 @@ function useControlLogin() {
     }, [isAuthenticated])
 
     return {
-        loginWithRedirect, nowLogout
+        loginWithRedirect, nowLogout, isAuthenticated, isLoading
     }
 
 
