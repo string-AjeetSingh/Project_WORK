@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const aRouter = require('./src/app');
+const { aRouter, bRouter } = require('./src/app');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 
@@ -11,6 +11,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser(process.env.SECRATE));
 app.use('/xtServer/api', aRouter);
+app.use('/xtServer/api', bRouter);
 app.use((err, req, res, next) => {
     if (err.name === 'UnauthorizedError') {
         // Handle JWT validation errors

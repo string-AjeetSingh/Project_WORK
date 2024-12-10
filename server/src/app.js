@@ -1,8 +1,8 @@
 const aRouter = require('express').Router();
+const bRouter = require('express').Router();
 const controllers = require('./controllers/controllers');
 const middleware = require('./middleware/middleware');
 
-//aRouter.use(middleware.authorize);
 
 aRouter.get('/tryIt',
     middleware.jwtVerification,
@@ -12,15 +12,13 @@ aRouter.get('/hello', middleware.jwtVerification,
         res.json("Very good, How about you, must be fine , let's work hard to be some one yes");
     })
 
-aRouter.get('/login', controllers.login);
-aRouter.get('/logout', controllers.logout);
-aRouter.post('/token', controllers.token);
-aRouter.post('/createPost', middleware.jwtVerification
+aRouter.get('/login', middleware.authorize, controllers.login);
+aRouter.get('/logout', middleware.authorize, controllers.logout);
+aRouter.post('/token', middleware.authorize, controllers.token);
+aRouter.post('/createPost', middleware.authorize, middleware.jwtVerification
     , controllers.createPost);
-aRouter.post('/fetchPosts', middleware.jwtVerification
-    , controllers.fetchPosts);
-aRouter.get('/fetchPosts', middleware.jwtVerification
-    , controllers.fetchPosts);
+aRouter.post('/fetchPosts', controllers.fetchPosts);
+aRouter.get('/fetchPosts', controllers.fetchPosts);
 
 aRouter.use('/', (req, res) => {
     res.status(200);
@@ -30,5 +28,5 @@ aRouter.use('/', (req, res) => {
 })
 
 
-module.exports = aRouter;
+module.exports = { aRouter, bRouter };
 

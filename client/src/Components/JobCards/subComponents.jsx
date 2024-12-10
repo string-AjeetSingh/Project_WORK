@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 function Container({ children }) {
     return (
         <>
-            <div className=" mb-3 ">
+            <div className=" mb-3   ">
                 {children}
             </div>
         </>
@@ -20,10 +20,8 @@ function ContainerNav({ data, common, setCommon, setContainer, children, isDefau
 
 
     function handleClick() {
-        setlstate('border-black');
+        setlstate('border-reen-200');
         setContainer(data);
-
-
 
 
         if (common.current) {
@@ -32,7 +30,10 @@ function ContainerNav({ data, common, setCommon, setContainer, children, isDefau
             }
         }
 
-        setCommon({ previous: setOff, previousKey: thekey });
+        if (setCommon) {
+            console.log('from ContainerNav , the typeof setcommon : ', typeof setCommon);
+            setCommon({ previous: setOff, previousKey: thekey });
+        }
 
     }
 
@@ -44,7 +45,7 @@ function ContainerNav({ data, common, setCommon, setContainer, children, isDefau
     useEffect(() => {
         if (isDefault) {
             handleClick();
-            setlstate('border-black');
+            setlstate('border-reen-200');
         }
     }, [])
 
@@ -54,7 +55,7 @@ function ContainerNav({ data, common, setCommon, setContainer, children, isDefau
 
             <button ref={aref} onClick={handleClick}
                 className={` ${lstate} m-1 p-3 font-serif 
-                hover:bg-green-700 border-2
+                hover:bg-green-700 border-2  text-green-200
                text-[1.2rem] rounded-md`}>
                 {children}
             </button>
@@ -63,7 +64,8 @@ function ContainerNav({ data, common, setCommon, setContainer, children, isDefau
 }
 
 function Card({ companyName, imgSrc, jobHeading,
-    timeAgo, tag, prev, index }) {
+    timeAgo, tag, prev, index, location,
+    dataToSetOnState, setState, isDefault }) {
 
     const aref = useRef(null);
     const [lstate, setlstate] = useState('border-black');
@@ -75,18 +77,28 @@ function Card({ companyName, imgSrc, jobHeading,
 
     function handleClick() {
         setlstate('border-slate-400');
+        setState(dataToSetOnState);
+        //console.log('from cards the state function ; ', setState);
+        // console.log('the data to set on state : ', dataToSetOnState);
         if (prev.current.off && prev.current.index !== index) {
             prev.current.off();
         }
         prev.current = { index: index, off: off }
     }
 
+    useEffect(() => {
+
+        if (isDefault) {
+            handleClick();
+        }
+    }, [])
+
     return (
         <>
             <div ref={aref} onClick={handleClick}
                 className={` flex flex-col m-2 p-2 
             items-start border 
-             ${lstate} rounded-lg font-serif text-slate-400
+             ${lstate} rounded-lg  text-green-200
              hover:bg-green-900 active:bg-green-800`}>
 
                 <div className="flex flex-row text-[0.8rem] 
@@ -98,10 +110,15 @@ function Card({ companyName, imgSrc, jobHeading,
                 <div className='flex flex-row flex-wrap
                 flex-start w-full'>
                     <img className='m-1' src={imgSrc} alt='company image'></img>
-                    <div className='text-[1.2rem]'>{companyName}</div>
+                    <div className='text-[1.2rem] text-green-600
+                    font-serif
+                    '>{companyName}</div>
                 </div>
+                <div className='text-[0.8rem] relative bottom-1 
+                
+                 '>{location ? location : "DumyBad, India"}</div>
 
-                <div className='text-[1rem] '>{jobHeading}</div>
+                <div className='text-[1rem] mt-1 '>{jobHeading}</div>
                 <hr className='w-full m-1 border-1 border-green-800 rounded-md'></hr>
 
                 <div className='p-1 m-1 text-green-300 

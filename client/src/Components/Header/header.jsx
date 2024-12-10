@@ -16,23 +16,23 @@ function Header({ children }) {
                 {/* Above fist side of the nav */}
 
                 <div className="flex flex-row items-center">
-                    <button className="m-1 font-serif text-[1rem] rounded-md
+                    <button className="m-1  text-[1rem] rounded-md
                     border-[2px] hover:bg-green-800 active:bg-green-900
-                     text-blue-300
+                     text-green-200
                       border-green-950 p-1">
                         Jobs
                     </button>
                     <div>
-                            <input className="rounded-md font-serif bg-transparent 
+                        <input className="rounded-md  bg-transparent 
                           bg-green-950 border-[2px] border-green-950
-                        placeholder-blue-300 text-blue-300
+                        placeholder-green-200 text-green-200
                         text-[1rem] p-1 m-1  hover:bg-green-800
-                         focus:bg-green-800" 
-                        type="search" placeholder=" Search Jobs"></input>
+                         focus:bg-green-800"
+                            type="search" placeholder=" Search Jobs"></input>
                     </div>
                     <button className="size-9 border-none rounded-full 
                         bg-cyan-700 m-1 mr-1">
-                     
+
                     </button>
                 </div>
 
