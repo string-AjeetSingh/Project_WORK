@@ -1,14 +1,14 @@
 import { Header } from "../Header/header";
 import { Footer } from "../Footer/footer";
 
-import { Section1, Section2, Section3} from "./subComponents";
+import { Section1, Section2, Section3 } from "./subComponents";
 
-function HomeWithoutLogin({ children }) {
+function HomeWithoutLogin({ children, login, logout }) {
 
     return (
         <>
             <header>
-                <Header></Header>
+                <Header login={login} logout={logout}></Header>
             </header><hr className="border-[1px] 
      border-green-950"></hr>
 

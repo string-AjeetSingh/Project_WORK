@@ -8,13 +8,14 @@ import { requestServer } from "../../MyLib/RequestServer/requestServer";
 import { ifDebugging } from "../../MyLib/ifDebugging/ifDebugging";
 import { useState, useEffect, useRef } from "react";
 import { myContext } from "./myContext";
-import { flushSync } from "react-dom";
+import { flushSync } from "react-dom"
+
 
 
 const debug = new ifDebugging(process.env.REACT_APP_isDebugging);
 const toServer = new requestServer
     (process.env.REACT_APP_SERVER_URL + "/xtServer/api/fetchPosts"
-        , { optionsMode: 'Default' }, false
+        , { optionsMode: 'default' }, false
     );
 
 function HomeWithLogin({ }) {
@@ -29,10 +30,15 @@ function HomeWithLogin({ }) {
 
         let res = await toServer.requestJson();
         // debug.console("from fetchPosts : ", res);
+        if (res) {
+            flushSync(() => {
+                setdataFromServer(res.json.data);
+            })
+        }
+        else {
+            debug.alert('Fail to get data from server , check consolo or call the admin for help');
+        }
 
-        flushSync(() => {
-            setdataFromServer(res.json.data);
-        })
 
     }
 

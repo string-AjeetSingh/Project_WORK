@@ -1,5 +1,7 @@
 const isDebugging = require('./../myLib/ifDebugging/ifDebugging');
 const alib = require('./../myLib/PracLib/alib');
+const utils = require('./../utils/utils');
+const path = require('path');
 const debug = new isDebugging(process.env.IS_DEBUGGING);
 
 module.exports.login = function (req, res, next) {
@@ -101,31 +103,75 @@ module.exports.tryConnection = async (req, res, next) => {
 };
 
 module.exports.createPost = async (req, res, next) => {
-    const mongo = new alib('Work', process.env.MONGOSTRING);
-    mongo.setCollection('Jobs');
-    let result = await mongo.insertOne({
-        "Document": "jobDummy",
-        "jobData": {
-            "title": req.body.data.title,
-            "description": req.body.data.description,
-            "requirements": req.body.data.requirements,
-            "qualifications": req.body.data.qualifications
-        },
-        "jobSocialData": {
-            "github": req.body.data.github,
-            "email": req.body.data.email,
-            "x": req.body.data.x
-        },
-        "companyName": req.body.data.companyName,
-        "img": req.file.src
 
-    });
+    debug.console('From CreatePost -');
 
-    debug.console('result from server : ', result);
-    mongo.over();
-    res.json({
-        messag: 'data must be set'
-    })
+    req.body.data = utils.jsonParseIfString(req.body.data);
+    debug.console('the req.body.data : ', req.body.data);
+
+
+
+    debug.console('the req.file : ', req.file);
+    if (req.body.data) {
+
+        let upload = {};
+        let matchList = [
+            "title", "desciption", "requirments",
+            "qualifications", "responsibilities",
+            "github", "email", "location",
+            "x", "companyName"
+        ]
+
+        req.body.data.forEach((item) => {
+            matchList.forEach((match) => {
+                if (item.inputData.name === match) {
+                    upload[match] = item.inputData.data;
+                }
+            })
+        })
+
+
+        const mongo = new alib('Work', process.env.MONGOSTRING);
+        mongo.setCollection('Jobs');
+        let result = await mongo.insertOne({
+            "Document": "jobDummy",
+            "jobData": {
+                "title": upload.title,
+                "description": upload.desciption,
+                "requirements": upload.requirments,
+                "qualifications": upload.qualifications
+            },
+            "jobSocialData": {
+                "github": upload.github,
+                "email": upload.email,
+                "x": upload.x
+            },
+            "companyName": upload.companyName,
+            "img": req.file.path,
+            "location": upload.location
+
+        });
+
+        debug.console('result from server : ', result);
+        /* 
+*/
+        mongo.over();
+        res.json({
+            message: "data must be set to database",
+            data: upload
+        })
+
+
+        return;
+    }
+    else {
+        res.status(404).json({
+            message: 'from createPost'
+        }).end()
+        return;
+    }
+
+
 
 };
 
@@ -141,4 +187,22 @@ module.exports.fetchPosts = async (req, res, next) => {
         data: result
     })
 
+};
+
+module.exports.temp = (req, res) => {
+    debug.console('from temp -  ');
+    if (req.file) {
+
+        debug.console('the req.file : ', req.file);
+        res.status(200).json({
+            message: 'file is found here',
+            filePath: path.join(process.env.SERVER_BASE, req.file.path)
+        })
+        return;
+    }
+    else {
+        res.status(404).json({
+            message: 'file not recived'
+        })
+    }
 };

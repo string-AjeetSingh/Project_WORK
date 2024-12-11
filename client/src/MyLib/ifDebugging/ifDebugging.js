@@ -26,6 +26,12 @@ class ifDebugging {
     setLevel(val = 'log') {
         this.level = val;
     }
+
+    alert(...message) {
+        if (this.isDebugging) {
+            alert(...message);
+        }
+    }
 }
 
 

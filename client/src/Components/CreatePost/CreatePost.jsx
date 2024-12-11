@@ -2,6 +2,15 @@ import { useReducer, useState, useRef, useEffect } from "react";
 import { NavShow, Section1, Section2, Section3 } from "./subComponents";
 import { flushSync } from "react-dom";
 import { MyContext } from "./myContext";
+import { requestServer } from "../../MyLib/RequestServer/requestServer";
+import { useControlLogin } from "../../MyLib/MyHook/controlLogin";
+import { useNavigate } from "react-router-dom";
+
+const toServer = new requestServer(process.env.REACT_APP_SERVER_URL + "/xtServer/api/createPost",
+  {
+    method: 'POST'
+  }, true
+)
 
 function CreatePost({ }) {
 
@@ -9,6 +18,19 @@ function CreatePost({ }) {
   const [section1FinalInputReport, setsection1FinalInputReport] = useState([]);
   const [section2FinalInputReport, setsection2FinalInputReport] = useState([]);
   const [section3FinalInputReport, setsection3FinalInputReport] = useState([]);
+  const { isAuthenticated, isLoading } = useControlLogin();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (isAuthenticated) {
+        toServer.setAuthorizedFlag(isAuthenticated);
+
+      } else {
+        navigate('/');
+      }
+    }
+  }, [isLoading, isAuthenticated])
 
 
   const initialValues = useRef({
@@ -128,12 +150,43 @@ function CreatePost({ }) {
     }
     console.log(initialValues.current.currentSection);
   }
+
   async function handleSectionButtons3(stateVal) {
 
     let allData = combineArraysToOne(stateVal);
     console.log('all data is below');
     console.log(allData);
 
+    if (allData.length < 1) {
+      alert('not data, please provide data to submit');
+      return;
+    }
+
+
+    if (allData[0].index === 1) {
+      alert('file contained may be');
+      if (allData[0].inputData.data[0].files) {
+        alert('file contained here');
+        toServer.setFormData('theImg', allData[0].inputData.data[0].files);
+        toServer.setFormData('data', allData.slice(1, allData.length), true);
+      }
+    } else {
+      toServer.setFormData('data', allData, true);
+    }
+    //console.log('the file is : ', allData[0].inputData.data[0].files);
+    //toServer.setContentType('multipart/form-data');
+
+    let res = await toServer.fetchNoStringify();
+    toServer.resetFormData();
+    if (res) {
+
+      alert('Uploaded succesfully ');
+      console.log('the response from submit : ', res);
+
+    } else {
+      alert('problem in connection i guess, unable to upload data');
+    }
+    //return
   }
 
   function updateFinalInputReport1(param) {
@@ -159,6 +212,7 @@ function CreatePost({ }) {
       newReport[param.index] = param;
       return newReport;
     })
+
   }
 
   function setOn(params) {
@@ -169,43 +223,54 @@ function CreatePost({ }) {
   }
 
   useEffect(() => {
-    animationSwitch.current.on();
+    if (animationSwitch.current.on) {
 
-  }, [])
-  return (
-    <>
-      <div className="p-1">
-        <div className="flex flex-row   ">
-          <div className="text-4xl font-serif 
+      animationSwitch.current.on();
+    }
+
+  }, [isAuthenticated])
+
+  if (!isLoading) {
+    if (isAuthenticated) {
+
+      return (
+        <>
+          <div className="p-1">
+            <div className="flex flex-row   ">
+              <div className="text-4xl font-serif 
           text-teal-600 mt-3 ml-3 mb-4 ">
-            Create Post
-          </div>
+                Create Post
+              </div>
 
-        </div>
-        <div className="flex flex-row 
+            </div>
+            <div className="flex flex-row 
          justify-center ">
-          <NavShow howMuch={3} highLight={highLightNav} ></NavShow>
-        </div>
+              <NavShow howMuch={3} highLight={highLightNav} ></NavShow>
+            </div>
 
-        <MyContext.Provider value={{
-          tryit, section1FinalInputReport, section2FinalInputReport
-          , section3FinalInputReport
+            <MyContext.Provider value={{
+              tryit, section1FinalInputReport, section2FinalInputReport
+              , section3FinalInputReport, isAuthenticated
 
-        }}>
+            }}>
 
-          <div className="flex flex-row 
+              <div className="flex flex-row 
          justify-center w-full  ">
-            {sectionArr}
+                {sectionArr}
+              </div>
+
+            </MyContext.Provider>
+
+
+
+
           </div>
-
-        </MyContext.Provider>
-
-
-
-
-      </div>
-    </>
-  );
+        </>
+      );
+    }
+  } else {
+    return (<h2 className="font-bold text-3xl font-serif">Checking authentication please wait ... </h2>)
+  }
 }
 
 export { CreatePost }

@@ -67,11 +67,7 @@ function AboutJob({ children, __note_this_component_use_context_and_i_am_a_messa
                 <div className="relative left-5">
 
                     {dataForAboutJob.jobData.qualifications ?
-                        <ul className="list-disc pl-5">
-                            {dataForAboutJob.jobData.qualifications.map((val) => {
-                                return (<li>{val}</li>)
-                            })}
-                        </ul>
+                        dataForAboutJob.jobData.qualifications
                         :
                         "no qualification"}
                 </div>
@@ -80,13 +76,9 @@ function AboutJob({ children, __note_this_component_use_context_and_i_am_a_messa
                 </div>
                 <div className="relative left-5">
                     {dataForAboutJob.jobData.requirements ?
-                        <ul className="list-disc pl-5">
-                            {dataForAboutJob.jobData.requirements.map((val) => {
-                                return (<li>{val}</li>)
-                            })}
-                        </ul>
+                        dataForAboutJob.jobData.requirements
                         :
-                        "no requirement"}
+                        "no qualification"}
                 </div>
 
                 <div className="font-serif text-2xl text-slate-500 font-bold">

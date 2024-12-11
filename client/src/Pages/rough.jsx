@@ -7,21 +7,21 @@ import { JobCards } from '../Components/JobCards/jobCards';
 import { LoginTry } from '../Components/Rough/login';
 import { TryConnection } from '../Components/Rough/tryConnectionServer';
 import { LoadingScreen } from '../Components/TranstitionScreen/LoadingScreen';
-
+import { useNavigate } from 'react-router-dom';
 
 
 
 
 
 function Rough({ children }) {
-
+    const navigate = useNavigate();
 
     return (
         <>
 
 
             {/*<LoadingScreen />*/}
-            <LoadingScreen />
+
             <div>
                 {/*<JobCards></JobCards>*/}
                 {/*<AboutJob></AboutJob>*/}
@@ -30,7 +30,7 @@ function Rough({ children }) {
                 {/*<LoginTry /> */}
                 {/*<TryConnection /> */}
 
-                <LoginTry />
+                <CreatePost></CreatePost>
 
 
 

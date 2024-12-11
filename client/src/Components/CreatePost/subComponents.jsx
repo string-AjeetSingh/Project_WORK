@@ -2,12 +2,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { useResizeValue } from "../../MyLib/MyHook/customHook";
 import { useAnimationOnOff } from "../../MyLib/MyHook/customAnimationOnOff";
+import { requestServer } from '../../MyLib/RequestServer/requestServer';
 import { MyContext } from './myContext';
 import { useContext } from 'react';
 
 function ProfileImage({ children }) {
 
   const [width, setwidth] = useState(window.innerWidth);
+  const [src, setsrc] = useState(null);
 
   function handleResize() {
     setwidth(window.innerWidth);
@@ -30,10 +32,13 @@ function ProfileImage({ children }) {
       <div className="p-1 flex flex-col items-center">
 
         <div className="size-36 relative 
-        border-2 border-green-700
-         rounded-full bg-slate-500 "></div>
+        border-2 border-green-700 overflow-hidden
+         rounded-full bg-slate-500 ">
+          {src ? <img src={src} alt='profile Img'></img> : null}
+        </div>
 
-        <UploadButton className="relative left-14 flex flex-row 
+        <UploadButton setImg={setsrc}
+          className="relative left-14 flex flex-row 
         justify-center items-center bg-green-950 rounded-xl p-1 scale-75
           bottom-10 border border-black"/>
 
@@ -62,10 +67,13 @@ font-bold">
       <div className="p-1 flex flex-col items-center">
 
         <div className="size-28 relative 
-        border-2 border-green-700
-         rounded-full bg-slate-500 "></div>
+        border-2 border-green-700 overflow-hidden
+         rounded-full bg-slate-500 ">
+          {src ? <img src={src} alt='profile Img'></img> : null}
+        </div>
 
-        <UploadButton className="relative left-14 flex flex-row 
+        <UploadButton setImg={setsrc}
+          className="relative left-14 flex flex-row 
         justify-center items-center bg-green-950 rounded-xl p-1 scale-75
           bottom-10 border border-black"/>
 
@@ -94,11 +102,14 @@ font-bold">
 
 
         <div className="size-40 relative 
-        border-2 border-green-700
-         rounded-full bg-slate-500 "></div>
+        border-2 border-green-700 overflow-hidden
+         rounded-full bg-slate-500 ">
+          {src ? <img src={src} alt='profile Img'></img> : null}
+        </div>
 
 
-        <UploadButton className="relative left-14 flex flex-row 
+        <UploadButton setImg={setsrc}
+          className="relative left-14 flex flex-row 
         justify-center items-center bg-green-950 rounded-xl p-1 scale-75
           bottom-10 border border-black"/>
 
@@ -202,8 +213,8 @@ function SectionHeading({ children }) {
 }
 
 function GetInput({ index, name, inputName, totalInputLength = 100
-  , inputHeight = 10, typeToggle = true, placeHolder = '',
-  spaceOccupy = '40%', prevValue,
+  , inputHeight = 10, typeToggle = true, placeHolder = '', isReadOnly = false,
+  spaceOccupy = '40%', prevValue, isDisabled = false,
   OutReport, isMendatory = false
 
 }) {
@@ -295,8 +306,8 @@ function GetInput({ index, name, inputName, totalInputLength = 100
 
         {typeToggle == 'input' ?
           <input
-            ref={aref}
-            name={inputName}
+            ref={aref} readOnly={isReadOnly}
+            name={inputName} disabled={isDisabled}
             onChange={(e) => {
               handledChanbg(e);
             }}
@@ -309,7 +320,7 @@ function GetInput({ index, name, inputName, totalInputLength = 100
           </input>
           :
           <textarea
-            ref={aref}
+            ref={aref} readOnly={isReadOnly} disabled={isDisabled}
             name={inputName}
             onChange={(e) => {
               handledChanbg(e);
@@ -368,12 +379,16 @@ function Button({ children, mode, handle, stateVal }) {
 }
 
 
-function UploadButton({
+function UploadButton({ setImg,
   children, className, onClick = null }) {
 
   let inputRef = useRef(null);
-  const { index, prevData,
+  const { index, prevData, isAuthenticated,
     OutReportFromInputs } = useContext(MyContext);
+
+  const toServer = new requestServer(process.env.REACT_APP_SERVER_URL + '/xtServer/api/temp', {
+    method: 'POST'
+  });
 
   const TheReport = useRef({
     index: index,
@@ -391,7 +406,7 @@ function UploadButton({
 
   }
 
-  function handleChangeFile(e) {
+  async function handleChangeFile(e) {
     console.log('Changing file');
 
     if (prevData) {
@@ -407,12 +422,31 @@ function UploadButton({
     }
     OutReportFromInputs(TheReport.current);
 
+
+    toServer.setAuthorizedFlag(isAuthenticated);
+    toServer.setFormData('tempImg', TheReport.current.inputData.data[0].files);
+    let result = await toServer.fetchNoStringify();
+
+    if (result.status === 200) {
+      alert('succesfully send temp data');
+      console.log('from sending temp data  : ', result);
+
+      if (result.json) {
+        setImg(result.json.filePath);
+      }
+    }
+    else {
+      alert("fail to send temp data");
+      console.log('from sending temp data  : ', result);
+    }
+
   }
 
 
   useEffect(() => {
     console.log("previous data is below");
     console.log(prevData);
+
   }, [prevData])
 
 
@@ -539,7 +573,7 @@ function Section1({ children, animation = false,
             OutReport={OutReportFromInputs}
           />
 
-          <GetInput index={3} inputName="jobTitle"
+          <GetInput index={3} inputName="title"
             inputHeight="20" spaceOccupy={getInputSpace}
             name={"Job Title"}
             placeHolder="Senior Web Developer"
@@ -547,7 +581,7 @@ function Section1({ children, animation = false,
             OutReport={OutReportFromInputs}
           />
 
-          <GetInput index={4} inputName="addresh"
+          <GetInput index={4} inputName="location"
             inputHeight="20" spaceOccupy={getInputSpace}
             name={"Addresh"} totalInputLength={200}
             placeHolder="Hoshiarpur, Mohali"
@@ -645,7 +679,7 @@ function Section2({ children, animation = false,
 
         <div className={getInputWrapperClassName}>
 
-          <GetInput inputName="about"
+          <GetInput inputName="desciption"
             index={5} OutReport={OutReportFromInputs}
             prevValue={section2FinalInputReport[5]}
             inputHeight="32" spaceOccupy={getInputSpace}
@@ -661,9 +695,18 @@ function Section2({ children, animation = false,
             placeHolder=" - Qualifications ...."
           />
 
-          <GetInput inputName="responsibilities"
+          <GetInput inputName="requirments"
             index={7} OutReport={OutReportFromInputs}
             prevValue={section2FinalInputReport[7]}
+            inputHeight="32" spaceOccupy={getInputSpace}
+            name={"Requirments"}
+            totalInputLength={500}
+            placeHolder="- Requirments ...."
+          />
+
+          <GetInput inputName="responsibilities"
+            index={8} OutReport={OutReportFromInputs}
+            prevValue={section2FinalInputReport[8]}
             inputHeight="32" spaceOccupy={getInputSpace}
             name={"Responsibilities"}
             totalInputLength={500}
@@ -764,28 +807,28 @@ function Section3({ children, animation = false,
         <div className={getInputWrapperClassName}>
 
           <GetInput inputName="email"
-            index={8} OutReport={OutReportFromInputs}
+            index={9} OutReport={OutReportFromInputs}
             inputHeight="10" spaceOccupy={getInputSpace}
             name={"Email Id"} typeToggle='input' totalInputLength={50}
-            prevValue={section3FinalInputReport[8]}
+            prevValue={section3FinalInputReport[9]}
             placeHolder="email@gmail.com"
           />
 
           <GetInput inputName="x"
-            index={9} OutReport={OutReportFromInputs}
+            index={10} OutReport={OutReportFromInputs}
             inputHeight="10" spaceOccupy={getInputSpace}
             name={"X"} typeToggle='input' totalInputLength={50}
-            prevValue={section3FinalInputReport[9]}
+            prevValue={section3FinalInputReport[10]}
             placeHolder="@twitter account"
 
           />
 
           <GetInput inputName="github"
-            index={10} OutReport={OutReportFromInputs}
+            index={11} OutReport={OutReportFromInputs}
             inputHeight="10" spaceOccupy={getInputSpace}
             name={"GitHub"} typeToggle='input'
             totalInputLength={100}
-            prevValue={section3FinalInputReport[10]}
+            prevValue={section3FinalInputReport[11]}
             placeHolder="github/UserName/YourRepository"
           />
 
