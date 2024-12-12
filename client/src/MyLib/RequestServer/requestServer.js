@@ -35,6 +35,7 @@ class requestServer {
         try {
 
             let result = await requestServer.fetch(this.options.optionsMode, this.url, this.options);
+            // this.options.body = {};       //reset the body data,
 
             if (result.ok) {
                 this.ifDebug.console(`succesfully connected to ${this.url}`);
@@ -113,6 +114,7 @@ class requestServer {
             debug.console('final fetch stringify body : ', finalOptions.body)
 
             let result = await fetch(url, finalOptions);
+
             return result;
         }
 
@@ -134,6 +136,8 @@ class requestServer {
         }
 
         let resultJson = await result.json();
+
+        this.formData = new FormData();  // reset the format data ,
         return {
             status: result.status,
             headers: result.headers,

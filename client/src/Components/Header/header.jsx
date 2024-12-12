@@ -1,9 +1,12 @@
+import { UserButton, OtherPanel } from "./subComponents";
+import { useResizeValue } from "../../MyLib/MyHook/customHook";
 
-
-function Header({ children, login, logout }) {
+function Header({ children, login, logout, key }) {
+    const size = useResizeValue(window.innerWidth);
     return (
         <>
-            <div className="flex flex-row flex-wrap  justify-between">
+            <div key={key}
+                className="flex flex-row flex-wrap  justify-between  ">
 
                 <div className="flex flex-row  justify-between items-center ">
                     <div className="flex flex-row justify-center items-end   m-1 p-1">
@@ -16,40 +19,30 @@ function Header({ children, login, logout }) {
                 {/* Above fist side of the nav */}
 
                 <div className="flex flex-row items-center">
-                    <button className="m-1  text-[1rem] rounded-md
-                    border-[2px] hover:bg-green-800 active:bg-green-900
-                     text-green-200
-                      border-green-950 p-1">
-                        Jobs
-                    </button>
 
-                    <button onClick={login ? login : null}
-                        className="m-1  text-[1rem] rounded-md
-                    border-[2px] hover:bg-green-800 active:bg-green-900
-                     text-green-200
-                      border-green-950 p-1">
-                        Login
-                    </button>
-                    <button onClick={logout ? logout : null}
-                        className="m-1  text-[1rem] rounded-md
-                    border-[2px] hover:bg-green-800 active:bg-green-900
-                     text-green-200
-                      border-green-950 p-1">
-                        logout
-                    </button>
-                    <div>
-                        <input className="rounded-md  bg-transparent 
-                          bg-green-950 border-[2px] border-green-950
-                        placeholder-green-200 text-green-200
-                        text-[1rem] p-1 m-1  hover:bg-green-800
-                         focus:bg-green-800"
-                            type="search" placeholder=" Search Jobs"></input>
-                    </div>
-                    <button className="size-9 border-none rounded-full 
-                        bg-cyan-700 m-1 mr-1">
+                    {size < 505 ? <OtherPanel /> :
+                        <>
+                            <button className="m-1  text-[1rem] rounded-md
+                        border-[2px] hover:bg-green-800 active:bg-green-900
+                        text-green-200
+                        border-green-950 p-1">
+                                Jobs
+                            </button>
 
-                    </button>
+                            <div>
+                                <input className="rounded-md  bg-transparent 
+                      bg-green-950 border-[2px] border-green-950
+                      placeholder-green-200 text-green-200
+                      text-[1rem] p-1 m-1  hover:bg-green-800
+                      focus:bg-green-800"
+                                    type="search" placeholder=" Search Jobs"></input>
+                            </div>
+
+                        </>
+                    }
+                    <UserButton login={login} logout={logout}></UserButton>
                 </div>
+
 
 
             </div>

@@ -1,14 +1,17 @@
 import { Header } from "../Header/header";
 import { Footer } from "../Footer/footer";
+import { commonContext } from "../../MyLib/commonContext";
 
 import { Section1, Section2, Section3 } from "./subComponents";
 
-function HomeWithoutLogin({ children, login, logout }) {
+function HomeWithoutLogin({ children, login, logout, user }) {
 
     return (
         <>
             <header>
-                <Header login={login} logout={logout}></Header>
+                <commonContext.Provider value={{ user }}>
+                    <Header login={login} logout={logout}></Header>
+                </commonContext.Provider>
             </header><hr className="border-[1px] 
      border-green-950"></hr>
 

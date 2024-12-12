@@ -10,13 +10,13 @@ function Home({ }) {
 
     let isLogin = false;
 
-    const { isAuthenticated, isLoading, loginWithRedirect, nowLogout } = useControlLogin(true);
+    const { isAuthenticated, isLoading, user, loginWithRedirect, nowLogout } = useControlLogin(true);
 
 
     if (!isLoading) {
         return (<>
-            {isAuthenticated ? <HomeWithLogin /> : <HomeWithoutLogin
-                login={loginWithRedirect} logout={nowLogout} />}
+            {isAuthenticated ? <HomeWithLogin logout={nowLogout} user={user} /> : <HomeWithoutLogin
+                login={loginWithRedirect} logout={nowLogout} user={user} />}
         </>);
     }
     return <div className="text-2xl font-bold ">Loading Please wait</div>

@@ -678,7 +678,7 @@ function Section1({ children, animation = false,
 
                 <div className={getInputWrapperClassName}>
 
-                    <GetInput index="2" inputName="userName"
+                    <GetInput index="2" inputName="name"
                         inputHeight="10" spaceOccupy={getInputSpace}
                         name={"User Name"} typeToggle='input'
                         placeHolder="Ex : Ajeet Singh"

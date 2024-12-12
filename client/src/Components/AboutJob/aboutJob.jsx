@@ -15,7 +15,7 @@ function AboutJob({ children, __note_this_component_use_context_and_i_am_a_messa
 
     if (dataForAboutJob) {
         return (<>
-            <div className="p-2 text-green-200">
+            <div className="p-2 text-green-200 overflow-y-auto h-full">
                 <div className="flex flex-row justify-start 
             items-center mb-2">
                     <div className="rounded-full size-10

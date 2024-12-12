@@ -313,7 +313,8 @@ function GetInput({ index, name, inputName, totalInputLength = 100
             }}
             placeholder={placeHolder}
             className={`border border-teal-500
-        bg-transparent rounded-md 
+              focus:outline-teal-400  
+        bg-transparent rounded-md text-green-200
         p-1 h-${inputHeight}`}
             maxLength={totalInputLength}>
 
@@ -327,7 +328,8 @@ function GetInput({ index, name, inputName, totalInputLength = 100
             }}
             placeholder={placeHolder}
             className={`border border-teal-500
-        bg-transparent rounded-md 
+               focus:outline-teal-400  
+        bg-transparent rounded-md text-green-200
         p-1 h-${inputHeight}`}
             maxLength={totalInputLength}
           >
@@ -406,8 +408,30 @@ function UploadButton({ setImg,
 
   }
 
+  async function setImage() {
+    toServer.setAuthorizedFlag(isAuthenticated);
+    toServer.setFormData('tempImg', TheReport.current.inputData.data[0].files);
+    let result = await toServer.fetchNoStringify();
+
+    if (result.status === 200) {
+      alert('succesfully send temp data');
+      console.log('from sending temp data  : ', result);
+
+      if (result.json) {
+        setImg(result.json.filePath);
+        TheReport.current.inputData.src = result.json.filePath
+      }
+    }
+    else {
+      alert("fail to send temp data");
+      console.log('from sending temp data  : ', result);
+    }
+  }
+
   async function handleChangeFile(e) {
     console.log('Changing file');
+
+
 
     if (prevData) {
       TheReport.current.inputData.data = [
@@ -420,32 +444,23 @@ function UploadButton({ setImg,
         null
       ]
     }
+
+    await setImage();
+
     OutReportFromInputs(TheReport.current);
-
-
-    toServer.setAuthorizedFlag(isAuthenticated);
-    toServer.setFormData('tempImg', TheReport.current.inputData.data[0].files);
-    let result = await toServer.fetchNoStringify();
-
-    if (result.status === 200) {
-      alert('succesfully send temp data');
-      console.log('from sending temp data  : ', result);
-
-      if (result.json) {
-        setImg(result.json.filePath);
-      }
-    }
-    else {
-      alert("fail to send temp data");
-      console.log('from sending temp data  : ', result);
-    }
-
   }
 
 
   useEffect(() => {
     console.log("previous data is below");
     console.log(prevData);
+    if (prevData) {
+      // alert('found previous data');
+      if (prevData.inputData.src) {
+        // alert('found previous data.src');
+        setImg(prevData.inputData.src)
+      }
+    }
 
   }, [prevData])
 

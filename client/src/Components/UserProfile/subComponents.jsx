@@ -114,6 +114,48 @@ function Discription({ }) {
     </>);
 }
 
+function Experiance({ }) {
+    return (<>
+
+        <CommonWrapper>
+            <div className="font-serif text-[1.3rem]
+       self-start 
+       relative bottom-1">
+                <i>Experiance</i>
+            </div>
+            <input
+                className="rounded-xl border
+              w-[70%] min-w-72 h-32 
+            border-blue-700 bg-transparent">
+            </input>
+
+        </CommonWrapper>
+
+
+    </>);
+}
+
+function Education({ }) {
+    return (<>
+
+        <CommonWrapper>
+            <div className="font-serif text-[1.3rem]
+       self-start 
+       relative bottom-1">
+                <i>Education</i>
+            </div>
+            <input
+                className="rounded-xl border
+              w-[70%] min-w-72 h-32 
+            border-blue-700 bg-transparent">
+            </input>
+
+        </CommonWrapper>
+
+
+    </>);
+}
+
 function Skills({ }) {
     return (<>
 
@@ -191,5 +233,5 @@ function SocialMedia({ }) {
 export {
     ProfileImageSection,
     ProfileSection2, Status, Discription,
-    Skills, SocialMedia
+    Skills, SocialMedia, Education, Experiance
 };

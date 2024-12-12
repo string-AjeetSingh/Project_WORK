@@ -2,7 +2,7 @@ import { useSearchParams } from "react-router-dom";
 import { TheLoopAnimation } from "./subComponents";
 import { useEffect, useState } from "react";
 
-function LoadingScreen({ }) {
+function LoadingScreen({ outControl }) {
     const [animationFlow, setanimationFlow] = useState('undefined');
 
 
@@ -16,8 +16,18 @@ function LoadingScreen({ }) {
         }
     }
 
+    function on() {
+        setanimationFlow('on');
+    }
+    function off() {
+        setanimationFlow('on');
+    }
+
     useEffect(() => {
         //    toggleAnimationFlow(false);
+        if (outControl) {
+            outControl.current = { on, off };
+        }
     }, [])
 
     return (

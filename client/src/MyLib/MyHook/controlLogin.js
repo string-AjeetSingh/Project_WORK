@@ -27,6 +27,7 @@ function useControlLogin(isHomePage = false) {
                     : process.env.REACT_APP_RETURN_URL
             }
         });
+
     }
     //fetch('sur');
     useEffect(() => {
@@ -48,11 +49,14 @@ function useControlLogin(isHomePage = false) {
                     alert('You are not Login, i navigate you to the home page');
                     navigate('/');
                 } else {
+                    /* 
+                    
                     toServer.setBodyCustom({ userData: user });
                     toServer.requestJson().
-                        then((res) => {
-                            debug.console('the response from request not authenticated : ', res);
-                        });
+                    then((res) => {
+                        debug.console('the response from request not authenticated : ', res);
+                    });
+                    */
                 }
 
             }
@@ -61,7 +65,7 @@ function useControlLogin(isHomePage = false) {
     }, [isAuthenticated, isLoading])
 
     return {
-        loginWithRedirect, nowLogout, isAuthenticated, isLoading
+        loginWithRedirect, nowLogout, isAuthenticated, isLoading, user
     }
 
 

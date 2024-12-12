@@ -7,6 +7,7 @@ import { useResizeValue } from "../../MyLib/MyHook/customHook";
 import { requestServer } from "../../MyLib/RequestServer/requestServer";
 import { ifDebugging } from "../../MyLib/ifDebugging/ifDebugging";
 import { useState, useEffect, useRef } from "react";
+import { commonContext } from "../../MyLib/commonContext";
 import { myContext } from "./myContext";
 import { flushSync } from "react-dom"
 
@@ -18,7 +19,7 @@ const toServer = new requestServer
         , { optionsMode: 'default' }, false
     );
 
-function HomeWithLogin({ }) {
+function HomeWithLogin({ logout, user }) {
 
     const [dataForAboutJob, setDataForAboutJob] = useState(null);
     const [dataFromServer, setdataFromServer] = useState(null);
@@ -48,8 +49,10 @@ function HomeWithLogin({ }) {
 
     return (
         <>
-            <header>
-                <Header></Header>
+            <header >
+                <commonContext.Provider value={{ user }}>
+                    <Header logout={logout} ></Header>
+                </commonContext.Provider>
             </header><hr className="border-[1px] 
      border-green-950"></hr>
 
