@@ -4,7 +4,7 @@ import { Container, ContainerNav, Card } from './subComponents';
 import { useContext } from 'react';
 import { myContext } from '../HomeWithLogin/myContext';
 
-function JobCards({ children, __note_this_component_use_context_and_i_am_a_message__ }) {
+function JobCards({ children, link, __note_this_component_use_context_and_i_am_a_message__ }) {
 
     const { dataFromServer, setDataForAboutJob } = useContext(myContext);
 
@@ -12,6 +12,7 @@ function JobCards({ children, __note_this_component_use_context_and_i_am_a_messa
     let [navItemArr, setnavItemArr] = useState([]);
 
     let docs;
+
 
 
     if (dataFromServer) {
@@ -58,7 +59,7 @@ function JobCards({ children, __note_this_component_use_context_and_i_am_a_messa
             for (let i = 0; i < docs.length; i++) {
                 //console.log('the console about docs : ', docs);
                 arr.push(
-                    <Card key={docs[i].index}
+                    <Card key={docs[i].index} theClick={link ? 'link' : 'local'}
                         prev={prevCard} index={docs[i].index} dataToSetOnState={docs[i]} location={docs[i].location}
                         companyName={docs[i].companyName} imgSrc={docs[i].img} setState={setDataForAboutJob}
                         jobHeading={docs[i].jobData.title} tag={docs[i].Tag} timeAgo={docs[i].TimeAgo}

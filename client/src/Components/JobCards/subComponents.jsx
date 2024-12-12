@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 function Container({ children }) {
@@ -64,18 +65,25 @@ function ContainerNav({ data, common, setCommon, setContainer, children, isDefau
 }
 
 function Card({ companyName, imgSrc, jobHeading,
-    timeAgo, tag, prev, index, location,
+    timeAgo, tag, prev, index, location, theClick,
     dataToSetOnState, setState, isDefault }) {
 
     const aref = useRef(null);
     const [lstate, setlstate] = useState('border-black');
-
+    const navigate = useNavigate();
 
     function off() {
         setlstate('border-black');
     }
 
     function handleClick() {
+        if (theClick === 'link') {
+            alert('going to use link');
+            navigate('jobDetial');
+
+            return;
+        }
+
         setlstate('border-slate-400');
         setState(dataToSetOnState);
         //console.log('from cards the state function ; ', setState);
@@ -88,10 +96,13 @@ function Card({ companyName, imgSrc, jobHeading,
 
     useEffect(() => {
 
-        if (isDefault) {
-            handleClick();
+        if (theClick !== 'link') {
+
+            if (isDefault) {
+                handleClick();
+            }
         }
-    }, [])
+    }, [theClick])
 
     return (
         <>

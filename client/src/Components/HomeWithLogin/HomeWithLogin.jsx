@@ -20,7 +20,7 @@ const toServer = new requestServer
     );
 
 function HomeWithLogin({ logout, user }) {
-
+    const size = useResizeValue(window.innerWidth);
     const [dataForAboutJob, setDataForAboutJob] = useState(null);
     const [dataFromServer, setdataFromServer] = useState(null);
 
@@ -63,8 +63,8 @@ function HomeWithLogin({ logout, user }) {
                     dataForAboutJob
                 }}>
 
-                    <Section1 children1={<JobCards />}
-                        children2={<AboutJob />}
+                    <Section1 children1={size < 700 ? <JobCards link /> : <JobCards />}
+                        children2={size < 700 ? null : <AboutJob />}
                         theFooter={<><hr className="border-[1px] 
     border-green-950"></hr>
                             <footer>

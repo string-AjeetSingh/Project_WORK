@@ -21,6 +21,12 @@ function UserButton({ login, logout, __note_this_component_use_context_and_i_am_
             <div className="font-serif text-green-200"> {user ? user.email : 'No login yet'}</div>
             <hr className="border-green-700  m-1"></hr>
 
+            {user ? <button className="m-1  text-[1rem] rounded-md
+                     border-[2px] hover:bg-green-800 active:bg-green-900
+                      text-green-200
+                       border-green-950 p-1"
+                onClick={login}> DashBoard</button> : null}
+
             {login ? <button className="m-1  text-[1rem] rounded-md
                      border-[2px] hover:bg-green-800 active:bg-green-900
                       text-green-200
@@ -76,16 +82,49 @@ function UserButton({ login, logout, __note_this_component_use_context_and_i_am_
 }
 
 
-function OtherPanel({ theSize }) {
+function OtherPanel({ theSize, setPanel }) {
+    const [toggle, settoggle] = useState(true);
+    //const [panelno, setpanelno] = useState(1);
     const size = useResizeValue(window.innerWidth);
+
+
+    function panelOn() {
+        //alert('On');
+        setPanel(0);
+    }
+    function panelOff() {
+        //alert('Off');
+        setPanel(1);
+    }
+
+    function handleClick() {
+        toggle ? settoggle(false) : settoggle(true);
+        toggle ? panelOn() : panelOff();
+    }
+    useEffect(() => {
+
+        if (size >= theSize) {
+            // console.log('the size : ', size);
+            // alert('time to off');
+            panelOff();
+        }
+    }, [size, theSize])
+
     return (
         <>
-            <button className="m-1  text-[1rem] rounded-md
+
+            <div className="flex flex-col  ">
+
+                <button onClick={handleClick} className="m-1  text-[1rem] rounded-md
                      border-[2px] hover:bg-green-800 active:bg-green-900
                       text-green-200
                        border-green-950 p-1">
-                DropDown
-            </button>
+                    DropDown
+
+                </button>
+            </div>
+
+
         </>
     );
 }
