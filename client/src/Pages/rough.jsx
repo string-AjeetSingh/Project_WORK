@@ -58,7 +58,7 @@ function Rough({ children }) {
                 {/* <UserProfile /> */}
                 {/*<TryConnection /> */}
 
-                <UserProfile />
+                {<CreateUserProfile></CreateUserProfile>}
                 <LoginTry />
 
 

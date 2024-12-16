@@ -3,8 +3,8 @@ const isDebugging = require('./../myLib/ifDebugging/ifDebugging');
 const alib = require('./../myLib/PracLib/alib');
 const utils = require('./../utils/utils');
 const path = require('path');
-const { stat } = require('fs');
-const { monitorEventLoopDelay } = require('perf_hooks');
+const { MongoOIDCError } = require('mongodb');
+
 const debug = new isDebugging(process.env.IS_DEBUGGING);
 
 module.exports.login = function (req, res, next) {
@@ -265,5 +265,125 @@ module.exports.userDetail = async (req, res) => {
             })
         }
     }
+
+};
+
+
+module.exports.isRegistered = async (req, res) => {
+    debug.console('form isRegistered -- ');
+
+
+    if (req.userData) {
+        debug.console('found user', req.userData.email);
+
+        let mongo = new alib('Work', process.env.MONGOSTRING);
+        mongo.setCollection('users');
+
+        let result = await mongo.
+            find({ 'userSocailData.email': req.userData.email });
+
+        if (result.length > 0) {
+            debug.console('found result ', result);
+            res.json({
+                status: 1
+            });
+        }
+        else {
+            debug.console('user not registered in database');
+            res.json({
+                status: 0, message: "no result found"
+            })
+        }
+    }
+    else {
+        debug.console('semmes not found user');
+        res.status(404).json({
+            status: -1, message: "not found users at the request you made"
+        })
+    }
+};
+
+module.exports.register = async (req, res) => {
+
+    debug.console('From Register -');
+
+
+    req.body.data = utils.jsonParseIfString(req.body.data);
+    debug.console('the req.body.data : ', req.body.data);
+
+
+
+    debug.console('the req.file : ', req.file);
+    if (req.body.data) {
+
+        let upload = {};
+        upload['color'] = null;
+        upload['img'] = null;
+
+        let matchList = [
+            "title", "discription", "education", "status",
+            "skills", "experiance",
+            "github", "email",
+            "x", "name"
+        ]
+
+        req.body.data.forEach((item) => {
+            if (item.index === 1) {
+                upload['color'] = item.inputData.data[1].color;
+            }
+
+            matchList.forEach((match) => {
+
+                if (item.inputData.name === match) {
+                    upload[match] = item.inputData.data;
+                }
+            })
+        })
+
+
+        const mongo = new alib('Work', process.env.MONGOSTRING);
+        mongo.setCollection('Users');
+
+
+        let result = await mongo.insertOne({
+            "Document": "user",
+            "userData": {
+                "status": upload.status,
+                "title": upload.title,
+                "description": upload.discription,
+                "experiance": upload.experiance,
+                "skills": upload.skills,
+                "education": upload.education
+            },
+            "userSocialData": {
+                "github": upload.github,
+                "email": upload.email,
+                "x": upload.x
+            },
+            "name": upload.name,
+            "img": req.file.path,
+
+        });
+
+        debug.console('result from server : ', result);
+
+
+        mongo.over();
+        res.json({
+            message: "see uploaded data, this must be uploaded ",
+            data: upload
+        })
+
+
+        return;
+    }
+    else {
+        res.status(404).json({
+            message: 'from Register'
+        }).end()
+        return;
+    }
+
+
 
 };

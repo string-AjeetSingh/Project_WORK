@@ -33,7 +33,8 @@ function useControlLogin(isHomePage = false) {
 
     async function theProcess() {
 
-        const profileImg = new requestServer(process.env.REACT_APP_SERVER_URL + '/xtServer/api/profileImg', {
+        const profileImg = new requestServer(process.env.REACT_APP_SERVER_URL
+            + '/xtServer/api/profileImg', {
             method: 'GET'
         })
         if (!isLoading) {

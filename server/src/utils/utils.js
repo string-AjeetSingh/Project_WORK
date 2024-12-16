@@ -3,7 +3,7 @@ module.exports.jsonParseIfString = (val) => {
     console.log('type of : ', typeof val);
     if (typeof val == 'string') {
         let result;
-        console.log('provided val is string');
+        console.log('provided val is string', val);
         result = JSON.parse(val);
         return result;
     }

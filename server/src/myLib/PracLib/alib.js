@@ -19,9 +19,13 @@ class alib {
     async find(query) {
 
         if (Object.keys(this.collection).length > 0) {
-            let state = await this.collection[this.collectionName].find(query);
-            state = await state.toArray();
-            return state;
+            try {
+                let state = await this.collection[this.collectionName].find(query);
+                state = await state.toArray();
+                return state;
+            } catch (error) {
+                console.error('Error from alib.find method  :', error);
+            }
         }
         else {
 
@@ -32,10 +36,15 @@ class alib {
 
     async ag(query) {
         if (Object.keys(this.collection).length > 0) {
-            let state = this.collection[this.collectionName]
-                .aggregate(query);
-            state = await state.toArray();
-            return state;
+            try {
+                let state = this.collection[this.collectionName]
+                    .aggregate(query);
+                state = await state.toArray();
+                return state;
+            } catch (error) {
+                console.error('Error from alib.ag method  :', error);
+            }
+
         }
         else {
 
@@ -46,10 +55,15 @@ class alib {
 
     async insertOne(query) {
         if (Object.keys(this.collection).length > 0) {
-            let state = await this.collection[this.collectionName]
-                .insertOne(query);
+            try {
 
-            return state;
+                let state = await this.collection[this.collectionName]
+                    .insertOne(query);
+
+                return state;
+            } catch (error) {
+                console.error('Error from alib.insertOne method  :', error);
+            }
         }
         else {
 
@@ -65,10 +79,15 @@ class alib {
 
 
         if (Object.keys(this.collection).length > 0) {
-            let state = await this.collection[this.collectionName]
-                .updateOne(matching, update);
+            try {
 
-            return state;
+                let state = await this.collection[this.collectionName]
+                    .updateOne(matching, update);
+
+                return state;
+            } catch (error) {
+                console.error('Error from alib.updateOne method  :', error);
+            }
         }
         else {
 
@@ -84,7 +103,13 @@ class alib {
     }
 
     async over() {
-        await this.client.close();
+        try {
+
+            await this.client.close();
+
+        } catch (error) {
+            console.error('Error from alib.over method  :', error);
+        }
     }
 
 

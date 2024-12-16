@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
-function ProfileImageSection({ children, screen }) {
+function ProfileImageSection({ screen, imgSrc }) {
 
     const [width, setwidth] = useState(window.innerWidth);
 
@@ -22,11 +22,14 @@ function ProfileImageSection({ children, screen }) {
     if (width <= 550 && width > 462) {
 
         return (<>
-            <div className="bg-slate-700 p-5 flex flex-row self-center
-           rounded-2xl border-2 border-green-800 w-[80%]  ">
-                <div className="size-36 relative top-14
+            <div className={`${screen ? screen : 'bg-slate-700'} p-5 flex flex-row self-center
+           rounded-2xl border-2 border-green-800 w-[80%]  `}>
+                <div className="size-36 relative top-14  overflow-hidden
             border-2 border-green-900
-             rounded-full bg-slate-500 "></div>
+             rounded-full bg-slate-500 ">
+                    <img className="w-full"
+                        src={imgSrc ? imgSrc : './stock/icon/defaultUser.png'}></img>
+                </div>
 
             </div>
         </>);
@@ -34,21 +37,27 @@ function ProfileImageSection({ children, screen }) {
     else if (width <= 462) {
 
         return (<>
-            <div className="bg-slate-700 p-5 flex flex-row self-center
-           rounded-2xl border-2 border-green-800  min-w-[315px] ">
-                <div className="size-28 relative top-12
+            <div className={`${screen ? screen : 'bg-slate-700'} p-5 flex flex-row self-center
+           rounded-2xl border-2 border-green-800  min-w-[315px] `}>
+                <div className="size-28 relative top-12 overflow-hidden
             border-2 border-green-900
-             rounded-full bg-slate-500 "></div>
+             rounded-full bg-slate-500 ">
+                    <img className="w-full"
+                        src={imgSrc ? imgSrc : './stock/icon/defaultUser.png'}></img>
+                </div>
             </div>
         </>);
     }
     else {
         return (<>
-            <div className="bg-slate-700 p-5 flex flex-row self-center
-           rounded-2xl border-2 border-green-800 max-w-[650px] w-[80%] ">
-                <div className="size-40 relative top-16
+            <div className={`${screen ? screen : 'bg-slate-700'} p-5 flex flex-row self-center
+           rounded-2xl border-2 border-green-800 max-w-[650px] w-[80%] `}>
+                <div className="size-40 relative top-16 overflow-hidden
             border-2 border-green-900
-             rounded-full bg-slate-500 "></div>
+             rounded-full bg-slate-500 ">
+                    <img className="w-full"
+                        src={imgSrc ? imgSrc : './stock/icon/defaultUser.png'}></img>
+                </div>
 
             </div>
         </>);
@@ -56,26 +65,45 @@ function ProfileImageSection({ children, screen }) {
 
 }
 
-function ProfileSection2({ children }) {
+function ProfileSection2({ children, userName, email, title }) {
     return (<>
         <div className="m-2 p-1 flex flex-col items-end">
 
             <div className="font-serif  self-end
             text-3xl  text-green-700
              ">
-                User Name</div>
+                {userName ? userName : 'User Name'}</div>
+
             <div className="font-serif text-[1.1rem]
-        relative bottom-1  text-green-700">email@gmail.com</div>
+        relative bottom-1  text-green-700">
+                {email ? email : ' email@gmail.com'}</div>
+
 
             <div className="font-serif text-3xl
        self-start mt-7 top-5 
        text-green-700
-       relative ">A Web Developer</div>
+       relative ">
+                {title ? title : 'A Web Developer'}</div>
         </div>
     </>);
 }
 
-function Status({ }) {
+function Status({ children }) {
+    const theInput = useRef(null);
+
+
+    useEffect(() => {
+
+        if (theInput) {
+            {
+                children ? theInput.current.value = children :
+                    theInput.current.value = 'no value provided'
+            }
+
+        }
+    }, [])
+
+
     return (<>
         <CommonWrapper>
             <div className="font-serif text-[1.3rem]
@@ -83,9 +111,9 @@ function Status({ }) {
        relative bottom-1">
                 <i>Status</i>
             </div>
-            <input
+            <input ref={theInput}
                 className="rounded-xl border
-            w-[50%] min-w-72
+            w-[50%] min-w-72 p-1
             border-blue-700 bg-transparent">
             </input>
         </CommonWrapper>
@@ -93,7 +121,22 @@ function Status({ }) {
     </>);
 }
 
-function Discription({ }) {
+function Discription({ children }) {
+    const theInput = useRef(null);
+
+
+    useEffect(() => {
+
+        if (theInput) {
+            {
+                children ? theInput.current.value = children :
+                    theInput.current.value = 'no value provided'
+            }
+
+        }
+    }, [])
+
+
     return (<>
 
         <CommonWrapper>
@@ -102,11 +145,11 @@ function Discription({ }) {
        relative bottom-1">
                 <i>Discription</i>
             </div>
-            <input
+            <textarea ref={theInput}
                 className="rounded-xl border
-              w-[70%] min-w-72 h-32 
+              w-[70%] min-w-72 h-64 p-1
             border-blue-700 bg-transparent">
-            </input>
+            </textarea>
 
         </CommonWrapper>
 
@@ -114,7 +157,21 @@ function Discription({ }) {
     </>);
 }
 
-function Experiance({ }) {
+function Experiance({ children }) {
+
+    const theInput = useRef(null);
+
+
+    useEffect(() => {
+
+        if (theInput) {
+            {
+                children ? theInput.current.value = children :
+                    theInput.current.value = 'no value provided'
+            }
+
+        }
+    }, [])
     return (<>
 
         <CommonWrapper>
@@ -123,11 +180,11 @@ function Experiance({ }) {
        relative bottom-1">
                 <i>Experiance</i>
             </div>
-            <input
+            <textarea ref={theInput}
                 className="rounded-xl border
-              w-[70%] min-w-72 h-32 
+              w-[70%] min-w-72  p-1 h-64
             border-blue-700 bg-transparent">
-            </input>
+            </textarea>
 
         </CommonWrapper>
 
@@ -135,7 +192,22 @@ function Experiance({ }) {
     </>);
 }
 
-function Education({ }) {
+function Education({ children }) {
+
+    const theInput = useRef(null);
+
+
+    useEffect(() => {
+
+        if (theInput) {
+            {
+                children ? theInput.current.value = children :
+                    theInput.current.value = 'no value provided'
+            }
+
+        }
+    }, [])
+
     return (<>
 
         <CommonWrapper>
@@ -144,11 +216,11 @@ function Education({ }) {
        relative bottom-1">
                 <i>Education</i>
             </div>
-            <input
+            <textarea ref={theInput}
                 className="rounded-xl border
-              w-[70%] min-w-72 h-32 
+              w-[70%] min-w-72 h-32 p-1
             border-blue-700 bg-transparent">
-            </input>
+            </textarea>
 
         </CommonWrapper>
 
@@ -156,31 +228,44 @@ function Education({ }) {
     </>);
 }
 
-function Skills({ }) {
-    return (<>
+function Skills({ children }) {
 
-        <CommonWrapper>
-            <div className="font-serif text-[1.3rem]
-       self-start 
-       relative bottom-1">
-                <i>Skills</i>
-            </div>
-            <div
-                className="flex flex-row flex-wrap p-2
-            rounded-xl border
-              w-[70%] min-w-72  h-32 
-            border-blue-700 bg-transparent">
-                <SkillsCards>C++</SkillsCards>
-                <SkillsCards>HTMl</SkillsCards>
-                <SkillsCards>CSS</SkillsCards>
-                <SkillsCards>Nodejs</SkillsCards>
-                <SkillsCards>Expressjs</SkillsCards>
-                <SkillsCards>MongoDb</SkillsCards>
 
-            </div>
-        </CommonWrapper>
 
-    </>);
+    if (!(children instanceof Array)) {
+        console.error("the children must be a array");
+        return (
+            <>
+                {null}
+            </>
+        );
+
+    }
+    else {
+        return (<>
+            <CommonWrapper>
+                <div className="font-serif text-[1.3rem]
+           self-start 
+           relative bottom-1">
+                    <i>Skills</i>
+                </div>
+                <div
+                    className="flex flex-row flex-wrap p-2
+                rounded-xl border
+                  w-[70%] min-w-72  h-40 
+                border-blue-700 bg-transparent">
+
+                    {children.length > 0 ? children.map((item) => {
+                        return <SkillsCards>{item}</SkillsCards>
+                    }) : <SkillsCards>No skills mentioned</SkillsCards>}
+
+                </div>
+            </CommonWrapper>
+
+        </>);
+    }
+
+
 }
 
 function SkillsCards({ children }) {
@@ -208,23 +293,30 @@ function CommonWrapper({ children }) {
 
 
 
-function SocialMedia({ }) {
+function SocialMedia({ email, github, x }) {
     return (<>
         <div className="m-1 flex flex-row flex-wrap justify-between">
 
-            <div className="m-1">
-                <div className="font-serif font-bold text-[1.2rem]">Email : </div>
-                <span className="relative bottom-2">Mirosoft@gmail.com</span>
-            </div>
-            <div className="m-1">
-                <div className="font-serif font-bold text-[1.2rem]">X : </div>
-                <span className="relative bottom-2">Mirosoft</span>
-            </div>
+            {email ?
+                <div className="m-1">
+                    <div className="font-serif font-bold text-[1.2rem]">Email : </div>
+                    <span className="relative bottom-2">{email}</span>
+                </div>
+                : null}
 
-            <div className="m-1">
-                <div className="font-serif font-bold text-[1.2rem]">GitHub : </div>
-                <span className="relative bottom-2">Mirosoft_Comunnity</span>
-            </div>
+            {x ?
+                <div className="m-1">
+                    <div className="font-serif font-bold text-[1.2rem]">X : </div>
+                    <span className="relative bottom-2">{x}</span>
+                </div>
+                : null}
+
+            {github ?
+                <div className="m-1">
+                    <div className="font-serif font-bold text-[1.2rem]">GitHub : </div>
+                    <span className="relative bottom-2">{github}</span>
+                </div>
+                : null}
 
         </div>
     </>);

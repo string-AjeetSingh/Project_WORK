@@ -263,6 +263,8 @@ function GetInput({ name, inputName, index,
         }
     });
 
+
+
     const [borderColor, setBorderColor] = useState(["border-teal-500", 'teal']);
     const [string, setString] = useState(['', totalInputLength]);
 
@@ -305,14 +307,20 @@ function GetInput({ name, inputName, index,
             console.error('please provide Functinoality to the attribute OutReport of the GetInput to get the report of the component');
         }
 
+
         if (boolPreviousVal) {
             aref.current.value = prevValue.inputData.data;
+        } else {
+            if (isMendatory) {
+                OutReport(TheReport.current);
+            }
         }
         if (aref.current.value.length < 1) {
             TheReport.current.ok = false;
         } else {
             TheReport.current.ok = true;
         }
+
     }, [])
 
 
@@ -459,7 +467,7 @@ function UploadButton({
 
         if (prevData) {
             TheReport.current.inputData.data = [
-                prevData.inputData.data[1],
+                prevData.inputData.data[0],
                 { 'color': color }
 
             ]

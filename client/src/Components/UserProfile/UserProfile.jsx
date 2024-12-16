@@ -12,15 +12,16 @@ import { requestServer } from '../../MyLib/RequestServer/requestServer';
 
 
 
-function UserProfile({ children }) {
+function UserProfile({ children, isAuthenticated }) {
 
     const [data, setdata] = useState(null);
 
-    async function UserDetail(params) {
+    async function userDetail(params) {
 
-        const userDetial = new requestServer(process.env.REACT_APP_SERVER_URL + "/xtServer/api/userDetail"
+        const userDetial = new requestServer(process.env.REACT_APP_SERVER_URL
+            + "/xtServer/api/userDetail"
             , { method: 'GET' }
-        );
+            , true);
 
         delete (userDetial.options.body);
 
@@ -29,7 +30,9 @@ function UserProfile({ children }) {
 
         if (result) {
             console.log('the user detail would be : ', result);
-            result(result.json.data);
+            console.log(result.json.data);
+
+            setdata(result.json.data);
         }
         else {
 
@@ -38,9 +41,7 @@ function UserProfile({ children }) {
 
     }
     useEffect(() => {
-        UserDetail().then((data) => {
-
-        });
+        userDetail();
     }, [])
 
     return (
@@ -49,15 +50,17 @@ function UserProfile({ children }) {
                 <div className='p-2 flex flex-col ' >
                     <ProfileImageSection></ProfileImageSection>
                     <br></br>
-                    <ProfileSection2></ProfileSection2>
+                    <ProfileSection2 userName={data.userData.name}
+                        title={data.userData.title}
+                        email={data.userSocialData.email} />
                     <br></br>
-                    <Status></Status>
-                    <Discription></Discription>
-                    <Skills></Skills>
-                    <Education></Education>
-                    <Experiance></Experiance>
+                    <Status>{data.userData.status}</Status>
+                    <Discription>{data.userData.discription}</Discription>
+                    <Skills>{data.userData.skills}</Skills>
+                    <Education>{data.userData.education} </Education>
+                    <Experiance>{data.userData.experiance}</Experiance>
                     <hr className='border-green-800'></hr>
-                    <SocialMedia></SocialMedia>
+                    <SocialMedia email={data.userSocialData.email} />
                 </div>
                 : <h3>No User Data To Show</h3>}
 

@@ -21,6 +21,18 @@ const upload = multer({
     })
 })
 
+const profileImg = multer({
+    storage: multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, "uploads/usersImg");
+        },
+        filename: function (req, file, cb) {
+            cb(null, file.fieldname +
+                Date.now().toLocaleString().toString() + path.extname(file.originalname));
+        }
+    })
+})
+
 const tempUpload = multer({
     storage: multer.diskStorage({
         destination: function (req, file, cb) {
@@ -50,6 +62,8 @@ aRouter.get('/hello', middleware.jwtVerification,
 aRouter.get('/login', middleware.authorize, controllers.login);
 aRouter.get('/logout', middleware.authorize, controllers.logout);
 aRouter.post('/token', middleware.authorize, controllers.token);
+aRouter.get('/isRegistered', middleware.jwtVerification,
+    controllers.isRegistered)
 
 aRouter.post('/temp', middleware.authorize,
     middleware.jwtVerification, tempUpload.single('tempImg')
@@ -59,6 +73,10 @@ aRouter.post('/temp', middleware.authorize,
 aRouter.post('/createPost', middleware.authorize
     , middleware.jwtVerification, upload.single('theImg')
     , controllers.createPost);
+
+aRouter.post('/register', middleware.authorize
+    , middleware.jwtVerification, profileImg.single('theImg')
+    , controllers.register);
 
 aRouter.post('/fetchPosts', controllers.fetchPosts);
 aRouter.get('/fetchPosts', controllers.fetchPosts);

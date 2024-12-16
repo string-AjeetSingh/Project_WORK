@@ -99,6 +99,7 @@ class requestServer {
         delete (this.options.headers);
     }
     resetFormData() {
+        this.formData = null;
         this.formData = new FormData();
     }
 

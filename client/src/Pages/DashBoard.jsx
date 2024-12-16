@@ -26,12 +26,11 @@ function DashBoard({ }) {
 
 
     const { isAuthenticated, isLoading, user,
-        loginWithRedirect, nowLogout } = useControlLogin(true);
+        loginWithRedirect, nowLogout } = useControlLogin();
 
     if (!isLoading) {
         return (<>
             {isAuthenticated ?
-
                 <>
 
                     <header >
@@ -42,7 +41,7 @@ function DashBoard({ }) {
                     <hr className="border-[1px] 
                      border-green-950"></hr>
                     <main>
-                        <UserProfile />
+                        <UserProfile isAuthenticated={isAuthenticated} />
                     </main>
 
                     <footer>
@@ -51,7 +50,7 @@ function DashBoard({ }) {
 
                 </>
 
-                : null}
+                : <h3>you are not authenticated to see this, please login</h3>}
         </>);
     }
     return <div className="text-2xl font-bold ">Loading Please wait</div>

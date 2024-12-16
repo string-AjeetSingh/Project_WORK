@@ -2,6 +2,13 @@ import { useReducer, useState, useRef, useEffect } from "react";
 import { NavShow, Section1, Section2, Section3 } from "./subComponents";
 import { flushSync } from "react-dom";
 import { MyContext } from "./myContext";
+import { requestServer } from "../../MyLib/RequestServer/requestServer";
+
+const toServer = new requestServer(process.env.REACT_APP_SERVER_URL + "/xtServer/api/register",
+    {
+        method: 'POST'
+    }, true
+)
 
 function CreateUserProfile({ }) {
 
@@ -9,6 +16,7 @@ function CreateUserProfile({ }) {
     const [section1FinalInputReport, setsection1FinalInputReport] = useState([]);
     const [section2FinalInputReport, setsection2FinalInputReport] = useState([]);
     const [section3FinalInputReport, setsection3FinalInputReport] = useState([]);
+
 
 
     const initialValues = useRef({
@@ -65,12 +73,12 @@ function CreateUserProfile({ }) {
         let runNext = true;
 
 
-        for (let val of stateVal) {
-            if (val) {
+        for (let item of stateVal) {
+            if (item) {
 
-                if (val.isMendatory) {
-                    if (!val.ok) {
-                        val.inputData.redNotice();
+                if (item.isMendatory) {
+                    if (!item.ok) {
+                        item.inputData.redNotice();
                         runNext = false;
                     }
                 }
@@ -135,6 +143,42 @@ function CreateUserProfile({ }) {
         let allData = combineArraysToOne(stateVal);
         console.log('all data is below');
         console.log(allData);
+        allData.forEach((item) => {
+            console.log('name of input : ', item.inputData.name);
+        })
+
+
+        //......................
+        if (allData.length < 1) {
+            alert('not data, please provide data to submit');
+            return;
+        }
+
+
+        if (allData[0].index === 1) {
+            alert('file contained may be');
+            if (allData[0].inputData.data[0].files) {
+                alert('file contained here');
+                toServer.setFormData('theImg', allData[0].inputData.data[0].files);
+                toServer.setFormData('data', allData, true);
+            }
+        } else {
+            toServer.setFormData('data', allData, true);
+        }
+        //console.log('the file is : ', allData[0].inputData.data[0].files);
+        //toServer.setContentType('multipart/form-data');
+
+        let res = await toServer.fetchNoStringify();
+        toServer.resetFormData();
+        if (res) {
+
+            alert('Uploaded succesfully ');
+            console.log('the response from submit : ', res);
+
+        } else {
+            alert('problem in connection i guess, unable to upload data');
+        }
+        //.......................
 
     }
 
@@ -173,6 +217,7 @@ function CreateUserProfile({ }) {
 
     useEffect(() => {
         animationSwitch.current.on();
+        toServer.setAuthorizedFlag(true);
 
     }, [])
     return (
