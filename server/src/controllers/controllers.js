@@ -238,6 +238,7 @@ module.exports.profileImg = async (req, res) => {
     }
 };
 
+
 module.exports.userDetail = async (req, res) => {
 
     debug.console('from userDetail -');
@@ -346,7 +347,7 @@ module.exports.register = async (req, res) => {
 
 
         let result = await mongo.insertOne({
-            "Document": "user",
+            "Document": "Dumyuser",
             "userData": {
                 "status": upload.status,
                 "title": upload.title,
@@ -361,7 +362,7 @@ module.exports.register = async (req, res) => {
                 "x": upload.x
             },
             "name": upload.name,
-            "img": req.file.path,
+            "img": req.file ? req.file.path : null,
 
         });
 
@@ -370,6 +371,7 @@ module.exports.register = async (req, res) => {
 
         mongo.over();
         res.json({
+            status: 1,
             message: "see uploaded data, this must be uploaded ",
             data: upload
         })
@@ -379,6 +381,7 @@ module.exports.register = async (req, res) => {
     }
     else {
         res.status(404).json({
+            status: 0,
             message: 'from Register'
         }).end()
         return;

@@ -2,7 +2,9 @@ import { useReducer, useState, useRef, useEffect } from "react";
 import { NavShow, Section1, Section2, Section3 } from "./subComponents";
 import { flushSync } from "react-dom";
 import { MyContext } from "./myContext";
+import { commonContext } from './../../MyLib/commonContext';
 import { requestServer } from "../../MyLib/RequestServer/requestServer";
+import { useContext } from "react";
 
 const toServer = new requestServer(process.env.REACT_APP_SERVER_URL + "/xtServer/api/register",
     {
@@ -12,6 +14,7 @@ const toServer = new requestServer(process.env.REACT_APP_SERVER_URL + "/xtServer
 
 function CreateUserProfile({ }) {
 
+    // let { isAuthenticated } = useContext(commonContext);
     const [highLightNav, sethighLightNav] = useState(1);
     const [section1FinalInputReport, setsection1FinalInputReport] = useState([]);
     const [section2FinalInputReport, setsection2FinalInputReport] = useState([]);
@@ -155,14 +158,15 @@ function CreateUserProfile({ }) {
         }
 
 
-        if (allData[0].index === 1) {
+        if (allData[0].inputData.data[0].files) {
             alert('file contained may be');
             if (allData[0].inputData.data[0].files) {
                 alert('file contained here');
                 toServer.setFormData('theImg', allData[0].inputData.data[0].files);
                 toServer.setFormData('data', allData, true);
             }
-        } else {
+        }
+        else {
             toServer.setFormData('data', allData, true);
         }
         //console.log('the file is : ', allData[0].inputData.data[0].files);
@@ -171,10 +175,13 @@ function CreateUserProfile({ }) {
         let res = await toServer.fetchNoStringify();
         toServer.resetFormData();
         if (res) {
-
-            alert('Uploaded succesfully ');
-            console.log('the response from submit : ', res);
-
+            if (res.json.status) {
+                console.log('the response from submit : ', res);
+                return true;
+            }
+            else {
+                return false;
+            }
         } else {
             alert('problem in connection i guess, unable to upload data');
         }

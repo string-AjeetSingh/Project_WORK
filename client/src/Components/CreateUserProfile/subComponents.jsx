@@ -4,10 +4,12 @@ import { useResizeValue } from "../../MyLib/MyHook/customHook";
 import { useAnimationOnOff } from "../../MyLib/MyHook/customAnimationOnOff";
 import { MyContext } from './myContext';
 import { useContext } from 'react';
+import { requestServer } from '../../MyLib/RequestServer/requestServer';
 
 function ProfileImage({ children,
     prevData }) {
 
+    const [src, setsrc] = useState(null);
     const [width, setwidth] = useState(window.innerWidth);
     const [divColor, setdivColor] = useState('bg-slate-700');
 
@@ -16,10 +18,23 @@ function ProfileImage({ children,
 
     }
 
+    function funcdivColor(mode, val) {
+        if (mode === 'new') {
+
+            setdivColor(val);
+            return true;
+        }
+        else if (mode === 'default') {
+            return divColor
+        }
+    }
+
     useEffect(() => {
 
         if (prevData) {
+            console.log('from useeffect the prev effect from profieIMg is ,', prevData)
             setdivColor(prevData.inputData.data[1].color);
+            setsrc(prevData.inputData.data[0].tempUrl);
         }
         window.addEventListener('resize', handleResize);
 
@@ -41,17 +56,19 @@ function ProfileImage({ children,
            rounded-2xl border-2 border-green-800 w-full  `}>
                     <div className="size-28 relative top-14
             border-2 border-green-900 
-             rounded-full bg-slate-500 "></div>
+             rounded-full bg-slate-500 ">
+                    </div>
                 </div>
 
 
 
-                <UploadButton
+                <UploadButton outSrcPimg={setsrc}
+                    divToHaveEffect={funcdivColor}
                     mode={'pimg'} className="relative right-20 flex flex-row 
         justify-center items-center bg-green-950 rounded-xl p-1 scale-75
           bottom-3 border border-black"/>
 
-                <UploadButton divToHaveEffect={setdivColor} className="relative left-36 flex flex-row 
+                <UploadButton divToHaveEffect={funcdivColor} className="relative left-36 flex flex-row 
         justify-center items-center bg-green-950 rounded-xl p-1 scale-75
           bottom-24 border border-black"/>
 
@@ -88,11 +105,13 @@ font-bold">
 
 
 
-                <UploadButton mode={'pimg'} className="relative right-6 flex flex-row 
+                <UploadButton outSrcPimg={setsrc}
+                    divToHaveEffect={funcdivColor}
+                    mode={'pimg'} className="relative right-6 flex flex-row 
         justify-center items-center bg-green-950 rounded-xl p-1 scale-75
           bottom-5 border border-black"/>
 
-                <UploadButton divToHaveEffect={setdivColor} className="relative left-24 flex flex-row 
+                <UploadButton divToHaveEffect={funcdivColor} className="relative left-24 flex flex-row 
         justify-center items-center bg-green-950 rounded-xl p-1 scale-75
           bottom-24 border border-black"/>
 
@@ -123,16 +142,20 @@ font-bold">
                 <div className={`${divColor} p-5 flex flex-row
            rounded-2xl border-2 border-green-800 w-full max-w-[600px]  `}>
                     <div className="size-28 relative top-12
-            border-2 border-green-900
-             rounded-full bg-slate-500 "></div>
+            border-2 border-green-900 overflow-hidden
+             rounded-full bg-slate-500 ">
+                        {src ? <img className='w-full' src={src} ></img> : null}
+                    </div>
                 </div>
 
 
-                <UploadButton mode={'pimg'} className="relative right-36 flex flex-row 
+                <UploadButton outSrcPimg={setsrc}
+                    divToHaveEffect={funcdivColor}
+                    mode={'pimg'} className="relative right-36 flex flex-row 
         justify-center items-center bg-green-950 rounded-xl p-1 scale-75
           bottom-3 border border-black"/>
 
-                <UploadButton divToHaveEffect={setdivColor} className="relative left-52 flex flex-row 
+                <UploadButton divToHaveEffect={funcdivColor} className="relative left-52 flex flex-row 
         justify-center items-center bg-green-950 rounded-xl p-1 scale-75
           bottom-24 border border-black"/>
 
@@ -381,8 +404,8 @@ function GetInput({ name, inputName, index,
 
 function Button({ children, mode, handle, stateVal }) {
 
-
-    function handleButton() {
+    const butt = useRef(null);
+    async function handleButton() {
         if (mode === 'next') {
             handle(1, stateVal);
         }
@@ -391,7 +414,15 @@ function Button({ children, mode, handle, stateVal }) {
 
         }
         else if (mode === 'submit') {
-            handle(stateVal);
+            butt.current.innerHTML = 'Submitting';
+            let bool = await handle(stateVal);
+            if (bool) {
+                alert('Uploaded succesfully ');
+            }
+            else {
+                alert('Uploaded failed ');
+            }
+            butt.current.innerHTML = 'Submit';
         }
     }
 
@@ -399,7 +430,7 @@ function Button({ children, mode, handle, stateVal }) {
 
     return (
         <>
-            <button onClick={handleButton}
+            <button ref={butt} onClick={handleButton}
                 className=" m-1 p-2
       pl-4 pr-4 flex flex-row items-center
       justify-center hover:bg-green-900 active:bg-green-800 active:text-teal-950
@@ -415,7 +446,7 @@ function Button({ children, mode, handle, stateVal }) {
 }
 
 
-function UploadButton({
+function UploadButton({ outSrcPimg, __this_component_use_context_and_i_am_a_message__,
     children, className, onClick = null, divToHaveEffect, mode }) {
 
     let inputRef = useRef(null);
@@ -430,7 +461,8 @@ function UploadButton({
         ok: false,
         inputData: {
             name: 'watch in data, it contain two datas files and color as array',
-            data: [],
+            data: [{ tempUrl: null },
+            { color: divToHaveEffect('default') }],
             redNotice: null,
         }
     });
@@ -442,19 +474,40 @@ function UploadButton({
 
     }
 
-    function handleChangeFile(e) {
+    async function requestTempImg(file) {
+
+        const tempImg = new requestServer(process.env.REACT_APP_SERVER_URL +
+            "xtServer/api/temp", { method: 'POST' }, true
+        )
+
+        tempImg.setAuthorizedFlag(true);
+        tempImg.setFormData('tempImg', file);
+        let result = await tempImg.fetchNoStringify();
+        if (result) {
+            console.log('found tempImgSrc is : ', result.json);
+            return result.json.filePath;
+        }
+        return false;
+    }
+
+    async function handleChangeFile(e) {
         console.log('Changing file');
+
+        let url = await requestTempImg(e.target.files[0]);
+        outSrcPimg(url);
 
         if (prevData) {
             TheReport.current.inputData.data = [
-                { files: e.target.files[0] },
+                { files: e.target.files[0], tempUrl: url },
                 prevData.inputData.data[1]
             ]
+
         } else {
             TheReport.current.inputData.data = [
-                { files: e.target.files[0] },
-                null
+                { files: e.target.files[0], tempUrl: url },
+                prevData.inputData.data[1]
             ]
+
         }
 
 
@@ -483,7 +536,7 @@ function UploadButton({
 
 
         OutReportFromInputs(TheReport.current);
-        divToHaveEffect(color);
+        divToHaveEffect('new', color);
     }
 
     function handleFocus() {
@@ -497,6 +550,12 @@ function UploadButton({
     useEffect(() => {
         console.log("previous data is below");
         console.log(prevData);
+        if (prevData) {
+
+        } else {
+            OutReportFromInputs(TheReport.current);
+        }
+
     }, [prevData])
 
 
