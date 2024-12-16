@@ -1,7 +1,10 @@
+const { emit } = require('process');
 const isDebugging = require('./../myLib/ifDebugging/ifDebugging');
 const alib = require('./../myLib/PracLib/alib');
 const utils = require('./../utils/utils');
 const path = require('path');
+const { stat } = require('fs');
+const { monitorEventLoopDelay } = require('perf_hooks');
 const debug = new isDebugging(process.env.IS_DEBUGGING);
 
 module.exports.login = function (req, res, next) {
@@ -205,4 +208,62 @@ module.exports.temp = (req, res) => {
             message: 'file not recived'
         })
     }
+};
+
+
+module.exports.profileImg = async (req, res) => {
+
+    debug.console('from profileImg - ');
+    if (req.userData.email) {
+        debug.console('found token user');
+
+        const mongo = new alib('Work', process.env.MONGOSTRING);
+        mongo.setCollection('Users');
+        let response = await mongo.find({ 'userSocialData.email': req.userData.email });
+
+        mongo.over();
+        if (response.length > 0) {
+            debug.console('found data from mongo', response);
+            res.json({
+                status: 1,
+                url: '/xtServer/api' + response[0].userData.img
+            })
+        }
+        else {
+            debug.console('not found data from mongo');
+            res.json({
+                status: -1, message: "No Matching entry found"
+            })
+        }
+    }
+};
+
+module.exports.userDetail = async (req, res) => {
+
+    debug.console('from userDetail -');
+
+    if (req.userData.email) {
+        debug.console(' token email found ');
+        const mongo = new alib('Work', process.env.MONGOSTRING);
+
+        mongo.setCollection('Users');
+        let result = await mongo.find({ 'userSocialData.email': req.userData.email });
+
+
+        if (result.length > 0) {
+            debug.console('entry found');
+            res.json({
+                status: 1,
+                data: result[0]
+            })
+        }
+        else {
+            debug.console('no entry found');
+            res.json({
+                status: -1,
+                message: 'no Entry found'
+            })
+        }
+    }
+
 };

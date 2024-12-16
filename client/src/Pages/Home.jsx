@@ -16,7 +16,7 @@ function Home({ }) {
     if (!isLoading) {
         return (<>
             {isAuthenticated ? <HomeWithLogin logout={nowLogout} user={user} /> : <HomeWithoutLogin
-                login={loginWithRedirect} logout={nowLogout} user={user} />}
+                login={loginWithRedirect} user={user} />}
         </>);
     }
     return <div className="text-2xl font-bold ">Loading Please wait</div>

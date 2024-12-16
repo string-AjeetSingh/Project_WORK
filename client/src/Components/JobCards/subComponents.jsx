@@ -102,6 +102,7 @@ function Card({ companyName, imgSrc, jobHeading,
                 handleClick();
             }
         }
+
     }, [theClick])
 
     return (

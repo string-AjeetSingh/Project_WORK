@@ -19,11 +19,11 @@ function ProfileImageSection({ children, screen }) {
     }, [])
 
 
-    if (width <= 550 && width > 380) {
+    if (width <= 550 && width > 462) {
 
         return (<>
-            <div className="bg-slate-700 p-5 flex flex-row
-           rounded-2xl border-2 border-green-800  ">
+            <div className="bg-slate-700 p-5 flex flex-row self-center
+           rounded-2xl border-2 border-green-800 w-[80%]  ">
                 <div className="size-36 relative top-14
             border-2 border-green-900
              rounded-full bg-slate-500 "></div>
@@ -31,11 +31,11 @@ function ProfileImageSection({ children, screen }) {
             </div>
         </>);
     }
-    else if (width <= 380) {
+    else if (width <= 462) {
 
         return (<>
-            <div className="bg-slate-700 p-5 flex flex-row
-           rounded-2xl border-2 border-green-800  ">
+            <div className="bg-slate-700 p-5 flex flex-row self-center
+           rounded-2xl border-2 border-green-800  min-w-[315px] ">
                 <div className="size-28 relative top-12
             border-2 border-green-900
              rounded-full bg-slate-500 "></div>
@@ -44,8 +44,8 @@ function ProfileImageSection({ children, screen }) {
     }
     else {
         return (<>
-            <div className="bg-slate-700 p-5 flex flex-row
-           rounded-2xl border-2 border-green-800 max-w-[650px] ">
+            <div className="bg-slate-700 p-5 flex flex-row self-center
+           rounded-2xl border-2 border-green-800 max-w-[650px] w-[80%] ">
                 <div className="size-40 relative top-16
             border-2 border-green-900
              rounded-full bg-slate-500 "></div>
@@ -60,7 +60,7 @@ function ProfileSection2({ children }) {
     return (<>
         <div className="m-2 p-1 flex flex-col items-end">
 
-            <div className="font-serif 
+            <div className="font-serif  self-end
             text-3xl  text-green-700
              ">
                 User Name</div>

@@ -63,7 +63,7 @@ function HomeWithLogin({ logout, user }) {
                     dataForAboutJob
                 }}>
 
-                    <Section1 children1={size < 700 ? <JobCards link /> : <JobCards />}
+                    <Section1 children1={size < 700 ? <JobCards link /> : <JobCards link={false} />}
                         children2={size < 700 ? null : <AboutJob />}
                         theFooter={<><hr className="border-[1px] 
     border-green-950"></hr>

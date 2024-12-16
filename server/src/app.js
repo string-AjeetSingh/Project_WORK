@@ -7,6 +7,7 @@ const path = require('path');
 
 const controllers = require('./controllers/controllers');
 const middleware = require('./middleware/middleware');
+const { copyFileSync } = require('fs');
 
 const upload = multer({
     storage: multer.diskStorage({
@@ -61,6 +62,13 @@ aRouter.post('/createPost', middleware.authorize
 
 aRouter.post('/fetchPosts', controllers.fetchPosts);
 aRouter.get('/fetchPosts', controllers.fetchPosts);
+
+aRouter.get('/profileImg', middleware.authorize, middleware.jwtVerification,
+    controllers.profileImg);
+
+aRouter.get('/userDetail', middleware.authorize, middleware.jwtVerification,
+    controllers.userDetail
+)
 
 aRouter.use('/', (req, res) => {
     res.status(200);

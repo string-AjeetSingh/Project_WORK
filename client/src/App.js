@@ -6,26 +6,27 @@ import './Css/App.css';
 import { Rough } from './Pages/rough';
 import { Home } from './Pages/Home';
 import { Nothing } from './Pages/Nothing';
-
+import { DashBoard } from './Pages/DashBoard';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
-   <>
-    
+    <>
+
 
       <BrowserRouter>
-      <Routes>
-      
-        <Route path='/' element={<Home/>}></Route>
-        <Route path='/rough' element={<Rough></Rough>}></Route>
-       
-       <Route path='*' element={<Nothing/>}></Route>
-      
-      </Routes>
+        <Routes>
+
+          <Route path='/' element={<Home />}></Route>
+          <Route path='/rough' element={<Rough></Rough>}></Route>
+          <Route path='/dashboard' element={<DashBoard />}></Route>
+
+          <Route path='*' element={<Nothing />}></Route>
+
+        </Routes>
       </BrowserRouter>
-   </>
+    </>
   );
 }
 

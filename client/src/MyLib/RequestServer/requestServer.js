@@ -56,6 +56,9 @@ class requestServer {
         }
     }
 
+    noBody() {
+        delete (this.options.body);
+    }
     setBody(val) {
         this.options.body.data = val;
     }
@@ -99,12 +102,16 @@ class requestServer {
         this.formData = new FormData();
     }
 
+
+
+
     static async fetch(mode, url, options) {
 
         if (mode === 'default') {
             let result = await fetch(url);
             return result;
         }
+
         else {
 
             debug.console('final fetch body : ', options.body)

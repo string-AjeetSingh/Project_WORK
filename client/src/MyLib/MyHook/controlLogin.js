@@ -30,18 +30,28 @@ function useControlLogin(isHomePage = false) {
 
     }
     //fetch('sur');
-    useEffect(() => {
-        toServer.setAuthorizedFlag(isAuthenticated)
 
+    async function theProcess() {
+
+        const profileImg = new requestServer(process.env.REACT_APP_SERVER_URL + '/xtServer/api/profileImg', {
+            method: 'GET'
+        })
         if (!isLoading) {
             if (isAuthenticated) {
 
 
                 toServer.setBodyCustom({ userData: user });
-                toServer.requestJson().
-                    then((res) => {
-                        debug.console('the response from request if authenticated : ', res);
-                    });
+                let res = await toServer.requestJson();
+                if (res) {
+                    debug.console('the response from request if authenticated : ', res);
+                }
+
+                profileImg.setAuthorizedFlag(isAuthenticated);
+                delete (profileImg.options.body);
+                res = await profileImg.requestJson();
+                if (res) {
+                    debug.console('profile img is : ', res.json.url);
+                }
 
             } else {
 
@@ -61,6 +71,11 @@ function useControlLogin(isHomePage = false) {
 
             }
         }
+
+    }
+    useEffect(() => {
+        toServer.setAuthorizedFlag(isAuthenticated);
+        theProcess();
 
     }, [isAuthenticated, isLoading])
 
