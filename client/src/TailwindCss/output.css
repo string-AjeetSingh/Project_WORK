@@ -1776,6 +1776,16 @@ video {
   opacity: 0.5;
 }
 
+.\*\:text-slate-600 > * {
+  --tw-text-opacity: 1;
+  color: rgb(71 85 105 / var(--tw-text-opacity, 1));
+}
+
+.\*\:placeholder\:text-slate-600 > *::placeholder {
+  --tw-text-opacity: 1;
+  color: rgb(71 85 105 / var(--tw-text-opacity, 1));
+}
+
 .hover\:border-dotted:hover {
   border-style: dotted;
 }

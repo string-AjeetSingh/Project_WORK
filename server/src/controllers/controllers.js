@@ -278,10 +278,10 @@ module.exports.isRegistered = async (req, res) => {
         debug.console('found user', req.userData.email);
 
         let mongo = new alib('Work', process.env.MONGOSTRING);
-        mongo.setCollection('users');
+        mongo.setCollection('Users');
 
         let result = await mongo.
-            find({ 'userSocailData.email': req.userData.email });
+            find({ 'userSocialData.email': req.userData.email });
 
         if (result.length > 0) {
             debug.console('found result ', result);
@@ -362,7 +362,8 @@ module.exports.register = async (req, res) => {
                 "x": upload.x
             },
             "name": upload.name,
-            "img": req.file ? req.file.path : null,
+            "img": req.file ? path.join(process.env.SERVER_BASE, req.file.path) : null,
+            "color": upload.color
 
         });
 

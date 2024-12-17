@@ -3,12 +3,13 @@ import { useSearchParams } from "react-router-dom";
 import { commonContext } from "../../MyLib/commonContext";
 import { useContext } from "react";
 import { useResizeValue } from "../../MyLib/MyHook/customHook";
+import { useNavigate } from "react-router-dom";
 
 function UserButton({ login, logout, __note_this_component_use_context_and_i_am_a_message__ }) {
     const [toggle, settoggle] = useState(true);
     const { user } = useContext(commonContext);
     const arefImg = useRef(null);
-
+    const navigate = useNavigate(null);
 
     const panel = [
         <div className=" flex flex-col absolute
@@ -27,7 +28,9 @@ function UserButton({ login, logout, __note_this_component_use_context_and_i_am_
                      border-[2px] hover:bg-green-800 active:bg-green-900
                       text-green-200 bg-slate-600
                        border-green-950 p-1"
-                onClick={login}> <img className="size-8 rounded-2xl mr-2"
+                onClick={() => {
+                    login ? login() : navigate('/dashboard');
+                }}> <img className="size-8 rounded-2xl mr-2"
                     src="./stock/icon/dashboard.png"></img> DashBoard</button> : null}
 
             {login ? <button className="m-1  flex flex-row w-fit self-end

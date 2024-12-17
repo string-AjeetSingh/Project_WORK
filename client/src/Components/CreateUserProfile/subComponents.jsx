@@ -5,6 +5,7 @@ import { useAnimationOnOff } from "../../MyLib/MyHook/customAnimationOnOff";
 import { MyContext } from './myContext';
 import { useContext } from 'react';
 import { requestServer } from '../../MyLib/RequestServer/requestServer';
+import { useNavigate } from 'react-router-dom';
 
 function ProfileImage({ children,
     prevData }) {
@@ -261,7 +262,7 @@ function SectionHeading({ children }) {
 
 function GetInput({ name, inputName, index,
     totalInputLength = 100, needPreValues = true,
-    prevValue
+    prevValue, isDisabled
     , inputHeight = 10, typeToggle = true, placeHolder = '',
     spaceOccupy = '40%', OutReport, isMendatory = false
 }) {
@@ -351,6 +352,8 @@ function GetInput({ name, inputName, index,
     return (
         <>
             <div className={`flex flex-col 
+            ${isDisabled ?
+                    '*:text-slate-600 *:placeholder:text-slate-600' : null}
        m-1
        h-fit `} style={{
                     width: spaceOccupy
@@ -365,7 +368,7 @@ function GetInput({ name, inputName, index,
 
 
                 {typeToggle == 'input' ?
-                    <input
+                    <input disabled={isDisabled}
                         ref={aref}
                         name={inputName} onChange={(e) => {
                             handledChanbg(e);
@@ -378,7 +381,7 @@ function GetInput({ name, inputName, index,
 
                     </input>
                     :
-                    <textarea
+                    <textarea disabled={isDisabled}
                         ref={aref}
                         name={inputName}
                         onChange={(e) => {
@@ -404,6 +407,9 @@ function GetInput({ name, inputName, index,
 
 function Button({ children, mode, handle, stateVal }) {
 
+
+    const navigate = useNavigate();
+
     const butt = useRef(null);
     async function handleButton() {
         if (mode === 'next') {
@@ -417,7 +423,8 @@ function Button({ children, mode, handle, stateVal }) {
             butt.current.innerHTML = 'Submitting';
             let bool = await handle(stateVal);
             if (bool) {
-                alert('Uploaded succesfully ');
+                alert('Uploaded succesfully, enjoy your work ');
+                navigate("/");
             }
             else {
                 alert('Uploaded failed ');
@@ -989,7 +996,7 @@ function Section3({ children, animation = false,
 
                 <div className={getInputWrapperClassName}>
 
-                    <GetInput inputName="email"
+                    <GetInput inputName="email" isDisabled
                         index={9} OutReport={OutReportFromInputs}
                         inputHeight="10" spaceOccupy={getInputSpace}
                         name={"Email Id"} typeToggle='input' totalInputLength={50}

@@ -20,7 +20,7 @@ function useControlLogin(isHomePage = false) {
 
     const navigate = useNavigate();
     const { loginWithRedirect, logout, isAuthenticated, user, isLoading } = useAuth0();
-
+    const [ifRegistered, setifRegistered] = useState(null);
 
     function nowLogout() {
         logout({
@@ -70,17 +70,24 @@ function useControlLogin(isHomePage = false) {
                     debug.console('the response from request if authenticated : ', res);
                 }
 
+                setifRegistered(true);
+                /* 
+                
                 res = await isRegistered();
                 if (res) {
-                    profileImg.setAuthorizedFlag(isAuthenticated);
-                    delete (profileImg.options.body);
-                    res = await profileImg.requestJson();
-                    if (res) {
-                        debug.console('profile img is : ', res.json.url);
-                    }
-                } else {
-                    alert('need to register first');
+                    
+                setifRegistered(res);
+                profileImg.setAuthorizedFlag(isAuthenticated);
+                delete (profileImg.options.body);
+                res = await profileImg.requestJson();
+                if (res) {
+                    debug.console('profile img is : ', res.json.url);
                 }
+            } else {
+                //alert('need to register first');
+            navigate('/welcomeUser');
+        }
+        */
 
 
             } else {
@@ -89,14 +96,7 @@ function useControlLogin(isHomePage = false) {
                     alert('You are not Login, i navigate you to the home page');
                     navigate('/');
                 } else {
-                    /* 
-                    
-                    toServer.setBodyCustom({ userData: user });
-                    toServer.requestJson().
-                    then((res) => {
-                        debug.console('the response from request not authenticated : ', res);
-                    });
-                    */
+
                 }
 
             }
@@ -110,7 +110,8 @@ function useControlLogin(isHomePage = false) {
     }, [isAuthenticated, isLoading])
 
     return {
-        loginWithRedirect, nowLogout, isAuthenticated, isLoading, user
+        loginWithRedirect, nowLogout, isAuthenticated, isLoading, user,
+        ifRegistered
     }
 
 

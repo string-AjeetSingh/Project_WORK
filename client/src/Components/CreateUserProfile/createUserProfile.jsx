@@ -12,7 +12,7 @@ const toServer = new requestServer(process.env.REACT_APP_SERVER_URL + "/xtServer
     }, true
 )
 
-function CreateUserProfile({ }) {
+function CreateUserProfile({ isAuthenticated, email }) {
 
     // let { isAuthenticated } = useContext(commonContext);
     const [highLightNav, sethighLightNav] = useState(1);
@@ -69,6 +69,31 @@ function CreateUserProfile({ }) {
         console.log(section2FinalInputReport);
         console.log(section3FinalInputReport);
         console.log('from try it function ,Over ----------------- ');
+    }
+
+    function placePreviousValueSection3(index, param = {
+        isMendatory: null, ok: null,
+        name: null, data: null, redNotice: null
+    }) {
+
+        if (param instanceof Object) {
+
+            const TheReport = {
+                index: index,
+                isMendatory: param.isMendatory,
+                ok: param.ok,
+                inputData: {
+                    name: param.name,
+                    data: param.data,
+                    redNotice: param.redNotice,
+                }
+            };
+
+            updateFinalInputReport3(TheReport);
+        }
+        else {
+            console.error('param must be instance of Object');
+        }
     }
 
     async function handleSectionButtons1(val, stateVal) {
@@ -224,7 +249,14 @@ function CreateUserProfile({ }) {
 
     useEffect(() => {
         animationSwitch.current.on();
-        toServer.setAuthorizedFlag(true);
+        toServer.setAuthorizedFlag(isAuthenticated);
+
+        if (email) {
+            placePreviousValueSection3(9, {
+                data: email,
+                name: 'email'
+            });
+        }
 
     }, [])
     return (

@@ -7,6 +7,7 @@ import { Rough } from './Pages/rough';
 import { Home } from './Pages/Home';
 import { Nothing } from './Pages/Nothing';
 import { DashBoard } from './Pages/DashBoard';
+import { WelcomeUser } from './Pages/WelcomeUser';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -21,6 +22,7 @@ function App() {
           <Route path='/' element={<Home />}></Route>
           <Route path='/rough' element={<Rough></Rough>}></Route>
           <Route path='/dashboard' element={<DashBoard />}></Route>
+          <Route path='/welcomeUser' element={<WelcomeUser />}></Route>
 
           <Route path='*' element={<Nothing />}></Route>
 

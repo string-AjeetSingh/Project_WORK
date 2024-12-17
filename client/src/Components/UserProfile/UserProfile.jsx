@@ -10,8 +10,6 @@ import { requestServer } from '../../MyLib/RequestServer/requestServer';
 
 
 
-
-
 function UserProfile({ children, isAuthenticated }) {
 
     const [data, setdata] = useState(null);
@@ -48,9 +46,9 @@ function UserProfile({ children, isAuthenticated }) {
         <>
             {data ?
                 <div className='p-2 flex flex-col ' >
-                    <ProfileImageSection></ProfileImageSection>
+                    <ProfileImageSection screen={data.color} imgSrc={data.img}></ProfileImageSection>
                     <br></br>
-                    <ProfileSection2 userName={data.userData.name}
+                    <ProfileSection2 userName={data.name}
                         title={data.userData.title}
                         email={data.userSocialData.email} />
                     <br></br>
@@ -60,7 +58,8 @@ function UserProfile({ children, isAuthenticated }) {
                     <Education>{data.userData.education} </Education>
                     <Experiance>{data.userData.experiance}</Experiance>
                     <hr className='border-green-800'></hr>
-                    <SocialMedia email={data.userSocialData.email} />
+                    <SocialMedia email={data.userSocialData.email}
+                        github={data.userSocialData.github} x={data.userSocialData.x} />
                 </div>
                 : <h3>No User Data To Show</h3>}
 
