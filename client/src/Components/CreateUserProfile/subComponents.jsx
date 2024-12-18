@@ -405,6 +405,226 @@ function GetInput({ name, inputName, index,
     );
 }
 
+
+function GetInputArray({ index, name, inputName, totalInputLength = 100
+    , inputHeight = 10, isReadOnly = false,
+    spaceOccupy = '40%', prevValue, isDisabled = false,
+    OutReport, isMendatory = false
+}) {
+
+
+    let aref = useRef(null);
+    let boolPreviousVal = false;
+    if (prevValue) {
+        if (Object.hasOwn(prevValue, 'inputData')) {
+            boolPreviousVal = true;
+        }
+    }
+
+    const TheReport = useRef({
+        index: index,
+        isMendatory: isMendatory,
+        ok: false,
+        inputData: {
+            name: inputName,
+            data: [],
+            redNotice: redBorder,
+        }
+    });
+
+    const childIndex = useRef(0);
+    const [borderColor, setBorderColor] = useState(["border-teal-500", 'teal']);
+    const [arr, setarr] = useState([null]);
+
+
+
+
+    function redBorder() {
+        setBorderColor(['border-red-600', 'red']);
+        alert('fill mendatory fields, if there is no mendatory field( one with red star), skip by pressing next');
+    }
+
+    function normalBorder() {
+        setBorderColor(['border-teal-500', 'teal']);
+
+    }
+
+    function add() {
+        setarr([...arr, <ArrayItem index={provideNewIndex()} handleValues={handleReport}
+            delFunction={del} />])
+    }
+    function del(index) {
+        console.log('From del arr  : ', arr)
+        handleReport(index, null, true);
+        setarr((prev) => {
+            let newarr = prev.slice();
+            console.log('arr sliced : ', newarr)
+
+            newarr[index] = null;
+            console.log('new arr is : ', newarr)
+            return newarr;
+        });
+        /* 
+        */
+    }
+
+    function handleReport(locindex, val, remove = false) {
+        console.log('from handlReport val is :', val);
+        console.log('from handlReport locindex is :', locindex);
+        if (remove) {
+            TheReport.current.inputData.data[locindex] = null;
+            console.log('from handleReport, new report : ', TheReport);
+            refineData(TheReport.current.inputData.data);
+            OutReport(TheReport.current);
+            return true;
+        }
+        TheReport.current.inputData.data[locindex] = val;
+        console.log('from handleReport, new report : ', TheReport);
+        OutReport(TheReport.current);
+    }
+
+    function refineData(arr) {
+        let newarr = [];
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i]) {
+                newarr[i] = arr[i];
+            }
+        }
+        TheReport.current.inputData.data = newarr;
+    }
+
+
+    function provideNewIndex() {
+        childIndex.current += 1
+        return childIndex.current
+    }
+
+    useEffect(() => {
+
+        if (!OutReport) {
+            console.error('please provide Functinoality to the attribute OutReport of the GetInput to get the report of the component');
+        }
+
+        if (boolPreviousVal) {
+            TheReport.current.inputData.data = prevValue.inputData.data;
+            console.log('if prev val the Report is : ', TheReport);
+            let newarr = [];
+            for (let i = 0; i < prevValue.inputData.data.length; i++) {
+
+                if (prevValue.inputData.data[i]) {
+                    childIndex.current = i;
+                    newarr[i] = <ArrayItem index={i}
+                        delFunction={del} handleValues={handleReport}
+                        val={prevValue.inputData.data[i]} />
+                }
+            }
+            console.log('if prev val the new arr is : ', newarr);
+            setarr(newarr);
+        }
+        else {
+            setarr([<ArrayItem index={childIndex.current}
+                handleValues={handleReport}
+                delFunction={del} />])
+        }
+        /* 
+        
+        if (aref.current.value.length < 1) {
+          TheReport.current.ok = false;
+        } else {
+          TheReport.current.ok = true;
+      }
+      */
+    }, [])
+
+    return (
+        <>
+            <div className={`flex flex-col 
+         m-1 max-sm:w-[350px] max-md:w-[600px] 
+         max-w-[600px] 
+         h-fit `} style={{
+                    //width: spaceOccupy
+                }}>
+
+                <div className="text-[1.2rem] 
+        font-bold text-teal-600 m-1 
+        ">
+                    <i>{name}</i>
+                </div>
+                <div className={`h-[300px] border border-teal-600
+           overflow-y-auto bg-teal-800
+               flex flex-col w-full p-1 m-1 rounded-md`}>
+                    <div className='w-full h-[15%] border-b-2 border-b-teal-950 
+            flex flex-row
+            justify-end p-1 items-center  '>
+
+                        <button onClick={add}
+                            className='text-2xl overflow-hidden  
+                active:bg-teal-700
+              border border-transparent  hover:border-green-900 m-1 p-1 
+             
+              '><img className='size-7' src='./stock/icon/plus.png'></img></button>
+
+                    </div>
+
+                    <div className=' h-fit
+            mt-1 justify-around
+            flex flex-row flex-wrap  '
+                    >
+                        {arr}
+
+
+                    </div>
+
+                </div>
+            </div>
+        </>
+    );
+}
+
+function ArrayItem({ refCustom, index, delFunction, handleValues, val }) {
+    const theInput = useRef(null);
+
+    useEffect(() => {
+        if (refCustom) {
+            refCustom.current.inputLength = theInput.current.value.length;
+        }
+        if (val) {
+
+            theInput.current.value = val;
+        }
+    }, [])
+    return (
+        <>
+            <div className=' min-w-[250px] w-[45%] max-w-[290px]
+         m-1  h-fit flex flex-row
+        bg-teal-900  text-teal-300
+        '>
+                <input ref={theInput} onChange={(e) => {
+                    handleValues(index, e.target.value);
+                }}
+                    placeholder='Tag'
+                    className='p-1 w-full border border-transparent
+            hover:border-teal-400 
+            placeholder:text-teal-600 placeholder:text-center
+             bg-transparent '>
+                </input>
+                <button onClick={() => {
+
+                    if (delFunction) {
+                        delFunction(index);
+                    }
+                }}
+                    className='bg-red-900 p-1 text-red-400 
+          font-bold mr-1 ml-1 overflow-hidden
+           active:bg-red-950
+          hover:bg-red-800'>
+                    <img className='size-7' src='./stock/icon/minus.png'></img>
+                </button>
+            </div>
+        </>
+    );
+}
+
 function Button({ children, mode, handle, stateVal }) {
 
 

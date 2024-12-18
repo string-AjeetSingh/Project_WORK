@@ -9,6 +9,7 @@ import { TryConnection } from '../Components/Rough/tryConnectionServer';
 import { LoadingScreen } from '../Components/TranstitionScreen/LoadingScreen';
 import { useNavigate } from 'react-router-dom';
 import { use } from 'react';
+import { GetInputArray } from '../Components/CreatePost/subComponents';
 
 
 
@@ -58,8 +59,7 @@ function Rough({ children }) {
                 {/* <UserProfile /> */}
                 {/*<TryConnection /> */}
 
-                {<CreateUserProfile></CreateUserProfile>}
-                <LoginTry />
+                <GetInputArray name={'Tags :'} />
 
 
 

@@ -1,6 +1,6 @@
 import { Header } from "../Header/header";
 import { Footer } from "../Footer/footer";
-import { Section1 } from "./subComponents";
+import { Section1, NoSearchResult } from "./subComponents";
 import { AboutJob } from "../AboutJob/aboutJob";
 import { JobCards } from "../JobCards/jobCards";
 import { useResizeValue } from "../../MyLib/MyHook/customHook";
@@ -10,6 +10,7 @@ import { useState, useEffect, useRef } from "react";
 import { commonContext } from "../../MyLib/commonContext";
 import { myContext } from "./myContext";
 import { flushSync } from "react-dom"
+import { useParams } from "react-router-dom";
 
 
 
@@ -19,12 +20,13 @@ const toServer = new requestServer
         , { optionsMode: 'default' }, false
     );
 
-function HomeWithLogin({ logout, user }) {
+function HomeWithLogin({ logout, user, isAuthenticated, useAsSearch }) {
     const size = useResizeValue(window.innerWidth);
     const [dataForAboutJob, setDataForAboutJob] = useState(null);
     const [dataFromServer, setdataFromServer] = useState(null);
+    const { search } = useParams();
 
-    // console.log('data from server : ', dataFromServer);
+    console.log('data from server : ', dataFromServer);
     console.log(' aboutJob data : ', dataForAboutJob);
 
     async function fetchPosts() {
@@ -43,21 +45,76 @@ function HomeWithLogin({ logout, user }) {
 
     }
 
+
+    async function fetchSearch() {
+
+        let tags = tagsForSearch(search);
+
+        const searchServer = new requestServer(process.env.REACT_APP_SERVER_URL +
+            '/xtServer/api/search', { method: 'POST' }, true
+        )
+        searchServer.setAuthorizedFlag(isAuthenticated);
+        searchServer.setContentType('application/json');
+        searchServer.setBodyProperty('data', { tags: tags });
+
+        let result = await searchServer.requestJson();
+        if (result) {
+            console.log('the response from search :', result);
+            if (result.json.status) {
+                setdataFromServer(result.json.data);
+            } else {
+                // alert('no matching results');
+                setdataFromServer({ noSearchResult: true });
+            }
+        }
+    }
+
     useEffect(() => {
-        fetchPosts();
+        if (!useAsSearch) {
+            fetchPosts();
+        }
+        else {
+            fetchSearch();
+        }
     }, [])
+
+    if (dataFromServer) {
+        if (dataFromServer.noSearchResult) {
+            return (
+                <>
+                    <header >
+                        <commonContext.Provider value={{ user, isAuthenticated, setdataFromServer }}>
+                            <Header logout={logout} search_Link={useAsSearch ? false : true} ></Header>
+                        </commonContext.Provider>
+                    </header><hr className="border-[1px] 
+     border-green-950"></hr>
+
+                    <main>
+                        <NoSearchResult />
+                    </main><hr className="border-[1px] 
+     border-green-950"></hr>
+
+                    <footer>
+                        <Footer></Footer>
+                    </footer>
+
+                </>
+            );
+        }
+    }
 
     return (
         <>
             <header >
-                <commonContext.Provider value={{ user }}>
-                    <Header logout={logout} ></Header>
+                <commonContext.Provider value={{ user, isAuthenticated, setdataFromServer }}>
+                    <Header logout={logout} search_Link={useAsSearch ? false : true} ></Header>
                 </commonContext.Provider>
             </header><hr className="border-[1px] 
      border-green-950"></hr>
 
 
             <main>
+
                 {dataFromServer ? <myContext.Provider value={{
                     dataFromServer, setDataForAboutJob,
                     dataForAboutJob
@@ -83,3 +140,32 @@ function HomeWithLogin({ logout, user }) {
 
 
 export { HomeWithLogin };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//functions ahead ..................................................................
+function tagsForSearch(string) {
+
+    let tags = string.split(' ');
+    tags = tags.filter((item) => item != '')
+    return tags;
+
+}

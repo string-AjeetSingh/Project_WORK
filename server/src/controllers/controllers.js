@@ -3,9 +3,24 @@ const isDebugging = require('./../myLib/ifDebugging/ifDebugging');
 const alib = require('./../myLib/PracLib/alib');
 const utils = require('./../utils/utils');
 const path = require('path');
-const { MongoOIDCError } = require('mongodb');
 
 const debug = new isDebugging(process.env.IS_DEBUGGING);
+
+module.exports.rough = async (req, res) => {
+
+    let theNo = await utils.setPrevNo('Jobs');
+    if (theNo) {
+        res.json({
+            status: 1,
+            message: `the new no is : ${theNo}`
+        })
+    } else {
+        res.json({
+            status: 0,
+            message: `false from setPrevNo()`
+        })
+    }
+};
 
 module.exports.login = function (req, res, next) {
 
@@ -122,7 +137,7 @@ module.exports.createPost = async (req, res, next) => {
             "title", "desciption", "requirments",
             "qualifications", "responsibilities",
             "github", "email", "location",
-            "x", "companyName"
+            "x", "companyName", "tags"
         ]
 
         req.body.data.forEach((item) => {
@@ -133,11 +148,20 @@ module.exports.createPost = async (req, res, next) => {
             })
         })
 
+        let theNo = await utils.setPrevNo('Jobs');
+        if (!theNo) {
+            console.error("no number to use with update");
+            res.json({
+                status: -1, message: 'no number to use with update'
+            })
+            return;
+        }
 
         const mongo = new alib('Work', process.env.MONGOSTRING);
         mongo.setCollection('Jobs');
         let result = await mongo.insertOne({
-            "Document": "jobDummy",
+            "Document": "job",
+            "from": req.userData.email,
             "jobData": {
                 "title": upload.title,
                 "description": upload.desciption,
@@ -150,8 +174,10 @@ module.exports.createPost = async (req, res, next) => {
                 "x": upload.x
             },
             "companyName": upload.companyName,
-            "img": req.file.path,
-            "location": upload.location
+            "img": req.file ? req.file.path : null,
+            "location": upload.location,
+            "no": theNo,
+            "tags": upload.tags    //need  work pending ...
 
         });
 
@@ -181,7 +207,7 @@ module.exports.createPost = async (req, res, next) => {
 module.exports.fetchPosts = async (req, res, next) => {
     const mongo = new alib('Work', process.env.MONGOSTRING);
     mongo.setCollection('Jobs');
-    let result = await mongo.find({});
+    let result = await mongo.find({ 'Document': 'job' });
 
     debug.console('result from server : ', result);
     mongo.over();
@@ -189,6 +215,71 @@ module.exports.fetchPosts = async (req, res, next) => {
         messag: 'data must be fetched',
         data: result
     })
+
+};
+
+module.exports.fetchAPosts = async (req, res, next) => {
+    debug.console('from fetchAPosts -- -- -- ');
+    if (req.query.no) {
+        debug.console('found query no is   :', parseInt(req.query.no));
+
+        const mongo = new alib('Work', process.env.MONGOSTRING);
+        mongo.setCollection('Jobs');
+        let result = await mongo.find({ no: parseInt(req.query.no) });
+
+        mongo.over();
+        debug.console('result from server : ', result);
+        if (result.length > 0) {
+            res.json({
+                status: 1,
+                messag: 'data must be fetched',
+                data: result[0]
+            })
+        } else {
+            res.json({
+                status: 0,
+                messag: 'not found data from server',
+
+            })
+        }
+
+
+
+    }
+    else {
+        res.json({
+            status: 0, message: 'please provide req.query.no'
+        })
+    }
+
+
+};
+
+module.exports.fetchUserPosts = async (req, res) => {
+    debug.console('from fetchUserPosts  -- -- --');
+
+    const mongo = new alib('Work', process.env.MONGOSTRING);
+    mongo.setCollection('Jobs');
+
+    let result = await mongo.find({ "from": req.userData.email });
+
+    debug.console('result from server : ', result);
+    mongo.over();
+    if (result.length > 0) {
+
+        res.json({
+            status: 1,
+            messag: 'data must be fetched',
+            data: result
+        })
+    }
+    else {
+        res.json({
+            status: 0,
+            messag: 'data not found',
+
+        })
+    }
 
 };
 
@@ -347,23 +438,23 @@ module.exports.register = async (req, res) => {
 
 
         let result = await mongo.insertOne({
-            "Document": "Dumyuser",
+            "Document": "user",
             "userData": {
                 "status": upload.status,
                 "title": upload.title,
                 "description": upload.discription,
                 "experiance": upload.experiance,
-                "skills": upload.skills,
-                "education": upload.education
+                "skills": upload.skills,        //make it array pending .... 
+                "education": upload.education,
+                "name": upload.name,
+                "img": req.file ? path.join(process.env.SERVER_BASE, req.file.path) : null,
+                "color": upload.color
             },
             "userSocialData": {
                 "github": upload.github,
                 "email": upload.email,
                 "x": upload.x
             },
-            "name": upload.name,
-            "img": req.file ? path.join(process.env.SERVER_BASE, req.file.path) : null,
-            "color": upload.color
 
         });
 
@@ -390,4 +481,46 @@ module.exports.register = async (req, res) => {
 
 
 
+};
+
+module.exports.search = async (req, res) => {
+    debug.console('from search controll -- -- -- ');
+    debug.console('the req.body is :', req.body);
+
+    if (req.body.data) {
+        if (req.body.data.tags) {
+
+            debug.console('founded tags here :', req.body.data.tags)
+
+            let mongo = new alib("Work", process.env.MONGOSTRING);
+            mongo.setCollection('Jobs');
+            let result = await mongo.find({ "tags": { $in: req.body.data.tags } })
+
+            if (result.length > 0) {
+                debug.console('result found : ', result);
+
+                res.json({
+                    status: 1,
+                    message: 'have the result enjoy',
+                    data: result
+                })
+                return false;
+            }
+
+            debug.console("result not found");
+
+            res.json({
+                status: 0,
+                message: 'result not found',
+
+            })
+        }
+        else {
+            debug.console('provide data.tags in body of request')
+            res.json({
+                status: -1,
+                message: 'provide data.tags in body of request'
+            })
+        }
+    }
 };

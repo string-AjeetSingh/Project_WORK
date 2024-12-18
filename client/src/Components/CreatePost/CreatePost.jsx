@@ -6,7 +6,8 @@ import { requestServer } from "../../MyLib/RequestServer/requestServer";
 import { useControlLogin } from "../../MyLib/MyHook/controlLogin";
 import { useNavigate } from "react-router-dom";
 
-const toServer = new requestServer(process.env.REACT_APP_SERVER_URL + "/xtServer/api/createPost",
+const toServer = new requestServer(process.env.REACT_APP_SERVER_URL
+  + "/xtServer/api/createPost",
   {
     method: 'POST'
   }, true
@@ -153,6 +154,7 @@ function CreatePost({ }) {
 
   async function handleSectionButtons3(stateVal) {
 
+
     let allData = combineArraysToOne(stateVal);
     console.log('all data is below');
     console.log(allData);
@@ -161,6 +163,7 @@ function CreatePost({ }) {
       alert('not data, please provide data to submit');
       return;
     }
+
 
 
     if (allData[0].index === 1) {
@@ -182,10 +185,13 @@ function CreatePost({ }) {
 
       alert('Uploaded succesfully ');
       console.log('the response from submit : ', res);
+      return true;
 
     } else {
       alert('problem in connection i guess, unable to upload data');
+      return false;
     }
+
     //return
   }
 

@@ -46,7 +46,7 @@ function UserProfile({ children, isAuthenticated }) {
         <>
             {data ?
                 <div className='p-2 flex flex-col ' >
-                    <ProfileImageSection screen={data.color} imgSrc={data.img}></ProfileImageSection>
+                    <ProfileImageSection screen={data.userData.color} imgSrc={data.userData.img}></ProfileImageSection>
                     <br></br>
                     <ProfileSection2 userName={data.name}
                         title={data.userData.title}

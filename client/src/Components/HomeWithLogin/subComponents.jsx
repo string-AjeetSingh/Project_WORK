@@ -32,7 +32,27 @@ function Section1({ children1, children2, theFooter }) {
     );
 }
 
+function NoSearchResult({ }) {
+    return (
+        <>
+            <div className=" m-1 p-1 flex 
+            flex-row justify-center">
+                <div className=" flex flex-col items-center">
+
+                    <img className="w-[60%] max-w-[400px] min-w-[300px] 
+                    rounded-full" src="/stock/noResult.png">
+                    </img>
+                    <span className="font-serif max-sm:text-2xl
+                    max-md:text-2xl max-lg:text-3xl text-4xl
+                      text-green-800 m-10">
+                        Try SomeThing Else !!</span>
+                </div>
+            </div>
+        </>
+    );
+}
 
 
 
-export { Section1 };
+
+export { Section1, NoSearchResult };

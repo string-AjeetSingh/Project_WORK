@@ -2,11 +2,13 @@ import { useRef, useEffect } from "react";
 import { useContext } from 'react';
 import { myContext } from "../HomeWithLogin/myContext";
 import { Link } from "react-router-dom";
+import { commonContext } from "../../MyLib/commonContext";
 
 
-function AboutJob({ children, __note_this_component_use_context_and_i_am_a_message__ }) {
+function AboutJob({ children, useInJobDetailjsx, __note_this_component_use_context_and_i_am_a_message__ }) {
 
-    const { dataForAboutJob } = useContext(myContext);
+    const { dataForAboutJob } =
+        useContext(useInJobDetailjsx ? commonContext : myContext);
 
 
     useEffect(() => {
@@ -15,8 +17,9 @@ function AboutJob({ children, __note_this_component_use_context_and_i_am_a_messa
 
     if (dataForAboutJob) {
         return (<>
-            <div className="p-2 text-green-200 overflow-y-auto h-full">
-                <div className="flex flex-row justify-start 
+            <div className="p-2 text-green-200 w-full 
+            overflow-y-auto h-full  min-w-[350px]">
+                <div className="flex flex-row justify-center  
             items-center mb-2">
                     <div className="rounded-full size-10
                 mr-2  bg-slate-500">
@@ -54,7 +57,7 @@ function AboutJob({ children, __note_this_component_use_context_and_i_am_a_messa
                 <div className="font-serif text-2xl text-slate-500 font-bold">
                     About:
                 </div>
-                <div className="relative left-5">
+                <div className="relative left-5 w-[96%]">
                     {dataForAboutJob.jobData.description ?
                         dataForAboutJob.jobData.description
                         :
@@ -64,7 +67,7 @@ function AboutJob({ children, __note_this_component_use_context_and_i_am_a_messa
                 <div className="font-serif text-2xl text-slate-500 font-bold">
                     Qualification:
                 </div>
-                <div className="relative left-5">
+                <div className="relative left-5 w-[96%]">
 
                     {dataForAboutJob.jobData.qualifications ?
                         dataForAboutJob.jobData.qualifications
@@ -74,7 +77,7 @@ function AboutJob({ children, __note_this_component_use_context_and_i_am_a_messa
                 <div className="font-serif text-2xl text-slate-500 font-bold">
                     Requirements:
                 </div>
-                <div className="relative left-5">
+                <div className="relative left-5 w-[96%]">
                     {dataForAboutJob.jobData.requirements ?
                         dataForAboutJob.jobData.requirements
                         :
@@ -84,7 +87,7 @@ function AboutJob({ children, __note_this_component_use_context_and_i_am_a_messa
                 <div className="font-serif text-2xl text-slate-500 font-bold">
                     Responsibilities:
                 </div>
-                <div className="relative left-5">
+                <div className="relative left-5 w-[96%]">
                     - Dummy row about some thing. <br></br>
                     - Dummy row about some thing <br></br>
                     - Dummy row about some thing <br></br>

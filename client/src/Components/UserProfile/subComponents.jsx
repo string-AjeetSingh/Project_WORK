@@ -28,7 +28,7 @@ function ProfileImageSection({ screen, imgSrc }) {
             border-2 border-green-900
              rounded-full bg-slate-500 ">
                     <img className="w-full"
-                        src={imgSrc ? imgSrc : './stock/icon/defaultUser.png'}></img>
+                        src={imgSrc ? '/xtServer/api' + imgSrc : './stock/icon/defaultUser.png'}></img>
                 </div>
 
             </div>
@@ -43,7 +43,7 @@ function ProfileImageSection({ screen, imgSrc }) {
             border-2 border-green-900
              rounded-full bg-slate-500 ">
                     <img className="w-full"
-                        src={imgSrc ? imgSrc : './stock/icon/defaultUser.png'}></img>
+                        src={imgSrc ? '/xtServer/api' + imgSrc : './stock/icon/defaultUser.png'}></img>
                 </div>
             </div>
         </>);
@@ -56,7 +56,7 @@ function ProfileImageSection({ screen, imgSrc }) {
             border-2 border-green-900
              rounded-full bg-slate-500 ">
                     <img className="w-full"
-                        src={imgSrc ? imgSrc : './stock/icon/defaultUser.png'}></img>
+                        src={imgSrc ? '/xtServer/api' + imgSrc : './stock/icon/defaultUser.png'}></img>
                 </div>
 
             </div>

@@ -18,7 +18,8 @@ function Home({ }) {
 
     if (!isLoading) {
         return (<>
-            {isAuthenticated ? ifRegistered ? <HomeWithLogin logout={nowLogout} user={user} /> : null
+            {isAuthenticated ? ifRegistered ? <HomeWithLogin logout={nowLogout}
+                user={user} isAuthenticated={isAuthenticated} /> : null
                 : <HomeWithoutLogin
                     login={loginWithRedirect} user={user} />}
         </>);

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 function Container({ children }) {
@@ -68,6 +69,7 @@ function Card({ companyName, imgSrc, jobHeading,
     timeAgo, tag, prev, index, location, theClick,
     dataToSetOnState, setState, isDefault }) {
 
+
     const aref = useRef(null);
     const [lstate, setlstate] = useState('border-black');
     const navigate = useNavigate();
@@ -78,12 +80,13 @@ function Card({ companyName, imgSrc, jobHeading,
 
     function handleClick() {
         if (theClick === 'link') {
-            alert('going to use link');
-            navigate('jobDetial');
+            //alert('going to use link');
+            // navigate('/jobDetial/' + dataToSetOnState.no);
 
             return;
         }
 
+        console.log('from card : ', dataToSetOnState.no);
         setlstate('border-slate-400');
         setState(dataToSetOnState);
         //console.log('from cards the state function ; ', setState);
@@ -107,37 +110,74 @@ function Card({ companyName, imgSrc, jobHeading,
 
     return (
         <>
-            <div ref={aref} onClick={handleClick}
-                className={` flex flex-col m-2 p-2 
-            items-start border 
+            {theClick === 'link' ?
+                <Link to={'/jobDetail/' + dataToSetOnState.no}>
+                    <div ref={aref} onClick={handleClick}
+                        className={` flex flex-col m-2 p-2 
+             items-start border 
              ${lstate} rounded-lg  text-green-200
              hover:bg-green-900 active:bg-green-800`}>
 
-                <div className="flex flex-row text-[0.8rem] 
-                justify-between w-full">
-                    <div>{timeAgo} Ago</div> <div className='p-1
-                     text-slate-500 text-[0.8rem] bg-blue-950'>{tag}</div>
+                        <div className="flex flex-row text-[0.8rem] 
+         justify-between w-full">
+                            <div>{timeAgo} Ago</div> <div className='p-1
+              text-slate-500 text-[0.8rem] bg-blue-950'>{tag}</div>
+                        </div>
+
+                        <div className='flex flex-row flex-wrap
+         flex-start w-full'>
+                            <img className='m-1' src={imgSrc} alt='company image'></img>
+                            <div className='text-[1.2rem] text-green-600
+             font-serif
+             '>{companyName}</div>
+                        </div>
+                        <div className='text-[0.8rem] relative bottom-1 
+         
+         '>{location ? location : "DumyBad, India"}</div>
+
+                        <div className='text-[1rem] mt-1 '>{jobHeading}</div>
+                        <hr className='w-full m-1 border-1 border-green-800 rounded-md'></hr>
+
+                        <div className='p-1 m-1 text-green-300 
+         font-serif self-start text-[0.8rem]
+         bg-green-900 rounded-r-2xl' >{tag}</div>
+
+                    </div>
+                </Link>
+                :
+                <div ref={aref} onClick={handleClick}
+                    className={` flex flex-col m-2 p-2 
+             items-start border 
+             ${lstate} rounded-lg  text-green-200
+             hover:bg-green-900 active:bg-green-800`}>
+
+                    <div className="flex flex-row text-[0.8rem] 
+         justify-between w-full">
+                        <div>{timeAgo} Ago</div> <div className='p-1
+              text-slate-500 text-[0.8rem] bg-blue-950'>{tag}</div>
+                    </div>
+
+                    <div className='flex flex-row flex-wrap
+         flex-start w-full'>
+                        <img className='m-1' src={imgSrc} alt='company image'></img>
+                        <div className='text-[1.2rem] text-green-600
+             font-serif
+             '>{companyName}</div>
+                    </div>
+                    <div className='text-[0.8rem] relative bottom-1 
+         
+         '>{location ? location : "DumyBad, India"}</div>
+
+                    <div className='text-[1rem] mt-1 '>{jobHeading}</div>
+                    <hr className='w-full m-1 border-1 border-green-800 rounded-md'></hr>
+
+                    <div className='p-1 m-1 text-green-300 
+         font-serif self-start text-[0.8rem]
+         bg-green-900 rounded-r-2xl' >{tag}</div>
+
                 </div>
+            }
 
-                <div className='flex flex-row flex-wrap
-                flex-start w-full'>
-                    <img className='m-1' src={imgSrc} alt='company image'></img>
-                    <div className='text-[1.2rem] text-green-600
-                    font-serif
-                    '>{companyName}</div>
-                </div>
-                <div className='text-[0.8rem] relative bottom-1 
-                
-                 '>{location ? location : "DumyBad, India"}</div>
-
-                <div className='text-[1rem] mt-1 '>{jobHeading}</div>
-                <hr className='w-full m-1 border-1 border-green-800 rounded-md'></hr>
-
-                <div className='p-1 m-1 text-green-300 
-                font-serif self-start text-[0.8rem]
-                 bg-green-900 rounded-r-2xl' >{tag}</div>
-
-            </div>
         </>
     );
 }

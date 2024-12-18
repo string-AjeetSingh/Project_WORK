@@ -7,7 +7,7 @@ const path = require('path');
 
 const controllers = require('./controllers/controllers');
 const middleware = require('./middleware/middleware');
-const { copyFileSync } = require('fs');
+
 
 const upload = multer({
     storage: multer.diskStorage({
@@ -45,12 +45,13 @@ const tempUpload = multer({
     })
 })
 
+
 aRouter.use(express.json());
 aRouter.use('/uploads', express.static('uploads'));
 aRouter.use(middleware.errors);
 
 
-
+aRouter.get('/rough', controllers.rough);
 aRouter.get('/tryIt',
     middleware.jwtVerification,
     controllers.tryConnection);
@@ -81,11 +82,24 @@ aRouter.post('/register', middleware.authorize
 aRouter.post('/fetchPosts', controllers.fetchPosts);
 aRouter.get('/fetchPosts', controllers.fetchPosts);
 
+aRouter.get('/fetchAPost', middleware.authorize, middleware.jwtVerification,
+    controllers.fetchAPosts
+)
+
+aRouter.get('/fetchUserPosts', middleware.authorize, middleware.jwtVerification,
+    controllers.fetchUserPosts);
+aRouter.post('/fetchUserPosts', middleware.authorize, middleware.jwtVerification,
+    controllers.fetchUserPosts);
+
 aRouter.get('/profileImg', middleware.authorize, middleware.jwtVerification,
     controllers.profileImg);
 
 aRouter.get('/userDetail', middleware.authorize, middleware.jwtVerification,
     controllers.userDetail
+)
+
+aRouter.post('/search', middleware.authorize, middleware.jwtVerification,
+    controllers.search
 )
 
 aRouter.use('/', (req, res) => {

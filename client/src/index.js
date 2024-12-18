@@ -23,7 +23,7 @@ root.render(
         }
       }>
 
-      <div className='bg-gradient-to-br min-h-[110vh]
+      <div className='bg-gradient-to-br min-h-[110vh] 
      
     from-green-950  to-green-900'>
 
