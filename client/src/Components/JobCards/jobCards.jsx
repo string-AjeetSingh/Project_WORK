@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import list from '../Rough/list.json';
 import { Container, ContainerNav, Card } from './subComponents';
-import { useContext } from 'react';
+import { useContext, createContext } from 'react';
+import { myContext as jobContext } from "./myContext"
 import { myContext } from '../HomeWithLogin/myContext';
 
 function JobCards({ children, link, __note_this_component_use_context_and_i_am_a_message__ }) {
@@ -10,8 +11,10 @@ function JobCards({ children, link, __note_this_component_use_context_and_i_am_a
 
     let [cardsArr, setCardsArr] = useState([]);
     let [navItemArr, setnavItemArr] = useState([]);
+    let forwardToCard = useRef(link ? 'link' : 'local');
 
     let docs;
+
 
 
 
@@ -59,7 +62,7 @@ function JobCards({ children, link, __note_this_component_use_context_and_i_am_a
             for (let i = 0; i < docs.length; i++) {
                 //console.log('the console about docs : ', docs);
                 arr.push(
-                    <Card key={docs[i].index} theClick={link ? 'link' : 'local'}
+                    <Card key={docs[i].index}
                         prev={prevCard} index={docs[i].index} dataToSetOnState={docs[i]} location={docs[i].location}
                         companyName={docs[i].companyName} imgSrc={docs[i].img} setState={setDataForAboutJob}
                         jobHeading={docs[i].jobData.title} tag={docs[i].Tag} timeAgo={docs[i].TimeAgo}
@@ -173,7 +176,9 @@ function JobCards({ children, link, __note_this_component_use_context_and_i_am_a
 
     useEffect(() => {
 
-        let result = calibrate(10, docs.length - 1);
+        forwardToCard.current = link ? 'link' : 'local';
+
+        let result = calibrate(10, docs.length === 1 ? docs.length : docs.length - 1);
         console.log(`the calibrated data below : `);
         console.log(`the total no of data: ${docs.length - 1}`);
         console.log(result);
@@ -181,7 +186,7 @@ function JobCards({ children, link, __note_this_component_use_context_and_i_am_a
 
         divideData(result);
 
-    }, [dataFromServer])
+    }, [dataFromServer, link])
     return (
         <>
 
@@ -195,8 +200,12 @@ function JobCards({ children, link, __note_this_component_use_context_and_i_am_a
 
                 <div className="flex flex-col w-full ">
 
+
                     <Container >
-                        {cardsArr}
+                        <jobContext.Provider value={{ theClick: forwardToCard }} >
+
+                            {cardsArr}
+                        </jobContext.Provider>
                     </Container>
 
                     <div className='overflow-auto'>

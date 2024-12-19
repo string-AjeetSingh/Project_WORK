@@ -79,6 +79,10 @@ aRouter.post('/register', middleware.authorize
     , middleware.jwtVerification, profileImg.single('theImg')
     , controllers.register);
 
+aRouter.post('/updateUserProfile', middleware.authorize
+    , middleware.jwtVerification, profileImg.single('theImg')
+    , controllers.updateUserProfile);
+
 aRouter.post('/fetchPosts', controllers.fetchPosts);
 aRouter.get('/fetchPosts', controllers.fetchPosts);
 

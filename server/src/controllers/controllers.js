@@ -483,6 +483,109 @@ module.exports.register = async (req, res) => {
 
 };
 
+module.exports.updateUserProfile = async (req, res) => {
+
+    debug.console('From updateUserProfile -');
+
+
+    req.body.data = utils.jsonParseIfString(req.body.data);
+    debug.console('the req.body.data : ', req.body.data);
+
+
+
+    debug.console('the req.file : ', req.file);
+    if (req.body.data) {
+
+        let upload = {};
+        let tempUrl = null;
+        upload['color'] = null;
+
+
+        let matchList = [
+            "title", "discription", "education", "status",
+            "skills", "experiance",
+            "github", "email",
+            "x", "name"
+        ]
+
+        req.body.data.forEach((item) => {
+            if (item.index === 1) {
+                upload['color'] = item.inputData.data[1].color;
+                tempUrl = item.inputData.data[0].tempUrl;
+            }
+
+            matchList.forEach((match) => {
+
+                if (item.inputData.name === match) {
+                    upload[match] = item.inputData.data;
+                }
+            })
+        })
+
+
+        const mongo = new alib('Work', process.env.MONGOSTRING);
+        mongo.setCollection('Users');
+
+        let finalUpdate = {
+            "Document": "user",
+            "userData": {
+                "status": upload.status,
+                "title": upload.title,
+                "description": upload.discription,
+                "experiance": upload.experiance,
+                "skills": upload.skills,
+                "education": upload.education,
+                "name": upload.name,
+                "color": upload.color
+            },
+            "userSocialData": {
+                "github": upload.github,
+                "email": upload.email,
+                "x": upload.x
+            }
+        }
+
+        if (req.file) {
+            finalUpdate.userData.img = path.join(process.env.SERVER_BASE, req.file.path);
+            debug.console('the final update will be : ', finalUpdate);
+        }
+        else {
+            finalUpdate.userData.img = tempUrl;
+        }
+        debug.console('the final update will be : ', finalUpdate);
+
+
+        let result = await mongo.updateOne(
+            { 'userSocialData.email': req.userData.email },
+            { $set: finalUpdate }
+        );
+
+        debug.console('result from server : ', result);
+
+
+        mongo.over();
+        res.json({
+            status: 1,
+            message: "see uploaded data, this must be uploaded ",
+            data: upload
+        })
+
+
+        return;
+    }
+    else {
+        res.status(404).json({
+            status: 0,
+            message: 'from Register'
+        }).end()
+        return;
+    }
+
+
+
+};
+
+
 module.exports.search = async (req, res) => {
     debug.console('from search controll -- -- -- ');
     debug.console('the req.body is :', req.body);

@@ -11,8 +11,10 @@ import { WelcomeUser } from './Pages/WelcomeUser';
 import { JobDetail } from './Pages/JobDetail';
 import { CreatePost } from './Components/CreatePost/CreatePost';
 import { Search } from './Pages/Search';
+import { UpdateProfile } from './Pages/UpdateProfile';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
 
 function App() {
   return (
@@ -27,6 +29,7 @@ function App() {
           <Route path='/theSearch/:search' element={<Search />}></Route>
           <Route path='/rough' element={<Rough></Rough>}></Route>
           <Route path='/dashboard' element={<DashBoard />}></Route>
+          <Route path='/updateProfile' element={<UpdateProfile />}></Route>
           <Route path='/welcomeUser' element={<WelcomeUser />}></Route>
           <Route path='/createPost' element={<CreatePost />}></Route>
           <Route path='/jobDetail/:no' element={<JobDetail />}></Route>

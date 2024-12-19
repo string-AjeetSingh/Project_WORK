@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { myContext } from './myContext';
 
 
 function Container({ children }) {
@@ -66,10 +67,11 @@ function ContainerNav({ data, common, setCommon, setContainer, children, isDefau
 }
 
 function Card({ companyName, imgSrc, jobHeading,
-    timeAgo, tag, prev, index, location, theClick,
-    dataToSetOnState, setState, isDefault }) {
+    timeAgo, tag, prev, index, location,
+    dataToSetOnState, setState, isDefault, __note_this_component_use_context_and_i_am_a_message__ }) {
 
-
+    const { theClick } = useContext(myContext);
+    // console.log('from Card : the theClick : ', theClick)
     const aref = useRef(null);
     const [lstate, setlstate] = useState('border-black');
     const navigate = useNavigate();
@@ -79,14 +81,14 @@ function Card({ companyName, imgSrc, jobHeading,
     }
 
     function handleClick() {
-        if (theClick === 'link') {
+        if (theClick.current === 'link') {
             //alert('going to use link');
             // navigate('/jobDetial/' + dataToSetOnState.no);
 
             return;
         }
 
-        console.log('from card : ', dataToSetOnState.no);
+        //console.log('from card : ', dataToSetOnState.no);
         setlstate('border-slate-400');
         setState(dataToSetOnState);
         //console.log('from cards the state function ; ', setState);
@@ -99,18 +101,18 @@ function Card({ companyName, imgSrc, jobHeading,
 
     useEffect(() => {
 
-        if (theClick !== 'link') {
+        if (theClick.current !== 'link') {
 
             if (isDefault) {
                 handleClick();
             }
         }
 
-    }, [theClick])
+    }, [theClick.current])
 
     return (
         <>
-            {theClick === 'link' ?
+            {theClick.current === 'link' ?
                 <Link to={'/jobDetail/' + dataToSetOnState.no}>
                     <div ref={aref} onClick={handleClick}
                         className={` flex flex-col m-2 p-2 

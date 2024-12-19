@@ -3,12 +3,13 @@ import { useState, useEffect, useRef } from 'react';
 import { useResizeValue } from "../../MyLib/MyHook/customHook";
 import { useAnimationOnOff } from "../../MyLib/MyHook/customAnimationOnOff";
 import { MyContext } from './myContext';
+import { MyContext as userContext } from '../UserProfile/myContext';
 import { useContext } from 'react';
 import { requestServer } from '../../MyLib/RequestServer/requestServer';
 import { useNavigate } from 'react-router-dom';
 
 function ProfileImage({ children,
-    prevData }) {
+    prevData, useAsUpdate }) {
 
     const [src, setsrc] = useState(null);
     const [width, setwidth] = useState(window.innerWidth);
@@ -34,7 +35,13 @@ function ProfileImage({ children,
 
         if (prevData) {
             console.log('from useeffect the prev effect from profieIMg is ,', prevData)
-            setdivColor(prevData.inputData.data[1].color);
+            if (prevData.inputData.data[1].color === '' || prevData.inputData.data[1].color === null
+                || prevData.inputData.data[1].color === undefined || prevData.inputData.data[1].color === false
+            ) {
+
+            } else {
+                setdivColor(prevData.inputData.data[1].color);
+            }
             setsrc(prevData.inputData.data[0].tempUrl);
         }
         window.addEventListener('resize', handleResize);
@@ -43,7 +50,7 @@ function ProfileImage({ children,
             window.removeEventListener('resize', handleResize);
         });
 
-    }, [])
+    }, [prevData])
 
 
 
@@ -63,13 +70,14 @@ function ProfileImage({ children,
 
 
 
-                <UploadButton outSrcPimg={setsrc}
+                <UploadButton outSrcPimg={setsrc} useAsUpdate={useAsUpdate}
                     divToHaveEffect={funcdivColor}
                     mode={'pimg'} className="relative right-20 flex flex-row 
         justify-center items-center bg-green-950 rounded-xl p-1 scale-75
           bottom-3 border border-black"/>
 
-                <UploadButton divToHaveEffect={funcdivColor} className="relative left-36 flex flex-row 
+                <UploadButton useAsUpdate={useAsUpdate}
+                    divToHaveEffect={funcdivColor} className="relative left-36 flex flex-row 
         justify-center items-center bg-green-950 rounded-xl p-1 scale-75
           bottom-24 border border-black"/>
 
@@ -106,13 +114,14 @@ font-bold">
 
 
 
-                <UploadButton outSrcPimg={setsrc}
+                <UploadButton outSrcPimg={setsrc} useAsUpdate={useAsUpdate}
                     divToHaveEffect={funcdivColor}
                     mode={'pimg'} className="relative right-6 flex flex-row 
         justify-center items-center bg-green-950 rounded-xl p-1 scale-75
           bottom-5 border border-black"/>
 
-                <UploadButton divToHaveEffect={funcdivColor} className="relative left-24 flex flex-row 
+                <UploadButton useAsUpdate={useAsUpdate}
+                    divToHaveEffect={funcdivColor} className="relative left-24 flex flex-row 
         justify-center items-center bg-green-950 rounded-xl p-1 scale-75
           bottom-24 border border-black"/>
 
@@ -150,13 +159,14 @@ font-bold">
                 </div>
 
 
-                <UploadButton outSrcPimg={setsrc}
+                <UploadButton outSrcPimg={setsrc} useAsUpdate={useAsUpdate}
                     divToHaveEffect={funcdivColor}
                     mode={'pimg'} className="relative right-36 flex flex-row 
         justify-center items-center bg-green-950 rounded-xl p-1 scale-75
           bottom-3 border border-black"/>
 
-                <UploadButton divToHaveEffect={funcdivColor} className="relative left-52 flex flex-row 
+                <UploadButton useAsUpdate={useAsUpdate}
+                    divToHaveEffect={funcdivColor} className="relative left-52 flex flex-row 
         justify-center items-center bg-green-950 rounded-xl p-1 scale-75
           bottom-24 border border-black"/>
 
@@ -267,7 +277,6 @@ function GetInput({ name, inputName, index,
     spaceOccupy = '40%', OutReport, isMendatory = false
 }) {
 
-    const { tryit } = useContext(MyContext);
     let aref = useRef(null);
     let boolPreviousVal = false;
     if (prevValue) {
@@ -333,6 +342,8 @@ function GetInput({ name, inputName, index,
 
 
         if (boolPreviousVal) {
+            console.log('have prev value');
+            console.log(prevValue);
             aref.current.value = prevValue.inputData.data;
         } else {
             if (isMendatory) {
@@ -345,7 +356,7 @@ function GetInput({ name, inputName, index,
             TheReport.current.ok = true;
         }
 
-    }, [])
+    }, [prevValue])
 
 
 
@@ -499,6 +510,7 @@ function GetInputArray({ index, name, inputName, totalInputLength = 100
         return childIndex.current
     }
 
+    // console.log('updated arr value is ', arr);
     useEffect(() => {
 
         if (!OutReport) {
@@ -506,8 +518,9 @@ function GetInputArray({ index, name, inputName, totalInputLength = 100
         }
 
         if (boolPreviousVal) {
+
             TheReport.current.inputData.data = prevValue.inputData.data;
-            console.log('if prev val the Report is : ', TheReport);
+            //console.log('if prev val the Report is : ', TheReport);
             let newarr = [];
             for (let i = 0; i < prevValue.inputData.data.length; i++) {
 
@@ -522,24 +535,17 @@ function GetInputArray({ index, name, inputName, totalInputLength = 100
             setarr(newarr);
         }
         else {
-            setarr([<ArrayItem index={childIndex.current}
+            setarr([<ArrayItem index={0}
                 handleValues={handleReport}
                 delFunction={del} />])
         }
-        /* 
-        
-        if (aref.current.value.length < 1) {
-          TheReport.current.ok = false;
-        } else {
-          TheReport.current.ok = true;
-      }
-      */
-    }, [])
+
+    }, [prevValue])
 
     return (
         <>
             <div className={`flex flex-col 
-         m-1 max-sm:w-[350px] max-md:w-[600px] 
+         m-1 max-sm:w-[300px] max-md:w-[600px] 
          max-w-[600px] 
          h-fit `} style={{
                     //width: spaceOccupy
@@ -592,7 +598,7 @@ function ArrayItem({ refCustom, index, delFunction, handleValues, val }) {
 
             theInput.current.value = val;
         }
-    }, [])
+    }, [val])
     return (
         <>
             <div className=' min-w-[250px] w-[45%] max-w-[290px]
@@ -625,7 +631,7 @@ function ArrayItem({ refCustom, index, delFunction, handleValues, val }) {
     );
 }
 
-function Button({ children, mode, handle, stateVal }) {
+function Button({ children, mode, handle, stateVal, useAsUpdate }) {
 
 
     const navigate = useNavigate();
@@ -639,12 +645,20 @@ function Button({ children, mode, handle, stateVal }) {
             handle(-1, stateVal);
 
         }
+        else if (mode === 'cancel') {
+            navigate('/dashboard')
+
+        }
         else if (mode === 'submit') {
             butt.current.innerHTML = 'Submitting';
             let bool = await handle(stateVal);
             if (bool) {
                 alert('Uploaded succesfully, enjoy your work ');
-                navigate("/");
+                if (useAsUpdate) {
+                    navigate("/dashboard");
+                } else {
+                    navigate("/");
+                }
             }
             else {
                 alert('Uploaded failed ');
@@ -674,13 +688,13 @@ function Button({ children, mode, handle, stateVal }) {
 
 
 function UploadButton({ outSrcPimg, __this_component_use_context_and_i_am_a_message__,
-    children, className, onClick = null, divToHaveEffect, mode }) {
+    children, className, onClick = null, divToHaveEffect, mode, useAsUpdate }) {
 
     let inputRef = useRef(null);
     let bEditRef = useRef(null);
     const [showDiv, setshowDiv] = useState('none');
     const { index, prevData,
-        OutReportFromInputs } = useContext(MyContext);
+        OutReportFromInputs } = useContext(useAsUpdate ? userContext : MyContext);
 
     const TheReport = useRef({
         index: index,
@@ -1269,4 +1283,7 @@ function Section3({ children, animation = false,
 }
 
 
-export { NavShow, Section1, Section2, Section3 }
+export {
+    NavShow, Section1, Section2, Section3,
+    GetInputArray, GetInput, Button, ProfileImage, SectionHeading
+}

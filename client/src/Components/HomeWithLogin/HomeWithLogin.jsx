@@ -26,8 +26,8 @@ function HomeWithLogin({ logout, user, isAuthenticated, useAsSearch }) {
     const [dataFromServer, setdataFromServer] = useState(null);
     const { search } = useParams();
 
-    console.log('data from server : ', dataFromServer);
-    console.log(' aboutJob data : ', dataForAboutJob);
+    //console.log('data from server : ', dataFromServer);
+    //console.log(' aboutJob data : ', dataForAboutJob);
 
     async function fetchPosts() {
 

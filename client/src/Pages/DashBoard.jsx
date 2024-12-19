@@ -6,25 +6,6 @@ import { ProviderStatus } from "../Components/ProviderStatus/providerStatus";
 
 function DashBoard({ }) {
 
-    /* 
-     <header >
-                <commonContext.Provider value={{ user }}>
-                    <Header logout={logout} ></Header>
-                </commonContext.Provider>
-            </header><hr className="border-[1px] 
-     border-green-950"></hr>
-
-
-      if (!isLoading) {
-        return (<>
-            {isAuthenticated ? <HomeWithLogin logout={nowLogout} user={user} /> : <HomeWithoutLogin
-                login={loginWithRedirect} user={user} />}
-        </>);
-    }
-    return <div className="text-2xl font-bold ">Loading Please wait</div>
-    */
-
-
     const { isAuthenticated, isLoading, user,
         loginWithRedirect, nowLogout } = useControlLogin();
 
@@ -35,7 +16,7 @@ function DashBoard({ }) {
 
                     <header >
                         <commonContext.Provider value={{ user }}>
-                            <Header logout={nowLogout} ></Header>
+                            <Header logout={nowLogout} search_Link ></Header>
                         </commonContext.Provider>
                     </header>
                     <hr className="border-[1px] 
