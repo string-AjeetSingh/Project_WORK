@@ -6,7 +6,7 @@ import { useEffect, useState, useRef } from 'react'
 import { LoadingScreen } from "../Components/TranstitionScreen/LoadingScreen";
 
 
-function JobDetail({ }) {
+function ProviderJobDetail({ }) {
     const loadingScreen = useRef(null);
     const { no } = useParams()
     console.log('the id is : ', no);
@@ -67,11 +67,14 @@ function JobDetail({ }) {
 
                     {dataForAboutJob ?
                         <commonContext.Provider value={{ dataForAboutJob }}>
-                            <AboutJob useInJobDetailjsx />
+                            <AboutJob useInProviderJobDetailjsx />
                         </commonContext.Provider>
                         :
                         <h1>No data from server</h1>
                     }
+                </div>
+                <div>
+                    Must contain Applied data
                 </div>
 
             </main>
@@ -81,4 +84,4 @@ function JobDetail({ }) {
 }
 
 
-export { JobDetail }
+export { ProviderJobDetail }

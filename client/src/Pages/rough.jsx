@@ -20,34 +20,14 @@ function Rough({ children }) {
     const loadingScreen = useRef(null);
 
 
-    useEffect(() => {
 
-        /* 
-        
-        if (loadingScreen.current.on) {
-            alert('going to append loading screen');
-            loadingScreen.current.on();
-        }
-        setTimeout(() => {
-            if (loadingScreen.current.off) {
-                alert('going to off loading screen');
-                loadingScreen.current.off();
-            }
-        }, 6000);
-        
-        return (() => {
-            if (loadingScreen.current.off) {
-                loadingScreen.current.off();
-            }
-        })
-        */
-    }, [])
 
     return (
         <>
 
 
             {/*<LoadingScreen />*/}
+            <LoadingScreen outControl={loadingScreen} />
 
 
             <div>
@@ -59,7 +39,19 @@ function Rough({ children }) {
                 {/* <UserProfile /> */}
                 {/*<TryConnection /> */}
 
-                <GetInputArray name={'Tags :'} />
+                <button className="m-1  text-[1rem] rounded-md
+                        border-[2px] hover:bg-green-800 active:bg-green-900
+                        text-green-200 z-50
+                        border-green-950 p-1">
+                    On
+                </button>
+
+                <button className="m-1  text-[1rem] rounded-md
+                        border-[2px] hover:bg-green-800 active:bg-green-900
+                        text-green-200 z-50
+                        border-green-950 p-1">
+                    Off
+                </button>
 
 
 

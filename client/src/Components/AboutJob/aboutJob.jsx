@@ -5,10 +5,10 @@ import { Link } from "react-router-dom";
 import { commonContext } from "../../MyLib/commonContext";
 
 
-function AboutJob({ children, useInJobDetailjsx, __note_this_component_use_context_and_i_am_a_message__ }) {
+function AboutJob({ children, useInJobDetailjsx, useInProviderJobDetailjsx, __note_this_component_use_context_and_i_am_a_message__ }) {
 
     const { dataForAboutJob } =
-        useContext(useInJobDetailjsx ? commonContext : myContext);
+        useContext(useInJobDetailjsx || useInProviderJobDetailjsx ? commonContext : myContext);
 
 
     useEffect(() => {
@@ -41,14 +41,17 @@ function AboutJob({ children, useInJobDetailjsx, __note_this_component_use_conte
 
                 </div>
                 <div className="flex flex-row justify-end">
-                    <button className="rounded-full font-serif font-bold
+                    {!useInProviderJobDetailjsx ?
+                        <button className="rounded-full font-serif font-bold
                 text-2xl p-2 pr-5 pl-5 m-1 border-2  text-green-800
                  border-green-700
                  bg-blue-400 hover:border-black 
                  active:bg-blue-600 active:text-blue-400">
 
-                        Apply
-                    </button>
+                            Apply
+                        </button>
+
+                        : null}
 
                 </div>
                 <hr className="w-full mt-1 mb-1 rounded-xl border-1 

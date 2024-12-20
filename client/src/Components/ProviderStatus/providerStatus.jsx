@@ -17,12 +17,12 @@ function ProviderStatus({ isAuthenticated }) {
         console.log('from FetchUserPosts, the response is ', result);
         if (result) {
             if (result.json.status) {
-                alert('found the data');
+                // alert('found the data');
                 console.log('the userPosts is  :', result.json);
                 return result.json.data;
             }
             else {
-                alert('not found the data');
+                // alert('not found the data');
                 return false;
 
             }

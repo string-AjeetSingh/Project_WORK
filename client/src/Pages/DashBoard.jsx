@@ -1,47 +1,65 @@
 import { UserProfile } from "../Components/UserProfile/UserProfile";
 import { Header } from "../Components/Header/header";
+import { Footer } from "../Components/Footer/footer";
 import { useControlLogin } from "../MyLib/MyHook/controlLogin";
 import { commonContext } from "../MyLib/commonContext";
 import { ProviderStatus } from "../Components/ProviderStatus/providerStatus";
+import { LoadingScreen } from "../Components/TranstitionScreen/LoadingScreen";
+import { useRef, useEffect, useState } from "react";
 
 function DashBoard({ }) {
 
     const { isAuthenticated, isLoading, user,
         loginWithRedirect, nowLogout } = useControlLogin();
+    const loadingScreen = useRef(null);
+    const offLoadingScreenFromChild = useRef(null);
+    const [boolscreen, setboolscreen] = useState(true);
 
-    if (!isLoading) {
-        return (<>
-            {isAuthenticated ?
-                <>
+    useEffect(() => {
+        console.log('from userEffect');
+        if (loadingScreen.current) {
+            offLoadingScreenFromChild.current = {
+                off: () => {
+                    loadingScreen.current.off();
+                    setTimeout(() => {
+                        setboolscreen(null);
+                    }, 5000)
+                }
+            }
+            loadingScreen.current.on();
+        }
+    }, [loadingScreen.current]);
 
-                    <header >
-                        <commonContext.Provider value={{ user }}>
-                            <Header logout={nowLogout} search_Link ></Header>
-                        </commonContext.Provider>
-                    </header>
-                    <hr className="border-[1px] 
-                     border-green-950"></hr>
-                    <main>
-                        <div className="text-3xl font-serif m-1 p-1 
-                        text-green-700" >
-                            DashBoard</div>
-                        <hr className="border-green-600 m-1"></hr>
-                        <UserProfile isAuthenticated={isAuthenticated} />
-                        <hr className="border-green-600 m-1"></hr>
-                        <br />
-                        <ProviderStatus isAuthenticated={isAuthenticated} />
-                    </main>
+    return (<>
+        {boolscreen ? <LoadingScreen outControl={loadingScreen} /> : null}
+        {isAuthenticated ?
+            <>
 
-                    <footer>
+                <header >
+                    <commonContext.Provider value={{ user }}>
+                        <Header logout={nowLogout} search_Link ></Header>
+                    </commonContext.Provider>
+                </header>
+                <hr className="border-[1px] 
+                                 border-green-950"></hr>
+                <main>
+                    <div className="text-3xl font-serif m-1 p-1 
+                                text-green-700" >
+                        DashBoard</div>
+                    <hr className="border-green-600 m-1"></hr>
+                    <UserProfile isAuthenticated={isAuthenticated} iAmReady={offLoadingScreenFromChild} />
 
-                    </footer>
 
-                </>
+                </main>
 
-                : <h3>you are not authenticated to see this, please login</h3>}
-        </>);
-    }
-    return <div className="text-2xl font-bold ">Loading Please wait</div>
+                <footer>
+                    <Footer></Footer>
+                </footer>
+
+            </>
+
+            : <h3>you are not authenticated to see this, please login</h3>}
+    </>);
 
 }
 

@@ -31,10 +31,10 @@ function TheLoopAnimation({ toggleTo = 'undefined' }) {
          right">
             <img ref={elemImg1} className="w-full
         absolute"
-                src="./logo.png"></img>
+                src="/logo.png"></img>
             <img ref={elemImg2} className="w-full
          absolute "
-                src="./logo.png"></img>
+                src="/logo.png"></img>
         </div>
 
 
@@ -84,7 +84,7 @@ function TheLoopAnimation({ toggleTo = 'undefined' }) {
                         font-serif font-bold">W</div>
                     <div className="text-3xl font-serif mr-1">ORK</div>
                     <img className="size-10 rotate-90 relative bottom-5 right-1
-                " src="./stock/leaf.png"></img>
+                " src="/stock/leaf.png"></img>
                 </div >
 
                 <div ref={elemImg5} className="
@@ -96,7 +96,7 @@ function TheLoopAnimation({ toggleTo = 'undefined' }) {
                 <img ref={elemImg6} className="w-full
             relative right-28 scale-[0] z-20
             "
-                    src="./logo.png"></img>
+                    src="/logo.png"></img>
             </div>
         ]
         )
@@ -166,6 +166,10 @@ function TheLoopAnimation({ toggleTo = 'undefined' }) {
         else if (toggleTo === 'undefined') {
             console.log('toggle to on will start the animations, you must also able to control it');
         }
+        else if (toggleTo === 'cancel') {
+            refLoopAnimationClose.current = true;
+            cancelAnimationFrame(refLoopAnimationId.current);
+        }
 
 
 
@@ -185,6 +189,8 @@ function TheLoopAnimation({ toggleTo = 'undefined' }) {
 
     return (
         <>
+            {/* 
+        
             <button className="block m-2 border-2 
             p-1  pr-4 pl-4 bg-violet-700 font-bold
             active:rounded-full
@@ -197,10 +203,12 @@ function TheLoopAnimation({ toggleTo = 'undefined' }) {
                 }}>
                 stop animation
             </button>
+            */
+            }
 
-            <hr></hr>
-            <div ref={elem1} className=" w-full
-             relative   top-0 h-screen
+
+            <div ref={elem1} className="w-screen
+             fixed   top-0 h-screen z-30
              bg-emerald-900
             flex flex-row justify-around
                 items-center">

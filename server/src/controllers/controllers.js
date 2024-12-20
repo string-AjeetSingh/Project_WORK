@@ -212,6 +212,7 @@ module.exports.fetchPosts = async (req, res, next) => {
     debug.console('result from server : ', result);
     mongo.over();
     res.json({
+        status: 1,
         messag: 'data must be fetched',
         data: result
     })
@@ -340,6 +341,38 @@ module.exports.userDetail = async (req, res) => {
 
         mongo.setCollection('Users');
         let result = await mongo.find({ 'userSocialData.email': req.userData.email });
+
+
+        if (result.length > 0) {
+            debug.console('entry found');
+            res.json({
+                status: 1,
+                data: result[0]
+            })
+        }
+        else {
+            debug.console('no entry found');
+            res.json({
+                status: -1,
+                message: 'no Entry found'
+            })
+        }
+    }
+
+};
+
+module.exports.providerDetail = async (req, res) => {
+
+    debug.console('from userDetail -');
+
+    if (req.userData.email) {
+        debug.console(' token email found ');
+        const mongo = new alib('Work', process.env.MONGOSTRING);
+
+        mongo.setCollection('Users');
+        let result = await mongo.ag([{ $match: { 'userSocialData.email': req.userData.email } },
+        { $project: { 'userData.img': 1, 'userData.name': 1 } }
+        ]);
 
 
         if (result.length > 0) {

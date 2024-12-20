@@ -101,6 +101,9 @@ aRouter.get('/profileImg', middleware.authorize, middleware.jwtVerification,
 aRouter.get('/userDetail', middleware.authorize, middleware.jwtVerification,
     controllers.userDetail
 )
+aRouter.get('/providerDetail', middleware.authorize, middleware.jwtVerification,
+    controllers.providerDetail
+)
 
 aRouter.post('/search', middleware.authorize, middleware.jwtVerification,
     controllers.search

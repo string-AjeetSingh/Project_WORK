@@ -47,7 +47,7 @@ function Card({ companyName, imgSrc, jobHeading,
 
     return (
         <>
-            <Link to={'/jobDetail/' + docNo} target="blank">
+            <Link to={'/providerJobDetail/' + docNo} target="blank">
                 <div ref={aref} onClick={handleClick}
                     className={` flex flex-col m-2 p-2 
                     items-start border h-fit min-w-[300px]

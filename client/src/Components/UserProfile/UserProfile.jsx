@@ -12,6 +12,7 @@ import {
 import { requestServer } from '../../MyLib/RequestServer/requestServer';
 import { useResizeValue } from '../../MyLib/MyHook/customHook';
 import { MyContext } from './myContext';
+import { useNavigate } from 'react-router-dom';
 
 
 const toServer = new requestServer(process.env.REACT_APP_SERVER_URL + "/xtServer/api/updateUserProfile",
@@ -21,14 +22,14 @@ const toServer = new requestServer(process.env.REACT_APP_SERVER_URL + "/xtServer
 )
 
 
-function UserProfile({ children, isAuthenticated, useAsUpdate, email }) {
+function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }) {
 
     const [data, setdata] = useState(null);
     const [sectionReport, setsectionReport] = useState([]);
     const [getInputWrapperClassName, setGIWC] = useState("");
     const [getInputSpace, setGIS] = useState('');
     const windowWidth = useResizeValue(window.innerWidth);
-
+    const navigate = useNavigate();
 
 
     function placePreviousValue(index, param = {
@@ -131,10 +132,19 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email }) {
         let result = await userDetial.requestJson();
 
         if (result) {
-            console.log('the user detail would be : ', result);
-            console.log(result.json.data);
+            if (result.json.status) {
 
-            setdata(result.json.data);
+                console.log('the user detail would be : ', result);
+                console.log(result.json.data);
+
+                setdata(result.json.data);
+                if (iAmReady) {
+                    iAmReady.current.off();
+                }
+            }
+            else {
+                console.error('server error, ' + result.json.message);
+            }
         }
         else {
             console.error('error from userDetail()');
@@ -351,6 +361,27 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email }) {
                     <div className='p-2 flex flex-col ' >
                         <ProfileImageSection screen={data.userData.color} imgSrc={data.userData.img}></ProfileImageSection>
                         <br></br>
+
+                        <button onClick={() => {
+                            navigate('/updateProfile');
+                        }}
+                            className="m-1  text-[1rem] rounded-md bg-green-950
+                        border-[2px] hover:bg-green-800 active:bg-green-900
+                        text-green-200 w-52 self-center rounded-tl-2xl
+                        border-green-950 p-1">
+                            Edit Profile
+                        </button>
+
+                        <button onClick={() => {
+                            navigate('/provider');
+                        }}
+                            className="m-1  text-[1rem] rounded-md bg-green-950
+                        border-[2px] hover:bg-green-800 active:bg-green-900
+                        text-green-200 w-80 self-center rounded-tl-2xl
+                        border-green-950 p-1">
+                            Switch To Provider
+                        </button>
+
                         <ProfileSection2 userName={data.userData.name}
                             title={data.userData.title}
                             email={data.userSocialData.email} />

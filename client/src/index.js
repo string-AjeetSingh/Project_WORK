@@ -13,25 +13,27 @@ console.log(ReactContainer);
 const root = ReactDOM.createRoot(ReactContainer[0]);
 
 root.render(
-  <React.StrictMode>
-    <Auth0Provider
-      domain='dev-2jpux8rtke6h2fat.us.auth0.com'
-      clientId='jfARQSPc43O0AmlrYatdCbLlJzrd0Pth'
-      authorizationParams={
-        {
-          redirect_uri: 'http://localhost:3000/'
-        }
-      }>
+  <>
+    <React.StrictMode>
+      <Auth0Provider
+        domain='dev-2jpux8rtke6h2fat.us.auth0.com'
+        clientId='jfARQSPc43O0AmlrYatdCbLlJzrd0Pth'
+        authorizationParams={
+          {
+            redirect_uri: 'http://localhost:3000/'
+          }
+        }>
 
-      <div className='bg-gradient-to-br min-h-[110vh] 
+        <div className='bg-gradient-to-br min-h-[110vh] 
      
-    from-green-950  to-green-900'>
+     from-green-950  to-green-900'>
 
-        <App />
-      </div>
-    </Auth0Provider>
+          <App />
+        </div>
+      </Auth0Provider>
 
-  </React.StrictMode>
+    </React.StrictMode>
+  </>
 );
 
 // If you want to start measuring performance in your app, pass a function

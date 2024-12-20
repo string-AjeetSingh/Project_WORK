@@ -20,24 +20,29 @@ function LoadingScreen({ outControl }) {
         setanimationFlow('on');
     }
     function off() {
-        setanimationFlow('on');
+        setanimationFlow('off');
+    }
+    function cancel() {
+        setanimationFlow('cancel');
     }
 
     useEffect(() => {
         //    toggleAnimationFlow(false);
         if (outControl) {
-            outControl.current = { on, off };
+            outControl.current = { on, off, cancel };
         }
     }, [])
 
     return (
         <>
-            <he>We are going to create a loading screen for sure -- </he>
+            {/* 
+             <he>We are going to create a loading screen for sure -- </he>
             <OnOfButton
                 setFunction={toggleAnimationFlow}>
                 Toggle TheLoopAnimation
             </OnOfButton >
-
+        */
+            }
 
             <TheLoopAnimation toggleTo={animationFlow} />
 

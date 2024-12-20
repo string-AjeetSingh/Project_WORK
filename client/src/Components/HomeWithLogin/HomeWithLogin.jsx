@@ -20,7 +20,7 @@ const toServer = new requestServer
         , { optionsMode: 'default' }, false
     );
 
-function HomeWithLogin({ logout, user, isAuthenticated, useAsSearch }) {
+function HomeWithLogin({ logout, user, isAuthenticated, useAsSearch, iAmReady }) {
     const size = useResizeValue(window.innerWidth);
     const [dataForAboutJob, setDataForAboutJob] = useState(null);
     const [dataFromServer, setdataFromServer] = useState(null);
@@ -34,9 +34,17 @@ function HomeWithLogin({ logout, user, isAuthenticated, useAsSearch }) {
         let res = await toServer.requestJson();
         // debug.console("from fetchPosts : ", res);
         if (res) {
-            flushSync(() => {
-                setdataFromServer(res.json.data);
-            })
+            if (res.json.status) {
+
+                flushSync(() => {
+                    setdataFromServer(res.json.data);
+                })
+                if (iAmReady.current) {
+                    iAmReady.current.off();
+                }
+            } else {
+                debug.alert('Fail to get data from server , check consolo or call the admin for help');
+            }
         }
         else {
             debug.alert('Fail to get data from server , check consolo or call the admin for help');
@@ -59,11 +67,19 @@ function HomeWithLogin({ logout, user, isAuthenticated, useAsSearch }) {
 
         let result = await searchServer.requestJson();
         if (result) {
+
             console.log('the response from search :', result);
+
             if (result.json.status) {
+                if (iAmReady.current) {
+                    iAmReady.current.off();
+                }
                 setdataFromServer(result.json.data);
             } else {
                 // alert('no matching results');
+                if (iAmReady.current) {
+                    iAmReady.current.off();
+                }
                 setdataFromServer({ noSearchResult: true });
             }
         }
