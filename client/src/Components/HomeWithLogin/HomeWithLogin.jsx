@@ -137,7 +137,7 @@ function HomeWithLogin({ logout, user, isAuthenticated, useAsSearch, iAmReady })
                 }}>
 
                     <Section1 children1={size < 700 ? <JobCards link /> : <JobCards link={false} />}
-                        children2={size < 700 ? null : <AboutJob />}
+                        children2={size < 700 ? null : <AboutJob isAuthenicated={isAuthenticated} />}
                         theFooter={<><hr className="border-[1px] 
     border-green-950"></hr>
                             <footer>

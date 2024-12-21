@@ -4,15 +4,17 @@ import { useParams } from "react-router-dom";
 import { requestServer } from "../MyLib/RequestServer/requestServer";
 import { useEffect, useState, useRef } from 'react'
 import { LoadingScreen } from "../Components/TranstitionScreen/LoadingScreen";
+import { useControlLogin } from "../MyLib/MyHook/controlLogin";
 
 
 function ProviderJobDetail({ }) {
     const loadingScreen = useRef(null);
     const { no } = useParams()
-    console.log('the id is : ', no);
     const [dataForAboutJob, setdataForAboutJob] = useState(null);
-    console.log('the data is  : ', dataForAboutJob);
+    const [data, setData] = useState(null);
     const [boolScreen, setboolscreen] = useState(true);
+    const { isAuthenticated, isLoading, ifRegistered,
+        user, loginWithRedirect, nowLogout } = useControlLogin(true);
 
     async function fetchData() {
         console.log('from fetchData -- -- - -');
@@ -38,6 +40,27 @@ function ProviderJobDetail({ }) {
         }
     }
 
+    async function appliedDetail() {
+        console.log('from appliedDetail -- -- - -');
+        let job = new requestServer(process.env.REACT_APP_SERVER_URL
+            + '/xtServer/api/usersApplied' + `?no=${no}`, { method: 'GET' });
+        job.setAuthorizedFlag(true);
+        job.noBody();
+        let result = await job.requestJson();
+
+        if (result) {
+            if (result.json.status) {
+                console.log('From appliedDetail the data we found : ', result);
+                return { theUser: result.json.user, applied: result.json.applied };
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    console.log("the data is : ", data);
     useEffect(() => {
         fetchData().
             then((res) => {
@@ -45,13 +68,18 @@ function ProviderJobDetail({ }) {
                     setdataForAboutJob(res)
                 }
             })
+
+        appliedDetail().then((res) => {
+            if (res) {
+                setData({ user: res.theUser, applied: res.applied });
+            }
+        })
     }, [])
 
     useEffect(() => {
         //alert("running loadingscreen effect");
         console.log('from userEffect');
         if (loadingScreen.current) {
-
             loadingScreen.current.on();
         }
 
@@ -63,19 +91,25 @@ function ProviderJobDetail({ }) {
     return (
         <>  {boolScreen ? <LoadingScreen outControl={loadingScreen} /> : null}
             <main>
-                <div className="flex flex-row">
+                {isAuthenticated ?
+                    <>
+                        <div className="flex flex-row">
 
-                    {dataForAboutJob ?
-                        <commonContext.Provider value={{ dataForAboutJob }}>
-                            <AboutJob useInProviderJobDetailjsx />
-                        </commonContext.Provider>
-                        :
-                        <h1>No data from server</h1>
-                    }
-                </div>
-                <div>
-                    Must contain Applied data
-                </div>
+                            {dataForAboutJob ?
+                                <commonContext.Provider value={{ dataForAboutJob }}>
+                                    <AboutJob useInProviderJobDetailjsx
+                                        isAuthenicated={isAuthenticated} />
+                                </commonContext.Provider>
+                                :
+                                <h1>No data from server</h1>
+                            }
+                        </div>
+                        <div>
+                            Must contain Applied data
+                        </div>
+                    </>
+
+                    : null}
 
             </main>
 

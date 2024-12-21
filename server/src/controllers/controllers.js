@@ -3,6 +3,8 @@ const isDebugging = require('./../myLib/ifDebugging/ifDebugging');
 const alib = require('./../myLib/PracLib/alib');
 const utils = require('./../utils/utils');
 const path = require('path');
+const { Double } = require('mongodb');
+const { DefaultDeserializer } = require('v8');
 
 const debug = new isDebugging(process.env.IS_DEBUGGING);
 
@@ -394,6 +396,66 @@ module.exports.providerDetail = async (req, res) => {
 };
 
 
+module.exports.userApplied = async (req, res) => {
+
+    debug.console('from userApplied -');
+
+
+
+
+    if (req.query.no && req.userData.email) {
+
+        debug.console(' token email found ');
+        let mongo = new alib('Work', process.env.MONGOSTRING);
+
+        mongo.setCollection('Users');
+        let userData = await mongo.ag([{ $match: { 'userSocialData.email': req.userData.email } },
+        { $project: { 'userData.img': 1, 'userData.name': 1 } }
+        ]);
+
+        await mongo.over();
+
+        mongo = new alib('Work', process.env.MONGOSTRING);
+        mongo.setCollection('Jobs');
+
+        let Applied = await mongo.ag([{ $match: { 'no': parseInt(req.query.no) } },
+        { $project: { Applied: 1 } }
+        ])
+        await mongo.over();
+        debug.console('applied : ', Applied);
+        debug.console('userData : ', userData);
+
+        if (Applied.length > 0 && userData.length > 0) {
+            debug.console('userData fetched', userData);
+            debug.console('the Applied data is found : ', Applied);
+
+            res.json({
+                status: 1,
+                user: userData[0].userData,
+                applied: Applied[0].Applied
+            })
+        } else {
+            res.json({
+                status: 0,
+                message: "no data from server"
+            })
+        }
+
+
+
+    }
+    else {
+        debug.console('no data or email found');
+        res.json({
+            status: -1,
+            message: 'no data or email found'
+        })
+    }
+
+
+};
+
+
 module.exports.isRegistered = async (req, res) => {
     debug.console('form isRegistered -- ');
 
@@ -660,3 +722,54 @@ module.exports.search = async (req, res) => {
         }
     }
 };
+
+module.exports.apply = async (req, res) => {
+
+
+    debug.console('from apply()  -- -- --');
+
+
+    if (req.file && req.body.data) {
+        debug.console('the req.body :', req.body);
+        req.body.data = utils.jsonParseIfString(req.body.data)
+        debug.console("the job no is : ", req.body.data.job);
+        debug.console('file found', req.file);
+        let mongo = new alib('Work', process.env.MONGOSTRING);
+        mongo.setCollection('Jobs');
+
+
+        let result = await mongo.updateOne({ no: req.body.data.job },
+            {
+                $push: {
+                    Applied:
+                    {
+                        email: req.userData.email,
+                        pdfUrl: path.join(process.env.SERVER_BASE, req.file.path)
+                    },
+                }
+            })
+
+        mongo.over();
+        if (result) {
+            debug.console('found the result : ', result);
+            res.json({
+                status: 1,
+                message: "file found, must be uploaded"
+            })
+            return;
+        }
+        debug.console('not found the result : ', result);
+        res.json({
+            status: 0,
+            message: "not uploaded succesfully "
+        })
+
+    } else {
+        debug.console('file not found or data not found', req.file, req.body.data);
+        res.json({
+            status: 0,
+            message: "file or data not found, must be error"
+        })
+    }
+};
+

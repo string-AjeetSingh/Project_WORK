@@ -21,6 +21,31 @@ const upload = multer({
     })
 })
 
+const uploadPdf = multer({
+    storage: multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, "uploads/jobsPdf");
+        },
+        filename: function (req, file, cb) {
+            cb(null, file.fieldname +
+                Date.now().toLocaleString().toString() + path.extname(file.originalname));
+        }
+    }),
+    fileFilter: function (req, file, cb) {
+
+
+        if (file.mimetype === 'application/pdf') {
+            cb(null, true)
+        }
+        else {
+            cb(new Error(1));
+        }
+    },
+    limits: {
+        fileSize: 1 * 1024 * 1024 * 3
+    }
+}).single('thePdf');
+
 const profileImg = multer({
     storage: multer.diskStorage({
         destination: function (req, file, cb) {
@@ -101,12 +126,48 @@ aRouter.get('/profileImg', middleware.authorize, middleware.jwtVerification,
 aRouter.get('/userDetail', middleware.authorize, middleware.jwtVerification,
     controllers.userDetail
 )
+aRouter.get('/usersApplied', middleware.authorize, middleware.jwtVerification,
+    controllers.userApplied
+)
 aRouter.get('/providerDetail', middleware.authorize, middleware.jwtVerification,
     controllers.providerDetail
 )
 
 aRouter.post('/search', middleware.authorize, middleware.jwtVerification,
     controllers.search
+)
+
+aRouter.post('/apply', middleware.authorize, middleware.jwtVerification,
+    (req, res, next) => {
+        uploadPdf(req, res, (err) => {
+            if (err) {
+
+                if (err instanceof multer.MulterError) {
+
+                    res.json({
+                        status: -2,
+                        message: err.message
+                    })
+                    console.error('Multer error found at apply  : ', err.message);
+
+                    return;
+                }
+                if (err.message) {
+                    console.error('Plesase provide pdf to apply');
+                    res.json({
+                        status: -1,
+                        message: 'expected pdf, please provide pdf file'
+                    })
+                    return;
+                }
+                res.status(500).end();
+                console.error('error found at apply  : ', err.message);
+                return;
+            } else {
+                next();
+            }
+        })
+    }, controllers.apply
 )
 
 aRouter.use('/', (req, res) => {
