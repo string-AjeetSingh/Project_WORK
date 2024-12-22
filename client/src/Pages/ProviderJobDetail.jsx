@@ -1,4 +1,5 @@
 import { AboutJob } from "../Components/AboutJob/aboutJob";
+import { AppliedInd } from "../Components/AppliedIndividuals/AppliedInd";
 import { commonContext } from "../MyLib/commonContext";
 import { useParams } from "react-router-dom";
 import { requestServer } from "../MyLib/RequestServer/requestServer";
@@ -43,21 +44,23 @@ function ProviderJobDetail({ }) {
     async function appliedDetail() {
         console.log('from appliedDetail -- -- - -');
         let job = new requestServer(process.env.REACT_APP_SERVER_URL
-            + '/xtServer/api/usersApplied' + `?no=${no}`, { method: 'GET' });
+            + '/xtServer/api/usersApplied' + `?no=${no}`, { method: 'GET' }, true);
         job.setAuthorizedFlag(true);
         job.noBody();
         let result = await job.requestJson();
+        console.log('From appliedDetail the result is :  ', result);
 
         if (result) {
             if (result.json.status) {
                 console.log('From appliedDetail the data we found : ', result);
-                return { theUser: result.json.user, applied: result.json.applied };
+                return result.json.applied;
             } else {
                 return false;
             }
         } else {
             return false;
         }
+
     }
 
     console.log("the data is : ", data);
@@ -70,9 +73,7 @@ function ProviderJobDetail({ }) {
             })
 
         appliedDetail().then((res) => {
-            if (res) {
-                setData({ user: res.theUser, applied: res.applied });
-            }
+            setData(res);
         })
     }, [])
 
@@ -104,9 +105,10 @@ function ProviderJobDetail({ }) {
                                 <h1>No data from server</h1>
                             }
                         </div>
-                        <div>
-                            Must contain Applied data
-                        </div>
+                        {data ?
+                            <AppliedInd data={data} />
+                            : <h1>No User Applied</h1>}
+
                     </>
 
                     : null}

@@ -406,14 +406,6 @@ module.exports.userApplied = async (req, res) => {
     if (req.query.no && req.userData.email) {
 
         debug.console(' token email found ');
-        let mongo = new alib('Work', process.env.MONGOSTRING);
-
-        mongo.setCollection('Users');
-        let userData = await mongo.ag([{ $match: { 'userSocialData.email': req.userData.email } },
-        { $project: { 'userData.img': 1, 'userData.name': 1 } }
-        ]);
-
-        await mongo.over();
 
         mongo = new alib('Work', process.env.MONGOSTRING);
         mongo.setCollection('Jobs');
@@ -423,15 +415,12 @@ module.exports.userApplied = async (req, res) => {
         ])
         await mongo.over();
         debug.console('applied : ', Applied);
-        debug.console('userData : ', userData);
 
-        if (Applied.length > 0 && userData.length > 0) {
-            debug.console('userData fetched', userData);
+        if (Applied.length > 0) {
             debug.console('the Applied data is found : ', Applied);
 
             res.json({
                 status: 1,
-                user: userData[0].userData,
                 applied: Applied[0].Applied
             })
         } else {
@@ -734,16 +723,39 @@ module.exports.apply = async (req, res) => {
         req.body.data = utils.jsonParseIfString(req.body.data)
         debug.console("the job no is : ", req.body.data.job);
         debug.console('file found', req.file);
+
+        let fetchUser = new alib('Work', process.env.MONGOSTRING);
+        fetchUser.setCollection('Users');
+
+        let user = await fetchUser.ag([
+            { $match: { "userSocialData.email": req.userData.email } },
+            { $project: { 'userData.img': 1, 'userData.name': 1 } }
+        ])
+
+        fetchUser.over();
+        if (!(user.length > 0)) {
+            res.json({
+                status: 0,
+                message: 'userData no found '
+            })
+            return
+        }
+
         let mongo = new alib('Work', process.env.MONGOSTRING);
         mongo.setCollection('Jobs');
 
-
+        let finalUserData = {
+            email: req.userData.email,
+            img: user[0].userData.img,
+            name: user[0].userData.name
+        }
+        debug.console('the final data of user : ', finalUserData);
         let result = await mongo.updateOne({ no: req.body.data.job },
             {
                 $push: {
                     Applied:
                     {
-                        email: req.userData.email,
+                        ...finalUserData,
                         pdfUrl: path.join(process.env.SERVER_BASE, req.file.path)
                     },
                 }
@@ -754,7 +766,8 @@ module.exports.apply = async (req, res) => {
             debug.console('found the result : ', result);
             res.json({
                 status: 1,
-                message: "file found, must be uploaded"
+                message: "file found, must be uploaded",
+                finalUserData: finalUserData
             })
             return;
         }

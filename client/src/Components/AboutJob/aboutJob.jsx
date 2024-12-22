@@ -9,7 +9,7 @@ import { pleaseWait } from "../../MyLib/Animation/animation";
 import { flushSync } from "react-dom";
 
 
-function AboutJob({ children, isAuthenicated, useInJobDetailjsx, useInProviderJobDetailjsx,
+function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInProviderJobDetailjsx,
     __note_this_component_use_context_and_i_am_a_message__ }) {
     const applyButton = useRef(null);
     const applyButton1 = useRef(null);
@@ -102,15 +102,20 @@ function AboutJob({ children, isAuthenicated, useInJobDetailjsx, useInProviderJo
                 <div className="flex flex-row justify-end">
 
                     {!useInProviderJobDetailjsx ?
-                        <button ref={applyButton1}
+                        <button
+                            ref={applyButton1}
                             onClick={() => {
-                                handleApply();
+
+                                email === dataForAboutJob.from ?
+                                    alert('You cannot apply on your provided job') : handleApply()
+
+
                             }}
-                            className="rounded-full font-serif font-bold
+                            className={`rounded-full font-serif font-bold
                 text-2xl p-2 pr-5 pl-5 m-1 border-2  text-green-800
-                 border-green-700
-                 bg-blue-400 hover:border-black 
-                 active:bg-blue-600 active:text-blue-400">
+                 border-green-700 ${email === dataForAboutJob.from ? 'bg-red-500' : 'bg-blue-400'}
+                  hover:border-black 
+                 active:bg-blue-600 active:text-blue-400`}>
 
                             Apply
                         </button>
