@@ -73,11 +73,11 @@ function Card({ companyName, imgSrc, jobHeading,
     const { theClick } = useContext(myContext);
     // console.log('from Card : the theClick : ', theClick)
     const aref = useRef(null);
-    const [lstate, setlstate] = useState('border-black');
+    const [lstate, setlstate] = useState('border-green-900');
     const navigate = useNavigate();
 
     function off() {
-        setlstate('border-black');
+        setlstate('border-green-900');
     }
 
     function handleClick() {
@@ -127,17 +127,19 @@ function Card({ companyName, imgSrc, jobHeading,
                         </div>
 
                         <div className='flex flex-row flex-wrap
-         flex-start w-full'>
-                            <img className='m-1' src={imgSrc} alt='company image'></img>
+         flex-start w-full items-center'>
+
+                            <img className='m-1 size-8 rounded-full'
+                                src={imgSrc ? imgSrc : null} alt='company image'></img>
                             <div className='text-[1.2rem] text-green-600
-             font-serif
+             font-serif ml-2
              '>{companyName}</div>
                         </div>
+
+                        <div className='text-[1rem] mt-1 '>{jobHeading}</div>
                         <div className='text-[0.8rem] relative bottom-1 
          
          '>{location ? location : "DumyBad, India"}</div>
-
-                        <div className='text-[1rem] mt-1 '>{jobHeading}</div>
                         <hr className='w-full m-1 border-1 border-green-800 rounded-md'></hr>
 
                         <div className='p-1 m-1 text-green-300 
@@ -160,17 +162,17 @@ function Card({ companyName, imgSrc, jobHeading,
                     </div>
 
                     <div className='flex flex-row flex-wrap
-         flex-start w-full'>
-                        <img className='m-1' src={imgSrc} alt='company image'></img>
+         flex-start w-full items-center'>
+                        <img className='m-1 size-8 rounded-full' src={imgSrc} alt='company image'></img>
                         <div className='text-[1.2rem] text-green-600
-             font-serif
+             font-serif ml-2
              '>{companyName}</div>
                     </div>
+
+                    <div className='text-[1rem] mt-1 '>{jobHeading}</div>
                     <div className='text-[0.8rem] relative bottom-1 
          
          '>{location ? location : "DumyBad, India"}</div>
-
-                    <div className='text-[1rem] mt-1 '>{jobHeading}</div>
                     <hr className='w-full m-1 border-1 border-green-800 rounded-md'></hr>
 
                     <div className='p-1 m-1 text-green-300 

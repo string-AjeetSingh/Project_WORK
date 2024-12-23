@@ -190,11 +190,7 @@ function JobCards({ children, link, __note_this_component_use_context_and_i_am_a
     return (
         <>
 
-            <div className="sticky  top-0 border-2
-        bg-blue-950 
-        border-gray-900 h-50 ">
-                <div className="m-4">i am nav bar</div>
-            </div>
+
 
             <div className="flex flex-row  ">
 

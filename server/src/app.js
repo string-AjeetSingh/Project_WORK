@@ -91,6 +91,7 @@ aRouter.post('/token', middleware.authorize, controllers.token);
 aRouter.get('/isRegistered', middleware.jwtVerification,
     controllers.isRegistered)
 
+
 aRouter.post('/temp', middleware.authorize,
     middleware.jwtVerification, tempUpload.single('tempImg')
     , controllers.temp

@@ -176,9 +176,10 @@ module.exports.createPost = async (req, res, next) => {
                 "x": upload.x
             },
             "companyName": upload.companyName,
-            "img": req.file ? req.file.path : null,
+            "img": req.file ? path.join(process.env.SERVER_BASE, req.file.path) : null,
             "location": upload.location,
             "no": theNo,
+            "Applied": [],
             "tags": upload.tags    //need  work pending ...
 
         });
@@ -233,6 +234,7 @@ module.exports.fetchAPosts = async (req, res, next) => {
         mongo.over();
         debug.console('result from server : ', result);
         if (result.length > 0) {
+
             res.json({
                 status: 1,
                 messag: 'data must be fetched',
@@ -478,6 +480,8 @@ module.exports.isRegistered = async (req, res) => {
         })
     }
 };
+
+
 
 module.exports.register = async (req, res) => {
 
@@ -733,22 +737,20 @@ module.exports.apply = async (req, res) => {
         ])
 
         fetchUser.over();
-        if (!(user.length > 0)) {
-            res.json({
-                status: 0,
-                message: 'userData no found '
-            })
-            return
+
+        let finalUserData = {
+            email: req.userData.email,
+
+        }
+        if (user.length > 0) {
+            fetchUser.img = user[0].userData.img;
+            fetchUser.name = user[0].userData.name;
         }
 
         let mongo = new alib('Work', process.env.MONGOSTRING);
         mongo.setCollection('Jobs');
 
-        let finalUserData = {
-            email: req.userData.email,
-            img: user[0].userData.img,
-            name: user[0].userData.name
-        }
+
         debug.console('the final data of user : ', finalUserData);
         let result = await mongo.updateOne({ no: req.body.data.job },
             {

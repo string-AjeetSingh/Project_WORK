@@ -15,6 +15,7 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
     const applyButton1 = useRef(null);
     const applyButton3 = useRef(null);
     const fileButton = useRef(null);
+    const [isApplied, setisApplied] = useState(null);
     const [boolC, setboolC] = useState(false);
     const { dataForAboutJob } =
         useContext(useInJobDetailjsx || useInProviderJobDetailjsx ? commonContext : myContext);
@@ -69,21 +70,33 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
         toApply.resetFormData();
     }
 
+
+
+
     useEffect(() => {
-
-
-    }, [applyButton1.current])
+        flushSync(() => {
+            setisApplied(false);
+        })
+        if (dataForAboutJob) {
+            dataForAboutJob.Applied.forEach((element) => {
+                if (element.email === email) {
+                    setisApplied(true);
+                }
+            });
+        }
+    }, [dataForAboutJob])
 
     if (dataForAboutJob) {
         return (<>
             <div className="p-2 text-green-200 w-full 
             overflow-y-auto h-full  min-w-[350px]">
-                <div className="flex flex-row justify-center  
+                <div className="flex flex-col justify-center 
             items-center mb-2">
-                    <div className="rounded-full size-10
+                    <img src={dataForAboutJob ? dataForAboutJob.img : null}
+                        className="rounded-full size-16
                 mr-2  bg-slate-500">
 
-                    </div>
+                    </img>
                     <div className="font-serif text-2xl text-green-700
                 font-bold">
                         {dataForAboutJob ? dataForAboutJob.companyName : "DummyMirosoft"}
@@ -91,8 +104,9 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
                 </div>
 
 
-                <div className="text-[1.2rem] font-serif underline
-               w-[60%] min-w-[320px]">
+                <div className="text-[1.2rem] font-serif   
+                text-center relative bottom-4 text-green-200
+                min-w-[320px]">
 
                     {dataForAboutJob ? dataForAboutJob.jobData.title
                         :
@@ -105,15 +119,17 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
                         <button
                             ref={applyButton1}
                             onClick={() => {
+                                if (isApplied) {
+                                    alert('Already applied for this job')
+                                } else {
+                                    email === dataForAboutJob.from ?
+                                        alert('You cannot apply on your provided job') : handleApply()
 
-                                email === dataForAboutJob.from ?
-                                    alert('You cannot apply on your provided job') : handleApply()
-
-
+                                }
                             }}
                             className={`rounded-full font-serif font-bold
                 text-2xl p-2 pr-5 pl-5 m-1 border-2  text-green-800
-                 border-green-700 ${email === dataForAboutJob.from ? 'bg-red-500' : 'bg-blue-400'}
+                 border-green-700 ${email === dataForAboutJob.from || isApplied ? 'bg-red-500' : 'bg-blue-400'}
                   hover:border-black 
                  active:bg-blue-600 active:text-blue-400`}>
 
@@ -177,10 +193,13 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
                     }
 
                 </div>
-                <hr className="w-full mt-1 mb-1 rounded-xl border-1 
-                border-slate-500"></hr>
+                <div className="ml-2 relative top-1 w-fit">
+                    Applied : {dataForAboutJob.Applied.length}
+                </div>
+                <hr className="w-full mt-1 mb-3 rounded-xl border-1 
+                border-green-800"></hr>
 
-                <div className="font-serif text-2xl text-slate-500 font-bold">
+                <div className="font-serif text-2xl text-green-300 font-bold">
                     About:
                 </div>
                 <div className="relative left-5 w-[96%]">
@@ -190,7 +209,7 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
                         "no discription"}
                 </div><br></br>
 
-                <div className="font-serif text-2xl text-slate-500 font-bold">
+                <div className="font-serif text-2xl text-green-300 font-bold">
                     Qualification:
                 </div>
                 <div className="relative left-5 w-[96%]">
@@ -200,7 +219,7 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
                         :
                         "no qualification"}
                 </div>
-                <div className="font-serif text-2xl text-slate-500 font-bold">
+                <div className="font-serif text-2xl text-green-300 font-bold">
                     Requirements:
                 </div>
                 <div className="relative left-5 w-[96%]">
@@ -210,7 +229,7 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
                         "no qualification"}
                 </div>
 
-                <div className="font-serif text-2xl text-slate-500 font-bold">
+                <div className="font-serif text-2xl text-green-300 font-bold">
                     Responsibilities:
                 </div>
                 <div className="relative left-5 w-[96%]">
@@ -221,12 +240,12 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
                     - Dummy row about some thing <br></br>
                 </div>
 
-                <hr className="w-full mt-1 mb-1 rounded-xl border-1 
+                <hr className="w-full mt-4 mb-1 rounded-xl border-1 
                 border-slate-500"></hr>
-                <div className="m-1 flex flex-row flex-wrap justify-between">
+                <div className="m-1 flex flex-col flex-wrap justify-between">
 
                     <div className="m-1">
-                        <div className="font-serif font-bold  text-slate-500
+                        <div className="font-serif font-bold  text-green-300
                         text-[1.2rem]">Email : </div>
                         <span className="relative bottom-2">
                             Mirosoft@gmail.com
@@ -238,7 +257,7 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
 
                     </div>
                     <div className="m-1">
-                        <div className="font-serif font-bold  text-slate-500 
+                        <div className="font-serif font-bold  text-green-300 
                         text-[1.2rem]">X : </div>
                         <span className="relative bottom-2">
                             {dataForAboutJob.jobSocialData.x.length > 1 ?
@@ -252,7 +271,7 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
                     </div>
 
                     <div className="m-1">
-                        <div className="font-serif font-bold  text-slate-500
+                        <div className="font-serif font-bold  text-green-300
                         text-[1.2rem]">GitHub : </div>
                         <span className="relative bottom-2">
                             {dataForAboutJob.jobSocialData.github.length > 1 ?
