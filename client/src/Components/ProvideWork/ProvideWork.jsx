@@ -49,7 +49,12 @@ function ProvideWork({ isAuthenticated, email }) {
                         border-[2px] hover:bg-green-800 active:bg-green-900
                         text-green-200 w-80 self-center rounded-tl-2xl
                         border-green-950 p-1">
-                    Switch To User Dashboard
+                    <div className='flex flex-row justify-center items-center'>
+
+                        <img src='/stock/icon/switch2.png'
+                            className='size-7 mr-2'></img>
+                        <span >Switch To User</span>
+                    </div>
                 </button>
             </div>
             <div className="m-2 p-1 flex flex-col items-end">

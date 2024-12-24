@@ -373,7 +373,12 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
                         border-[2px] hover:bg-green-800 active:bg-green-900
                         text-green-200 w-52 self-center rounded-tl-2xl
                         border-green-950 p-1">
-                                Edit Profile
+                                <div className='flex flex-row justify-center items-center'>
+
+                                    <img src='/stock/icon/edit.png'
+                                        className='size-7 mr-2'></img>
+                                    <span >Edit Profile</span>
+                                </div>
                             </button>
 
                             <button onClick={() => {
@@ -384,7 +389,12 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
                         border-[2px] hover:bg-green-800 active:bg-green-900
                         text-green-200 w-80 self-center rounded-tl-2xl
                         border-green-950 p-1">
-                                Switch To Provider
+                                <div className='flex flex-row justify-center items-center'>
+
+                                    <img src='/stock/icon/switch1.png'
+                                        className='size-7 mr-2'></img>
+                                    <span >Switch To Provider</span>
+                                </div>
                             </button>
 
                             <ProfileSection2 userName={data.userData.name}

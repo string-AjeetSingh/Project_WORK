@@ -89,7 +89,7 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
     if (dataForAboutJob) {
         return (<>
             <div className="p-2 text-green-200 w-full 
-            overflow-y-auto h-full  min-w-[350px]">
+            overflow-y-auto h-full  min-w-[350px] ">
                 <div className="flex flex-col justify-center 
             items-center mb-2">
                     <img src={dataForAboutJob ? dataForAboutJob.img : null}
@@ -240,8 +240,8 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
                     - Dummy row about some thing <br></br>
                 </div>
 
-                <hr className="w-full mt-4 mb-1 rounded-xl border-1 
-                border-slate-500"></hr>
+                <hr className="w-full mt-7 mb-1 rounded-xl border-1 
+                border-green-800"></hr>
                 <div className="m-1 flex flex-col flex-wrap justify-between">
 
                     <div className="m-1">

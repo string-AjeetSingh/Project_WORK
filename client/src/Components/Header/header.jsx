@@ -28,6 +28,7 @@ function Header({ children, login, logout, key, search_Link }) {
               text-[1rem] p-2 m-1  hover:bg-green-800
               "
                     type="search" placeholder=" Search Jobs"></input>
+
                 <button onClick={handleSearchButton}
                     className="m-1  text-[1rem] rounded-md pr-4 pl-4
                         border-t border-t-teal-800  hover:bg-green-800 active:bg-green-900
@@ -38,13 +39,28 @@ function Header({ children, login, logout, key, search_Link }) {
                 </button>
             </div>
             <button onClick={() => {
+                navigate('/');
+            }} title="Home"
+                className="m-1  text-[rem] rounded-md bg-green-950
+            border-[2px] hover:bg-green-800 active:bg-green-900
+            text-green-200
+            border-transparent p-1">
+                <div className="flex flex-row justify-center items-center">
+                    <img src="/stock/icon/home.png" className="size-7 m-1"></img>
+                    <span>Home </span>
+                </div>
+            </button>
+            <button onClick={() => {
                 navigate('/createPost');
             }}
-                className="m-1  text-[1rem] rounded-md bg-green-950
+                className="m-1  text-[rem] rounded-md bg-green-950
                         border-[2px] hover:bg-green-800 active:bg-green-900
                         text-green-200
-                        border-green-950 p-1">
-                Provide Work
+                        border-transparent p-1">
+                <div className="flex flex-row items-center justify-center">
+                    <img src="/stock/icon/provide.png" className="size-7 m-1"></img>
+                    <span>Provide Work </span>
+                </div>
             </button>
         </div >, null]
 
@@ -145,14 +161,31 @@ function Header({ children, login, logout, key, search_Link }) {
                     {size < 505 ? <OtherPanel theSize={504} setPanel={setpanelno} /> :
                         <>
                             <button onClick={() => {
-                                navigate('/createPost');
-                            }}
-                                className="m-1  text-[1rem] rounded-md
+                                navigate('/');
+                            }} title="Home"
+                                className="m-1  text-[0.7rem] rounded-md
                         border-[2px] hover:bg-green-800 active:bg-green-900
                         text-green-200
-                        border-green-950 p-1">
-                                Provide Work
+                        border-transparent p-1">
+                                <div className="flex flex-col items-center">
+                                    <img src="/stock/icon/home.png" className="size-7 m-1"></img>
+                                    <span>Home </span>
+                                </div>
                             </button>
+
+                            <button onClick={() => {
+                                navigate('/createPost');
+                            }} title="Provide Work"
+                                className="m-1  text-[0.7rem] rounded-md
+                        border-[2px] hover:bg-green-800 active:bg-green-900
+                        text-green-200
+                        border-transparent p-1">
+                                <div className="flex flex-col items-center">
+                                    <img src="/stock/icon/provide.png" className="size-7 m-1"></img>
+                                    <span>Provide Work </span>
+                                </div>
+                            </button>
+
 
                             <div>
                                 <input ref={refSearch} className="rounded-md  bg-transparent 

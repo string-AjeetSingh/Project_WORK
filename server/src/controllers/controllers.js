@@ -758,7 +758,9 @@ module.exports.apply = async (req, res) => {
                     Applied:
                     {
                         ...finalUserData,
-                        pdfUrl: path.join(process.env.SERVER_BASE, req.file.path)
+                        pdfUrl: process.env.SERVER_PROTOCOL + "://" + process.env.SERVER_NAME +
+                            ":" + process.env.PORT
+                            + path.join(process.env.SERVER_BASE, req.file.path)
                     },
                 }
             })

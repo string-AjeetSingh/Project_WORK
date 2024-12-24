@@ -91,24 +91,29 @@ function ProviderJobDetail({ }) {
 
     return (
         <>  {boolScreen ? <LoadingScreen outControl={loadingScreen} /> : null}
-            <main>
+            <main className="flex flex-row justify-center">
                 {isAuthenticated ?
                     <>
-                        <div className="flex flex-row">
+
+                        <div className='p-2 flex flex-col w-full 
+                        border rounded-2xl border-green-600
+                        max-w-[900px] min-w-[370px]'>
 
                             {dataForAboutJob ?
                                 <commonContext.Provider value={{ dataForAboutJob }}>
                                     <AboutJob useInProviderJobDetailjsx
                                         isAuthenicated={isAuthenticated} />
+                                    <hr className="w-full mt-7 mb-1 rounded-xl border-1 
+                border-green-800"></hr>
                                 </commonContext.Provider>
                                 :
                                 <h1>No data from server</h1>
                             }
-                        </div>
-                        {data ?
-                            <AppliedInd data={data} />
-                            : <h1>No User Applied</h1>}
+                            {data ?
+                                <AppliedInd data={data} />
+                                : <h1>No User Applied</h1>}
 
+                        </div>
                     </>
 
                     : null}

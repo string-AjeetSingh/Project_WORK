@@ -3,18 +3,27 @@ import { AppliedCards } from "./subComponents";
 function AppliedInd({ data }) {
     return (
         <>
-            <div className="flex flex-col p-2 m-1 overflow-y-auto
-            h-[600px] border ">
-                Must contain Applied data
-                <ol className="list-decimal pl-6 text-2xl font-bold text-slate-400">
+            <div className="flex flex-col items-center 
+            p-2 m-1 overflow-y-auto 
+               ">
+                <div className=" p-3 min-w-[370px] 
+                max-w-[500px] w-[70%] h-[600px]  overflow-y-auto">
 
-                    {data.map((item) => {
-                        return <li >
-                            <AppliedCards name={item.name}
-                                img={item.img} email={item.email} pdf={item.pdfUrl} />
-                        </li>
-                    })}
-                </ol>
+                    <span className="text-green-200 
+                    text-2xl font-serif  ">Resumes :</span><br />
+                    <div className="text-green-200 text-[1.1rem]
+                    relative -top-2"> Total : <b className="text-green-400">{data ? data.length : 0}</b> </div>
+                    <ol className="list-decimal pl-6 
+                     text-green-200  ">
+
+                        {data.map((item) => {
+                            return <li >
+                                <AppliedCards name={item.name}
+                                    img={item.img} email={item.email} pdf={item.pdfUrl} />
+                            </li>
+                        })}
+                    </ol>
+                </div>
             </div>
         </>
     );

@@ -105,7 +105,7 @@ function HomeWithLogin({ logout, user, isAuthenticated, useAsSearch, iAmReady })
                     </header><hr className="border-[1px] 
      border-green-950"></hr>
 
-                    <main>
+                    <main className="p-2">
                         <NoSearchResult />
                     </main><hr className="border-[1px] 
      border-green-950"></hr>
@@ -129,7 +129,7 @@ function HomeWithLogin({ logout, user, isAuthenticated, useAsSearch, iAmReady })
      border-green-950"></hr>
 
 
-            <main>
+            <main className="pb-2">
 
                 {dataFromServer ? <myContext.Provider value={{
                     dataFromServer, setDataForAboutJob,
