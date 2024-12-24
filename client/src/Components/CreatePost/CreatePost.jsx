@@ -5,6 +5,8 @@ import { MyContext } from "./myContext";
 import { requestServer } from "../../MyLib/RequestServer/requestServer";
 import { useControlLogin } from "../../MyLib/MyHook/controlLogin";
 import { useNavigate } from "react-router-dom";
+import { commonContext } from "../../MyLib/commonContext";
+import { Header } from "../Header/header";
 
 const toServer = new requestServer(process.env.REACT_APP_SERVER_URL
   + "/xtServer/api/createPost",
@@ -19,7 +21,7 @@ function CreatePost({ }) {
   const [section1FinalInputReport, setsection1FinalInputReport] = useState([]);
   const [section2FinalInputReport, setsection2FinalInputReport] = useState([]);
   const [section3FinalInputReport, setsection3FinalInputReport] = useState([]);
-  const { isAuthenticated, isLoading } = useControlLogin();
+  const { isAuthenticated, isLoading, nowLogout, user } = useControlLogin();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -241,11 +243,20 @@ function CreatePost({ }) {
 
       return (
         <>
+          <header >
+            <commonContext.Provider value={{ user }}>
+              <Header logout={nowLogout} search_Link ></Header>
+            </commonContext.Provider>
+          </header>
+          <hr className="border-[1px] 
+                                 border-green-950"></hr>
           <div className="p-1">
-            <div className="flex flex-row   ">
-              <div className="text-4xl font-serif 
-          text-teal-600 mt-3 ml-3 mb-4 ">
-                Create Post
+            <div className="flex flex-row  justify-center
+            relative w-full mb-4
+           ">
+              <div className="text-4xl font-serif
+          text-teal-600  ">
+                Create Job
               </div>
 
             </div>

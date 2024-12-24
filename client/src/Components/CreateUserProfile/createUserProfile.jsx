@@ -262,10 +262,12 @@ function CreateUserProfile({ isAuthenticated, email }) {
     return (
         <>
             <div className="p-1">
-                <div className="flex flex-row   ">
-                    <div className="text-4xl font-serif 
-          text-teal-600 mt-3 ml-3 mb-4 ">
-                        Create User Profile
+                <div className="flex flex-row  justify-center
+            relative w-full mb-4
+           ">
+                    <div className="text-4xl font-serif
+          text-teal-600  ">
+                        Welcome
                     </div>
 
                 </div>

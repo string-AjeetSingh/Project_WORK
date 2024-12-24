@@ -12,8 +12,8 @@ function UserButton({ login, logout, __note_this_component_use_context_and_i_am_
     const navigate = useNavigate(null);
 
     const panel = [
-        <div className=" flex flex-col absolute
-         p-2 m-1 min-w-[250px] z-20 items-start
+        <div className=" flex flex-col absolute 
+         p-2 m-1 min-w-[250px] z-20 items-start 
          bg-green-900 border border-green-950"
             style={{
                 right: '3px'
@@ -73,14 +73,14 @@ function UserButton({ login, logout, __note_this_component_use_context_and_i_am_
 
     return (
         <>
-            <div>
+            <div >
 
                 <button onClick={() => {
                     handleClick();
                 }}
                     className="size-10 border-none relative
-            rounded-full    overflow-hidden
-            bg-cyan-700 m-1 mr-1">
+            rounded-full    overflow-hidden 
+            bg-cyan-700 m-1 mr-2">
 
                     <img ref={arefImg} className="w-full" alt="a img"
                         src={user ? '/stock/icon/defaultUser.png' : '/stock/icon/noUser3.png'}></img>

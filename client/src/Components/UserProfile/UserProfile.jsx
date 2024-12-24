@@ -286,7 +286,7 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
 
                             <GetInput index="5" inputName="discription"
                                 inputHeight="32" spaceOccupy={getInputSpace}
-                                name={"Discription"}
+                                name={"Dewscription"}
                                 prevValue={sectionReport[5]}
                                 totalInputLength={200} OutReport={updateFinalInputReport}
                                 placeHolder="Tell Brife About You ..."

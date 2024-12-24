@@ -1,8 +1,10 @@
 import { AboutJob } from "../Components/AboutJob/aboutJob";
+import { Header } from "../Components/Header/header";
 import { commonContext } from "../MyLib/commonContext";
 import { useParams } from "react-router-dom";
 import { requestServer } from "../MyLib/RequestServer/requestServer";
 import { useEffect, useState, useRef } from 'react'
+import { useControlLogin } from "../MyLib/MyHook/controlLogin";
 import { LoadingScreen } from "../Components/TranstitionScreen/LoadingScreen";
 
 
@@ -13,12 +15,13 @@ function JobDetail({ }) {
     const [dataForAboutJob, setdataForAboutJob] = useState(null);
     console.log('the data is  : ', dataForAboutJob);
     const [boolScreen, setboolscreen] = useState(true);
+    const { isAuthenicated, user, isLoading, nowLogout } = useControlLogin();
 
     async function fetchData() {
         console.log('from fetchData -- -- - -');
         let job = new requestServer(process.env.REACT_APP_SERVER_URL
             + '/xtServer/api/fetchAPost' + `?no=${no}`, { method: 'GET' });
-        job.setAuthorizedFlag(true);
+        job.setAuthorizedFlag(isAuthenicated);
         job.noBody();
         let result = await job.requestJson();
 
@@ -62,12 +65,21 @@ function JobDetail({ }) {
 
     return (
         <>  {boolScreen ? <LoadingScreen outControl={loadingScreen} /> : null}
+            <header >
+                <commonContext.Provider value={{ user }}>
+                    <Header logout={nowLogout} search_Link ></Header>
+                </commonContext.Provider>
+            </header>
+            <hr className="border-[1px] 
+                                 border-green-950"></hr>
             <main>
                 <div className="flex flex-row">
 
                     {dataForAboutJob ?
                         <commonContext.Provider value={{ dataForAboutJob }}>
-                            <AboutJob useInJobDetailjsx />
+                            <AboutJob isAuthenicated={isAuthenicated}
+                                email={user.email}
+                                useInJobDetailjsx />
                         </commonContext.Provider>
                         :
                         <h1>No data from server</h1>

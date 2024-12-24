@@ -1012,7 +1012,7 @@ function Section1({ children, animation = false,
 
                     <GetInput index="5" inputName="discription"
                         inputHeight="20" spaceOccupy={getInputSpace}
-                        name={"Discription"}
+                        name={"Description"}
                         prevValue={section1FinalInputReport[5]}
                         totalInputLength={200} OutReport={OutReportFromInputs}
                         placeHolder="Tell Brife About You ..."

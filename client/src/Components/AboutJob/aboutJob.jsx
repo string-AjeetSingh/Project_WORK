@@ -89,7 +89,7 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
     if (dataForAboutJob) {
         return (<>
             <div className="p-2 text-green-200 w-full 
-            overflow-y-auto h-full  min-w-[350px] ">
+            overflow-y-auto h-fit  min-w-[350px]  ">
                 <div className="flex flex-col justify-center 
             items-center mb-2">
                     <img src={dataForAboutJob ? dataForAboutJob.img : null}

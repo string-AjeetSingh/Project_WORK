@@ -7,7 +7,7 @@ function AppliedInd({ data }) {
             p-2 m-1 overflow-y-auto 
                ">
                 <div className=" p-3 min-w-[370px] 
-                max-w-[500px] w-[70%] h-[600px]  overflow-y-auto">
+                max-w-[700px] w-[90%] h-[600px]  overflow-y-auto">
 
                     <span className="text-green-200 
                     text-2xl font-serif  ">Resumes :</span><br />

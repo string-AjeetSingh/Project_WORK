@@ -91,7 +91,7 @@ function ProviderJobDetail({ }) {
 
     return (
         <>  {boolScreen ? <LoadingScreen outControl={loadingScreen} /> : null}
-            <main className="flex flex-row justify-center">
+            <main className="flex flex-row justify-center pt-5 pb-5">
                 {isAuthenticated ?
                     <>
 

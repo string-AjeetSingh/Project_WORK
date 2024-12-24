@@ -34,7 +34,7 @@ function Header({ children, login, logout, key, search_Link }) {
                         border-t border-t-teal-800  hover:bg-green-800 active:bg-green-900
                         text-green-200 bg-teal-950
                         p-2">
-                    <img className="w-5 h-6" src="./stock/icon/search.png">
+                    <img className="w-5 h-6" src="/stock/icon/search.png">
                     </img>
                 </button>
             </div>
@@ -178,7 +178,7 @@ function Header({ children, login, logout, key, search_Link }) {
                             }} title="Provide Work"
                                 className="m-1  text-[0.7rem] rounded-md
                         border-[2px] hover:bg-green-800 active:bg-green-900
-                        text-green-200
+                        text-green-200 
                         border-transparent p-1">
                                 <div className="flex flex-col items-center">
                                     <img src="/stock/icon/provide.png" className="size-7 m-1"></img>
@@ -190,7 +190,7 @@ function Header({ children, login, logout, key, search_Link }) {
                             <div>
                                 <input ref={refSearch} className="rounded-md  bg-transparent 
                       bg-green-950 border-[2px] border-green-950
-                      placeholder-green-200 text-green-200
+                      placeholder-green-200 text-green-200 
                       text-[1rem] p-1 m-1  hover:bg-green-800
                       focus:bg-green-800"
                                     type="search" placeholder=" Search Jobs"></input>
