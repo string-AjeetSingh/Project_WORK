@@ -43,10 +43,7 @@ function DashBoard({ }) {
                 <hr className="border-[1px] 
                                  border-green-950"></hr>
                 <main>
-                    <div className="text-3xl font-serif m-1 p-1 
-                                text-green-700" >
-                        DashBoard</div>
-                    <hr className="border-green-600 m-1"></hr>
+
                     <UserProfile isAuthenticated={isAuthenticated} iAmReady={offLoadingScreenFromChild} />
 
 

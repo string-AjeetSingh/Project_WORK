@@ -113,7 +113,7 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
                         "Dummy Software Designer"}
 
                 </div>
-                <div className="flex flex-row justify-end">
+                <div className="flex flex-row justify-end ">
 
                     {!useInProviderJobDetailjsx ?
                         <button

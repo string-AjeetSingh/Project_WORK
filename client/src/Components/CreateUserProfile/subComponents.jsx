@@ -362,7 +362,7 @@ function GetInput({ name, inputName, index,
 
     return (
         <>
-            <div className={`flex flex-col 
+            <div className={`flex flex-col  text-teal-300
             ${isDisabled ?
                     '*:text-slate-600 *:placeholder:text-slate-600' : null}
        m-1

@@ -54,13 +54,13 @@ function ProvideWork({ isAuthenticated, email }) {
             </div>
             <div className="m-2 p-1 flex flex-col items-end">
 
-                <div className="font-serif  self-end
-            text-3xl  text-green-700
+                <div className="font-serif  font-bold self-end
+            text-3xl  text-green-300
              ">
                     {data ? data.userData.name : 'User Name'}</div>
 
                 <div className="font-serif text-[1.1rem]
-        relative bottom-1  text-green-700">
+        relative bottom-1  text-green-200">
                     {email ? email : ' email@gmail.com'}</div>
 
             </div>
@@ -75,7 +75,8 @@ function ProvideWork({ isAuthenticated, email }) {
                  flex flex-row justify-center items-center">
                     <img className="w-16 relative  " src="/provider2.png"></img>
                 </button>
-            </div>
+            </div><hr className="border-green-800">
+            </hr>
 
             <ProviderStatus isAuthenticated={isAuthenticated} />
 

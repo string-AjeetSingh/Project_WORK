@@ -238,10 +238,10 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
         <>
             {data ?
                 useAsUpdate ?
-                    <div className='p-2'>
+                    <div className='p-2 flex flex-row justify-center '>
 
                         <div className=" m-1 p-4 border 
-      border-green-800 rounded-2xl relative
+      border-green-800 rounded-2xl relative 
       flex flex-col w-full max-w-[800px] " >
 
 
@@ -285,7 +285,7 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
                             />
 
                             <GetInput index="5" inputName="discription"
-                                inputHeight="20" spaceOccupy={getInputSpace}
+                                inputHeight="32" spaceOccupy={getInputSpace}
                                 name={"Discription"}
                                 prevValue={sectionReport[5]}
                                 totalInputLength={200} OutReport={updateFinalInputReport}
@@ -358,42 +358,51 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
                         </div>
                     </div>
                     :
-                    <div className='p-2 flex flex-col ' >
-                        <ProfileImageSection screen={data.userData.color} imgSrc={data.userData.img}></ProfileImageSection>
-                        <br></br>
+                    <div className='p-2 flex flex-col items-center  ' >
+                        <div className='p-2 flex flex-col w-full 
+                        border rounded-2xl border-green-600
+                        max-w-[900px] min-w-[370px]'>
 
-                        <button onClick={() => {
-                            navigate('/updateProfile');
-                        }}
-                            className="m-1  text-[1rem] rounded-md bg-green-950
+                            <ProfileImageSection screen={data.userData.color} imgSrc={data.userData.img}></ProfileImageSection>
+                            <br></br>
+
+                            <button onClick={() => {
+                                navigate('/updateProfile');
+                            }}
+                                className="m-1  text-[1rem] rounded-md bg-green-950
                         border-[2px] hover:bg-green-800 active:bg-green-900
                         text-green-200 w-52 self-center rounded-tl-2xl
                         border-green-950 p-1">
-                            Edit Profile
-                        </button>
+                                Edit Profile
+                            </button>
 
-                        <button onClick={() => {
-                            navigate('/provider');
-                        }}
-                            className="m-1  text-[1rem] rounded-md bg-green-950
+                            <button onClick={() => {
+                                navigate('/provider');
+                            }}
+                                className="m-1  text-[1rem] rounded-md bg-green-950
+                        
                         border-[2px] hover:bg-green-800 active:bg-green-900
                         text-green-200 w-80 self-center rounded-tl-2xl
                         border-green-950 p-1">
-                            Switch To Provider
-                        </button>
+                                Switch To Provider
+                            </button>
 
-                        <ProfileSection2 userName={data.userData.name}
-                            title={data.userData.title}
-                            email={data.userSocialData.email} />
-                        <br></br>
-                        <Status>{data.userData.status}</Status>
-                        <Discription>{data.userData.description}</Discription>
-                        <Skills>{data.userData.skills}</Skills>
-                        <Education>{data.userData.education} </Education>
-                        <Experiance>{data.userData.experiance}</Experiance>
-                        <hr className='border-green-800'></hr>
-                        <SocialMedia email={data.userSocialData.email}
-                            github={data.userSocialData.github} x={data.userSocialData.x} />
+                            <ProfileSection2 userName={data.userData.name}
+                                title={data.userData.title}
+                                email={data.userSocialData.email} />
+                            <br></br>
+                            <div className='flex flex-col'>
+
+                                <Status>{data.userData.status}</Status>
+                                <Discription>{data.userData.description}</Discription>
+                                <Skills>{data.userData.skills}</Skills>
+                                <Education>{data.userData.education} </Education>
+                                <Experiance>{data.userData.experiance}</Experiance>
+                            </div>
+                            <hr className='border-green-800'></hr>
+                            <SocialMedia email={data.userSocialData.email}
+                                github={data.userSocialData.github} x={data.userSocialData.x} />
+                        </div>
                     </div>
 
 

@@ -9,11 +9,11 @@ function Card({ companyName, imgSrc, jobHeading,
     dataToSetOnState, setState, isDefault, docNo }) {
 
     const aref = useRef(null);
-    const [lstate, setlstate] = useState('border-black');
+    const [lstate, setlstate] = useState('border-green-800');
     const navigate = useNavigate();
 
     function off() {
-        setlstate('border-black');
+        setlstate('border-green-800');
     }
 
     function handleClick() {
@@ -60,9 +60,9 @@ function Card({ companyName, imgSrc, jobHeading,
                      text-slate-500 text-[0.8rem] bg-blue-950'>{tag}</div>
                     </div>
 
-                    <div className='flex flex-row flex-wrap
+                    <div className='flex flex-row flex-wrap items-center
                 flex-start w-full'>
-                        <img className='m-1' src={imgSrc} alt='company image'></img>
+                        <img className='m-1 size-10 rounded-full' src={imgSrc} alt='company image'></img>
                         <div className='text-[1.2rem] text-green-600
                     font-serif
                     '>{companyName}</div>
@@ -86,11 +86,10 @@ function Card({ companyName, imgSrc, jobHeading,
 
 function CommonWrapper({ children }) {
     return (<>
-        <div className="flex-col m-1 mb-5
-        p-4 rounded-xl
-        text-blue-400 border-l
-        border-b
-         border-green-800">
+        <div className="flex-col m-1 
+        p-1 rounded-xl  
+        text-blue-400 
+        ">
             {children}
         </div>
     </>);

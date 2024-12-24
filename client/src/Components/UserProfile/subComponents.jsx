@@ -24,7 +24,7 @@ function ProfileImageSection({ screen, imgSrc }) {
         return (<>
             <div className={`${screen ? screen : 'bg-slate-700'} p-5 flex flex-row self-center
            rounded-2xl border-2 border-green-800 w-[80%]  `}>
-                <div className="size-36 relative top-14  overflow-hidden
+                <div className="size-24 relative top-14  overflow-hidden
             border-2 border-green-900
              rounded-full bg-slate-500 ">
                     <img className="w-full"
@@ -39,7 +39,7 @@ function ProfileImageSection({ screen, imgSrc }) {
         return (<>
             <div className={`${screen ? screen : 'bg-slate-700'} p-5 flex flex-row self-center
            rounded-2xl border-2 border-green-800  min-w-[315px] `}>
-                <div className="size-28 relative top-12 overflow-hidden
+                <div className="size-20 relative top-12 overflow-hidden
             border-2 border-green-900
              rounded-full bg-slate-500 ">
                     <img className="w-full"
@@ -52,7 +52,7 @@ function ProfileImageSection({ screen, imgSrc }) {
         return (<>
             <div className={`${screen ? screen : 'bg-slate-700'} p-5 flex flex-row self-center
            rounded-2xl border-2 border-green-800 max-w-[650px] w-[80%] `}>
-                <div className="size-40 relative top-16 overflow-hidden
+                <div className="size-32 relative top-16 overflow-hidden
             border-2 border-green-900
              rounded-full bg-slate-500 ">
                     <img className="w-full"
@@ -69,19 +69,19 @@ function ProfileSection2({ children, userName, email, title }) {
     return (<>
         <div className="m-2 p-1 flex flex-col items-end">
 
-            <div className="font-serif  self-end
-            text-3xl  text-green-700
+            <div className="font-serif font-bold  self-end
+            text-4xl  text-green-300 
              ">
                 {userName ? userName : 'User Name'}</div>
 
             <div className="font-serif text-[1.1rem]
-        relative bottom-1  text-green-700">
+        relative bottom-1  text-green-200">
                 {email ? email : ' email@gmail.com'}</div>
 
 
             <div className="font-serif text-3xl
-       self-start mt-7 top-5 
-       text-green-700
+       self-start mt-7 top-5  
+       text-green-300
        relative ">
                 {title ? title : 'A Web Developer'}</div>
         </div>
@@ -106,14 +106,14 @@ function Status({ children }) {
 
     return (<>
         <CommonWrapper>
-            <div className="font-serif text-[1.3rem]
-       self-start 
+            <div className="font-serif text-[1.4rem]
+       self-start  text-green-300 font-bold
        relative bottom-1">
-                <i>Status</i>
+                Status :
             </div>
             <input ref={theInput}
-                className="rounded-xl border
-            w-[50%] min-w-72 p-1
+                className=" text-[1.2rem] pl-3
+            w-[50%] min-w-72  relative bottom-2
             border-blue-700 bg-transparent">
             </input>
         </CommonWrapper>
@@ -140,15 +140,15 @@ function Discription({ children }) {
     return (<>
 
         <CommonWrapper>
-            <div className="font-serif text-[1.3rem]
-       self-start 
-       relative bottom-1">
-                <i>Discription</i>
+            <div className="font-serif text-[1.4rem]
+         text-green-300 font-bold mb-1
+       relative ">
+                Discription :
             </div>
-            <textarea ref={theInput}
-                className="rounded-xl border
-              w-[70%] min-w-72 h-64 p-1
-            border-blue-700 bg-transparent">
+            <textarea ref={theInput} readOnly
+                className="rounded-md  relative bottom-2 
+              w-[45%] min-w-72 h-48 pl-2 pr-2 text-[1.1rem]
+            border-green-800 bg-transparent">
             </textarea>
 
         </CommonWrapper>
@@ -175,14 +175,14 @@ function Experiance({ children }) {
     return (<>
 
         <CommonWrapper>
-            <div className="font-serif text-[1.3rem]
-       self-start 
+            <div className="font-serif text-[1.4rem]
+       self-start text-green-300 font-bold
        relative bottom-1">
-                <i>Experiance</i>
+                Experiance
             </div>
-            <textarea ref={theInput}
-                className="rounded-xl border
-              w-[70%] min-w-72  p-1 h-64
+            <textarea ref={theInput} readOnly
+                className="rounded-xl relative bottom-2
+              w-[45%] min-w-72 h-64 pl-3
             border-blue-700 bg-transparent">
             </textarea>
 
@@ -211,14 +211,14 @@ function Education({ children }) {
     return (<>
 
         <CommonWrapper>
-            <div className="font-serif text-[1.3rem]
-       self-start 
+            <div className="font-serif text-[1.4rem]
+       self-start  text-green-300 font-bold
        relative bottom-1">
-                <i>Education</i>
+                Education
             </div>
-            <textarea ref={theInput}
-                className="rounded-xl border
-              w-[70%] min-w-72 h-32 p-1
+            <textarea ref={theInput} readOnly
+                className="rounded-xl relative bottom-2
+              w-[45%] min-w-72 h-32 pl-3
             border-blue-700 bg-transparent">
             </textarea>
 
@@ -245,15 +245,15 @@ function Skills({ children }) {
         return (<>
             <CommonWrapper>
                 <div className="font-serif text-[1.3rem]
-           self-start 
+           self-start text-green-300 font-bold
            relative bottom-1">
-                    <i>Skills</i>
+                    Skills
                 </div>
                 <div
                     className="flex flex-row flex-wrap p-2
                 rounded-xl border
-                  w-[70%] min-w-72  h-40 
-                border-blue-700 bg-transparent">
+                  w-[45%] min-w-72  h-40 
+                border-green-800 bg-transparent">
 
                     {children.length > 0 ? children.map((item) => {
                         return <SkillsCards>{item}</SkillsCards>
@@ -281,11 +281,9 @@ function SkillsCards({ children }) {
 
 function CommonWrapper({ children }) {
     return (<>
-        <div className="flex-col m-1 mb-5
-        p-4 rounded-xl
-        text-blue-400 border-l
-        border-b
-         border-green-800">
+        <div className="flex-col m-1 
+        p-2 rounded-xl
+        text-green-200 ">
             {children}
         </div>
     </>);
@@ -295,25 +293,28 @@ function CommonWrapper({ children }) {
 
 function SocialMedia({ email, github, x }) {
     return (<>
-        <div className="m-1 flex flex-row flex-wrap justify-between">
+        <div className="m-1 flex flex-col flex-wrap justify-between text-green-200">
 
             {email ?
                 <div className="m-1">
-                    <div className="font-serif font-bold text-[1.2rem]">Email : </div>
+                    <div className="font-serif text-green-300
+                    font-bold text-[1.4rem]">Email : </div>
                     <span className="relative bottom-2">{email}</span>
                 </div>
                 : null}
 
             {x ?
                 <div className="m-1">
-                    <div className="font-serif font-bold text-[1.2rem]">X : </div>
+                    <div className="font-serif text-green-300
+                    font-bold text-[1.2rem]">X : </div>
                     <span className="relative bottom-2">{x}</span>
                 </div>
                 : null}
 
             {github ?
                 <div className="m-1">
-                    <div className="font-serif font-bold text-[1.2rem]">GitHub : </div>
+                    <div className="font-serif font-bold text-green-300
+                    text-[1.2rem]">GitHub : </div>
                     <span className="relative bottom-2">{github}</span>
                 </div>
                 : null}

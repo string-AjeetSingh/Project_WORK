@@ -45,11 +45,11 @@ function ProviderStatus({ isAuthenticated }) {
                 Provided Work :
             </h1>
 
-            <div className="flex flex-row  w-[80%]   ">
+            <div className="flex flex-row    ">
                 <CommonWrapper>
                     <div className=" flex flex-row flex-wrap
-             overflow-y-auto min-w-[350px]  m-1 w-full justify-start
-            h-80">
+             overflow-y-auto min-w-[350px]  m-1 w-full justify-center
+            h-96">
                         {data instanceof Array ?
                             data.map((item) => {
                                 return <Card companyName={item.companyName} theClick={'link'}

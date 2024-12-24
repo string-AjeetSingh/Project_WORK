@@ -50,9 +50,12 @@ function Provider({ }) {
                         </commonContext.Provider>
                     </header><hr className="border-[1px] 
                               border-green-950"></hr>
-                    <main>
-
-                        <ProvideWork isAuthenticated={isAuthenticated} email={user ? user.email : null} />
+                    <main className="flex flex-row justify-center p-3">
+                        <div className='p-2 flex flex-col w-full 
+                        border rounded-2xl border-green-600
+                        max-w-[900px] min-w-[370px]'>
+                            <ProvideWork isAuthenticated={isAuthenticated} email={user ? user.email : null} />
+                        </div>
                     </main>
 
                     <footer>
