@@ -1,0 +1,18 @@
+{
+    "Part Time": {
+        "color": "bg-red-800",
+        "fontColor": "text-slate-300"
+    },
+    "Full Time": {
+        "color": "bg-teal-800",
+        "fontColor": "text-teal-200"
+    },
+    "Office": {
+        "color": "bg-pink-800",
+        "fontColor": "text-pink-300"
+    },
+    "Remote": {
+        "color": "bg-orange-700",
+        "fontColor": "text-red-100"
+    }
+}

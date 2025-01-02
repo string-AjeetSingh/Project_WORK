@@ -2,6 +2,8 @@ import { useEffect, useRef, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { myContext } from './myContext';
+import { commonContext } from '../../MyLib/commonContext';
+import filterColors from './../../Jsons/filterColors.json';
 
 
 function Container({ children }) {
@@ -67,7 +69,7 @@ function ContainerNav({ data, common, setCommon, setContainer, children, isDefau
 }
 
 function Card({ companyName, imgSrc, jobHeading,
-    timeAgo, tag, prev, index, location,
+    timeAgo, prev, index, location, tags,
     dataToSetOnState, setState, isDefault, __note_this_component_use_context_and_i_am_a_message__ }) {
 
     const { theClick } = useContext(myContext);
@@ -123,7 +125,7 @@ function Card({ companyName, imgSrc, jobHeading,
                         <div className="flex flex-row text-[0.8rem] 
          justify-between w-full">
                             <div>{timeAgo} Ago</div> <div className='p-1
-              text-slate-500 text-[0.8rem] bg-blue-950'>{tag}</div>
+              text-slate-500 text-[0.8rem] bg-blue-950'></div>
                         </div>
 
                         <div className='flex flex-row flex-wrap
@@ -142,9 +144,19 @@ function Card({ companyName, imgSrc, jobHeading,
          '>{location ? location : "DumyBad, India"}</div>
                         <hr className='w-full m-1 border-1 border-green-800 rounded-md'></hr>
 
-                        <div className='p-1 m-1 text-green-300 
-         font-serif self-start text-[0.8rem]
-         bg-green-900 rounded-r-2xl' >{tag}</div>
+
+                        <div className='flex flex-row flex-wrap 
+                    h-fit items-center'>
+                            <div className='p-1 m-1 mr-3 text-green-300 
+         font-serif  text-[0.8rem]
+         bg-green-900 rounded-r-2xl' ></div>
+                            {tags.length > 0 ?
+                                tags.map((item) => {
+                                    return <Worktag name={item} />
+                                })
+                                : null}
+
+                        </div>
 
                     </div>
                 </Link>
@@ -158,7 +170,7 @@ function Card({ companyName, imgSrc, jobHeading,
                     <div className="flex flex-row text-[0.8rem] 
          justify-between w-full">
                         <div>{timeAgo} Ago</div> <div className='p-1
-              text-slate-500 text-[0.8rem] bg-blue-950'>{tag}</div>
+              text-slate-500 text-[0.8rem] bg-blue-950'></div>
                     </div>
 
                     <div className='flex flex-row flex-wrap
@@ -175,9 +187,26 @@ function Card({ companyName, imgSrc, jobHeading,
          '>{location ? location : "DumyBad, India"}</div>
                     <hr className='w-full m-1 border-1 border-green-800 rounded-md'></hr>
 
-                    <div className='p-1 m-1 text-green-300 
-         font-serif self-start text-[0.8rem]
-         bg-green-900 rounded-r-2xl' >{tag}</div>
+                    <div className='flex flex-row flex-wrap 
+                    h-fit items-center'>
+                        <div className='p-1 m-1 mr-3 text-green-300 
+         font-serif  text-[0.8rem]
+         bg-green-900 rounded-r-2xl' ></div>
+                        {tags.length > 0 ?
+                            tags.map((item) => {
+                                let out = null;
+                                Object.keys(filterColors).forEach((key) => {
+                                    if (key === item) {
+
+                                        out = <Worktag name={item} color={filterColors[key].color}
+                                            fontColor={filterColors[key].fontColor} />
+                                    }
+                                })
+                                return out;
+                            })
+                            : null}
+
+                    </div>
 
                 </div>
             }
@@ -186,13 +215,17 @@ function Card({ companyName, imgSrc, jobHeading,
     );
 }
 
-function Filter({ }) {
+function Filter({ data, setData }) {
     const [filterData, setfilterData] = useState({ prev: [], curr: [], app: [] });
-    console.log('the filter Data is : ', filterData);
+    //console.log('the filter Data is : ', filterData);
     const [panel, setPanel] = useState({
         isActivated: false, activate: null,
         deActivate: null
     });
+
+
+
+
 
     function handleActivate() {
         setPanel((prev) => {
@@ -260,23 +293,60 @@ function Filter({ }) {
         })
     }, [])
 
+    useEffect(() => {
+        if (filterData.app.length > 0) {
+            let containbool = false;
+            filterData.app.forEach((item) => {
+                if (item) {
+                    containbool = true;
+                }
+            })
+
+            if (containbool) {
+                if (data) {
+                    if (data.length > 0) {
+                        let newArr = [];
+                        let bool = false;
+                        data.forEach((dataItem) => {
+                            bool = false;
+                            dataItem.types.forEach((type) => {
+                                filterData.app.forEach((appliedType) => {
+                                    if (appliedType === type) {
+                                        bool = true;
+                                    }
+                                })
+                            })
+                            if (bool) {
+                                newArr.push(dataItem);
+                            }
+                        })
+                        console.log('the new array after apply : ', newArr);
+                        //setData(newArr);
+                    }
+                }
+            }
+        }
+    }, [filterData.app])
+
+
+
     return (
         <>
             <div className='flex flex-col items-center relative '>
 
                 <div className='flex flex-row items-center p-1 pt-2 pb-2 
              w-full  overflow-x-auto bg-green-900 '>
-                    <FilterButtons index={1} name={'Remote'} color={'bg-orange-700'}
-                        fontColor={'text-red-100'} panelControl={panel}
+                    <FilterButtons index={1} name={'Remote'} color={filterColors.Remote.color}
+                        fontColor={filterColors.Remote.fontColor} panelControl={panel}
                         setData={setfilterData} data={filterData} />
-                    <FilterButtons index={2} name={'Part Time'} color="bg-red-800"
-                        fontColor="text-slate-300" panelControl={panel}
+                    <FilterButtons index={2} name={'Part Time'} color={filterColors['Part Time'].color}
+                        fontColor={filterColors['Part Time'].fontColor} panelControl={panel}
                         setData={setfilterData} data={filterData} />
-                    <FilterButtons index={3} name={'Full Time'} color="bg-teal-800"
-                        fontColor="text-teal-200" panelControl={panel}
+                    <FilterButtons index={3} name={'Full Time'} color={filterColors['Full Time'].color}
+                        fontColor={filterColors['Full Time'].fontColor} panelControl={panel}
                         setData={setfilterData} data={filterData} />
-                    <FilterButtons index={4} name={'Office'} color="bg-pink-800"
-                        fontColor="text-pink-300" panelControl={panel}
+                    <FilterButtons index={4} name={'Office'} color={filterColors.Office.color}
+                        fontColor={filterColors.Office.fontColor} panelControl={panel}
                         setData={setfilterData} data={filterData} />
 
 
@@ -395,5 +465,16 @@ function FilterButtons({ name, color, fontColor, index,
     );
 }
 
+function Worktag({ name, color, fontColor }) {
+    return (
+        <>
+            <div className={`flex flex-row items-center p-1 mr-1 shrink-0
+            border rounded-md  ${color} `}>
+                <lable className={` text-[0.8rem] ${fontColor}`}>{name}</lable>
+            </div>
+        </>
+    );
+}
 
-export { Container, ContainerNav, Card, Filter };
+
+export { Container, ContainerNav, Card, Filter, Worktag };

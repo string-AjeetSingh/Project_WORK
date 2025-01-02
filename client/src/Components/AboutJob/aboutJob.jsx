@@ -7,6 +7,8 @@ import { ButtonAnimation } from "../../MyLib/Animation/animation";
 import { requestServer } from "../../MyLib/RequestServer/requestServer";
 import { pleaseWait } from "../../MyLib/Animation/animation";
 import { flushSync } from "react-dom";
+import filterColors from './../../Jsons/filterColors.json'
+import { Worktag } from "../JobCards/subComponents";
 
 
 function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInProviderJobDetailjsx,
@@ -199,7 +201,28 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
                 <hr className="w-full mt-1 mb-3 rounded-xl border-1 
                 border-green-800"></hr>
 
-                <div className="font-serif text-2xl text-green-300 font-bold">
+                <div className='flex flex-row flex-wrap 
+                    h-fit items-center'>
+                    <div className='p-1 m-1 mr-3 text-green-300 
+         font-serif  text-[0.8rem]
+         bg-green-900 rounded-r-2xl' ></div>
+                    {dataForAboutJob.types.length > 0 ?
+                        dataForAboutJob.types.map((item) => {
+                            let out = null;
+                            Object.keys(filterColors).forEach((key) => {
+                                if (key === item) {
+
+                                    out = <Worktag name={item} color={filterColors[key].color}
+                                        fontColor={filterColors[key].fontColor} />
+                                }
+                            })
+                            return out;
+                        })
+                        : null}
+
+                </div>
+
+                <div className="font-serif text-2xl mt-2 text-green-300 font-bold">
                     About:
                 </div>
                 <div className="relative left-5 w-[96%]">

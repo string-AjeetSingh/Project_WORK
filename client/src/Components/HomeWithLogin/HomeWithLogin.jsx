@@ -133,7 +133,7 @@ function HomeWithLogin({ logout, user, isAuthenticated, useAsSearch, iAmReady })
 
                 {dataFromServer ? <myContext.Provider value={{
                     dataFromServer, setDataForAboutJob,
-                    dataForAboutJob
+                    dataForAboutJob, setdataFromServer
                 }}>
 
                     <Section1 children1={size < 700 ? <JobCards link /> : <JobCards link={false} />}

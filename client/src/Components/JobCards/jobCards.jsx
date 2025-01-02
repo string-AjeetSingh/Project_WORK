@@ -7,7 +7,7 @@ import { myContext } from '../HomeWithLogin/myContext';
 
 function JobCards({ children, link, __note_this_component_use_context_and_i_am_a_message__ }) {
 
-    const { dataFromServer, setDataForAboutJob } = useContext(myContext);
+    const { dataFromServer, setDataForAboutJob, setdataFromServer } = useContext(myContext);
 
     let [cardsArr, setCardsArr] = useState([]);
     let [navItemArr, setnavItemArr] = useState([]);
@@ -65,7 +65,7 @@ function JobCards({ children, link, __note_this_component_use_context_and_i_am_a
                     <Card key={docs[i].index}
                         prev={prevCard} index={docs[i].index} dataToSetOnState={docs[i]} location={docs[i].location}
                         companyName={docs[i].companyName} imgSrc={docs[i].img} setState={setDataForAboutJob}
-                        jobHeading={docs[i].jobData.title} tag={docs[i].Tag} timeAgo={docs[i].TimeAgo}
+                        jobHeading={docs[i].jobData.title} tags={docs[i].types} timeAgo={docs[i].TimeAgo}
                         isDefault={i === 0 ? true : false} />
                 )
             }
@@ -195,7 +195,7 @@ function JobCards({ children, link, __note_this_component_use_context_and_i_am_a
             <div className="flex flex-col  ">
                 <div className="flex flex-col w-full ">
 
-                    <Filter />
+                    <Filter data={dataFromServer} setData={setdataFromServer} />
 
                     <Container >
                         <jobContext.Provider value={{ theClick: forwardToCard }} >
