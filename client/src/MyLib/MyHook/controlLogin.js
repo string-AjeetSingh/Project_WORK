@@ -51,15 +51,13 @@ function useControlLogin(isHomePage = false) {
         }
         else {
             console.error('an error with request');
+            return 'error with server';
         }
     }
 
     async function theProcess() {
 
-        const profileImg = new requestServer(process.env.REACT_APP_SERVER_URL
-            + '/xtServer/api/profileImg', {
-            method: 'GET'
-        })
+
         if (!isLoading) {
             if (isAuthenticated) {
 
@@ -70,24 +68,19 @@ function useControlLogin(isHomePage = false) {
                     debug.console('the response from request if authenticated : ', res);
                 }
 
-                setifRegistered(true);
-                /* 
-                
+
+
+
                 res = await isRegistered();
                 if (res) {
-                    
-                setifRegistered(res);
-                profileImg.setAuthorizedFlag(isAuthenticated);
-                delete (profileImg.options.body);
-                res = await profileImg.requestJson();
-                if (res) {
-                    debug.console('profile img is : ', res.json.url);
+
+                    setifRegistered(res);
+
+                } else {
+                    //alert('need to register first');
+                    navigate('/welcomeUser');
                 }
-            } else {
-                //alert('need to register first');
-            navigate('/welcomeUser');
-        }
-        */
+
 
 
             } else {

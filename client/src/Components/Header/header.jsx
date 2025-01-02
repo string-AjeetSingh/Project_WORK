@@ -10,6 +10,7 @@ function Header({ children, login, logout, key, search_Link }) {
     const size = useResizeValue(window.innerWidth);
     const [panelno, setpanelno] = useState(1);
     const refSearch = useRef(null);
+    const [theUserImg, settheUserImg] = useState(null);
     const navigate = useNavigate();
     const { isAuthenticated, setdataFromServer } = useContext(commonContext);
 
@@ -113,6 +114,29 @@ function Header({ children, login, logout, key, search_Link }) {
 
 
     }
+
+    async function ProfileImg() {
+        console.log('from ProfileImg -- -- - -');
+        let job = new requestServer(process.env.REACT_APP_SERVER_URL
+            + '/xtServer/api/profileImg', { method: 'GET' }, true);
+        job.setAuthorizedFlag(isAuthenticated);
+        job.noBody();
+        let result = await job.requestJson();
+        console.log('From ProfileImg the result is :  ', result);
+
+        if (result) {
+            if (result.json.status) {
+                console.log('From ProfileImg the data we found : ', result);
+                return result.json.url;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+    }
+
     async function handleSearch(event) {
         if (event.key === 'Enter') {
             await theSearch();
@@ -136,6 +160,12 @@ function Header({ children, login, logout, key, search_Link }) {
             }
         })
     })
+
+    useEffect(() => {
+        ProfileImg().then((res) => {
+            settheUserImg(res);
+        })
+    }, [])
 
 
     return (
@@ -198,7 +228,7 @@ function Header({ children, login, logout, key, search_Link }) {
 
                         </>
                     }
-                    <UserButton login={login} logout={logout} ></UserButton>
+                    <UserButton userImg={theUserImg} login={login} logout={logout} ></UserButton>
                 </div>
 
 

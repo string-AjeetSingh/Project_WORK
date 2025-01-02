@@ -90,6 +90,7 @@ aRouter.get('/logout', middleware.authorize, controllers.logout);
 aRouter.post('/token', middleware.authorize, controllers.token);
 aRouter.get('/isRegistered', middleware.jwtVerification,
     controllers.isRegistered)
+aRouter.get('/deleteWork', controllers.deleteWork);
 
 
 aRouter.post('/temp', middleware.authorize,

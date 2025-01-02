@@ -12,7 +12,7 @@ const toServer = new requestServer(process.env.REACT_APP_SERVER_URL + "/xtServer
     }, true
 )
 
-function CreateUserProfile({ isAuthenticated, email }) {
+function CreateUserProfile({ isAuthenticated, email, logout }) {
 
     // let { isAuthenticated } = useContext(commonContext);
     const [highLightNav, sethighLightNav] = useState(1);
@@ -30,7 +30,7 @@ function CreateUserProfile({ isAuthenticated, email }) {
         allSectionsArr: [null,
             <Section1 animation={true}
                 outOn={setOn}
-                outOff={setOff}
+                outOff={setOff} logout={logout}
                 OutReportFromInputs={updateFinalInputReport1}
                 buttonHandle1={handleSectionButtons1} />,
 
@@ -59,7 +59,7 @@ function CreateUserProfile({ isAuthenticated, email }) {
     const [sectionArr, setsectionArr] =
         useState(<Section1 animation={true}
             outOn={setOn}
-            outOff={setOff}
+            outOff={setOff} logout={logout}
             OutReportFromInputs={updateFinalInputReport1}
             buttonHandle1={handleSectionButtons1} />)
 

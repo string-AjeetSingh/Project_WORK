@@ -5,7 +5,9 @@ import { useContext } from "react";
 import { useResizeValue } from "../../MyLib/MyHook/customHook";
 import { useNavigate } from "react-router-dom";
 
-function UserButton({ login, logout, __note_this_component_use_context_and_i_am_a_message__ }) {
+function UserButton({ login, logout, __note_this_component_use_context_and_i_am_a_message__,
+    userImg
+}) {
     const [toggle, settoggle] = useState(true);
     const { user } = useContext(commonContext);
     const arefImg = useRef(null);
@@ -82,8 +84,13 @@ function UserButton({ login, logout, __note_this_component_use_context_and_i_am_
             rounded-full    overflow-hidden 
             bg-cyan-700 m-1 mr-2">
 
-                    <img ref={arefImg} className="w-full" alt="a img"
-                        src={user ? '/stock/icon/defaultUser.png' : '/stock/icon/noUser3.png'}></img>
+                    {user ?
+                        <img ref={arefImg} className="w-full" alt="a img"
+                            src={userImg ? userImg : '/stock/icon/defaultUser.png'}></img>
+                        :
+                        <img ref={arefImg} className="w-full" alt="a img"
+                            src={'/stock/icon/noUser3.png'}></img>
+                    }
 
 
                 </button>

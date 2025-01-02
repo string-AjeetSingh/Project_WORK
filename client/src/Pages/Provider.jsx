@@ -8,7 +8,7 @@ import { ProvideWork } from "../Components/ProvideWork/ProvideWork";
 
 function Provider({ }) {
     const { isAuthenticated, isLoading, user,
-        loginWithRedirect, nowLogout } = useControlLogin();
+        nowLogout } = useControlLogin();
     const loadingScreen = useRef(null);
     const [boolscreen, setboolscreen] = useState(true);
 
@@ -52,7 +52,7 @@ function Provider({ }) {
                               border-green-950"></hr>
                     <main className="flex flex-row justify-center p-3">
                         <div className='p-2 flex flex-col w-full 
-                        border rounded-2xl border-green-600
+                        border rounded-2xl border-green-800
                         max-w-[900px] min-w-[370px]'>
                             <ProvideWork isAuthenticated={isAuthenticated} email={user ? user.email : null} />
                         </div>

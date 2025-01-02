@@ -1,4 +1,4 @@
-import { AboutJob } from "../Components/AboutJob/aboutJob";
+import { AboutJob, DeleteWork } from "../Components/AboutJob/aboutJob";
 import { AppliedInd } from "../Components/AppliedIndividuals/AppliedInd";
 import { commonContext } from "../MyLib/commonContext";
 import { useParams } from "react-router-dom";
@@ -6,10 +6,12 @@ import { requestServer } from "../MyLib/RequestServer/requestServer";
 import { useEffect, useState, useRef } from 'react'
 import { LoadingScreen } from "../Components/TranstitionScreen/LoadingScreen";
 import { useControlLogin } from "../MyLib/MyHook/controlLogin";
+import { useNavigate } from "react-router-dom";
 
 
 function ProviderJobDetail({ }) {
     const loadingScreen = useRef(null);
+    const navigate = useNavigate();
     const { no } = useParams()
     const [dataForAboutJob, setdataForAboutJob] = useState(null);
     const [data, setData] = useState(null);
@@ -21,7 +23,7 @@ function ProviderJobDetail({ }) {
         console.log('from fetchData -- -- - -');
         let job = new requestServer(process.env.REACT_APP_SERVER_URL
             + '/xtServer/api/fetchAPost' + `?no=${no}`, { method: 'GET' });
-        job.setAuthorizedFlag(true);
+        job.setAuthorizedFlag(isAuthenticated);
         job.noBody();
         let result = await job.requestJson();
 
@@ -45,7 +47,7 @@ function ProviderJobDetail({ }) {
         console.log('from appliedDetail -- -- - -');
         let job = new requestServer(process.env.REACT_APP_SERVER_URL
             + '/xtServer/api/usersApplied' + `?no=${no}`, { method: 'GET' }, true);
-        job.setAuthorizedFlag(true);
+        job.setAuthorizedFlag(isAuthenticated);
         job.noBody();
         let result = await job.requestJson();
         console.log('From appliedDetail the result is :  ', result);
@@ -59,6 +61,33 @@ function ProviderJobDetail({ }) {
             }
         } else {
             return false;
+        }
+
+    }
+
+    async function deleteJob(deleteButton) {
+        console.log('from deleteJob -- -- - -');
+        console.log('the deleteButton is : ', deleteButton);
+        deleteButton.current.innerHTML = 'Processing';
+        let job = new requestServer(process.env.REACT_APP_SERVER_URL
+            + '/xtServer/api/deleteWork' + `?no=${no}`, { method: 'GET' }, true);
+        job.setAuthorizedFlag(isAuthenticated);
+        job.noBody();
+        let result = await job.requestJson();
+        console.log('From deleteJob the result is :  ', result);
+
+        if (result) {
+            if (result.json.status) {
+                console.log('From deleteJob the data we found : ', result);
+                alert('Deleted');
+                navigate('/provider');
+            } else {
+                alert(result.json.message);
+            }
+            deleteButton.current.innerHTML = 'Delete';
+        } else {
+            alert('Some kind of error from server');
+            deleteButton.current.innerHTML = 'Delete';
         }
 
     }
@@ -112,6 +141,9 @@ function ProviderJobDetail({ }) {
                             {data ?
                                 <AppliedInd data={data} />
                                 : <h1>No User Applied</h1>}
+                            <hr className="w-full mt-7 mb-1 rounded-xl border-1 
+                border-green-800"></hr>
+                            <DeleteWork handleButton={deleteJob} />
 
                         </div>
                     </>

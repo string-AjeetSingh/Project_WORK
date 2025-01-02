@@ -14,7 +14,7 @@ function WelcomeUser({ }) {
                 <>
 
                     <main>
-                        <CreateUserProfile email={user.email}
+                        <CreateUserProfile logout={nowLogout} email={user.email}
                             isAuthenticated={isAuthenticated} />
                     </main>
                 </>

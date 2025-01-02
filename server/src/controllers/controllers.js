@@ -1,10 +1,9 @@
-const { emit } = require('process');
+
 const isDebugging = require('./../myLib/ifDebugging/ifDebugging');
 const alib = require('./../myLib/PracLib/alib');
 const utils = require('./../utils/utils');
 const path = require('path');
-const { Double } = require('mongodb');
-const { DefaultDeserializer } = require('v8');
+
 
 const debug = new isDebugging(process.env.IS_DEBUGGING);
 
@@ -62,7 +61,7 @@ module.exports.token = function (req, res, next) {
 
 
     debug.console('from token control - ');
-    debug.console('data form client body  ', req.body);
+    // debug.console('data form client body  ', req.body);
 
     let token = req.theJwt.sign({
         userData: {
@@ -114,7 +113,7 @@ module.exports.tryConnection = async (req, res, next) => {
     const mongo = new alib('Work', process.env.MONGOSTRING);
     mongo.setCollection('Jobs');
     let result = await mongo.find();
-    debug.console('the res is : ', result);
+    //debug.console('the res is : ', result);
 
     await mongo.over();
     res.json({
@@ -127,11 +126,11 @@ module.exports.createPost = async (req, res, next) => {
     debug.console('From CreatePost -');
 
     req.body.data = utils.jsonParseIfString(req.body.data);
-    debug.console('the req.body.data : ', req.body.data);
+    //debug.console('the req.body.data : ', req.body.data);
 
 
 
-    debug.console('the req.file : ', req.file);
+    //debug.console('the req.file : ', req.file);
     if (req.body.data) {
 
         let upload = {};
@@ -184,7 +183,7 @@ module.exports.createPost = async (req, res, next) => {
 
         });
 
-        debug.console('result from server : ', result);
+        //debug.console('result from server : ', result);
         /* 
 */
         mongo.over();
@@ -212,7 +211,7 @@ module.exports.fetchPosts = async (req, res, next) => {
     mongo.setCollection('Jobs');
     let result = await mongo.find({ 'Document': 'job' });
 
-    debug.console('result from server : ', result);
+    // debug.console('result from server : ', result);
     mongo.over();
     res.json({
         status: 1,
@@ -225,14 +224,14 @@ module.exports.fetchPosts = async (req, res, next) => {
 module.exports.fetchAPosts = async (req, res, next) => {
     debug.console('from fetchAPosts -- -- -- ');
     if (req.query.no) {
-        debug.console('found query no is   :', parseInt(req.query.no));
+        //debug.console('found query no is   :', parseInt(req.query.no));
 
         const mongo = new alib('Work', process.env.MONGOSTRING);
         mongo.setCollection('Jobs');
         let result = await mongo.find({ no: parseInt(req.query.no) });
 
         mongo.over();
-        debug.console('result from server : ', result);
+        // debug.console('result from server : ', result);
         if (result.length > 0) {
 
             res.json({
@@ -268,7 +267,7 @@ module.exports.fetchUserPosts = async (req, res) => {
 
     let result = await mongo.find({ "from": req.userData.email });
 
-    debug.console('result from server : ', result);
+    // debug.console('result from server : ', result);
     mongo.over();
     if (result.length > 0) {
 
@@ -292,7 +291,7 @@ module.exports.temp = (req, res) => {
     debug.console('from temp -  ');
     if (req.file) {
 
-        debug.console('the req.file : ', req.file);
+        //  debug.console('the req.file : ', req.file);
         res.status(200).json({
             message: 'file is found here',
             filePath: path.join(process.env.SERVER_BASE, req.file.path)
@@ -319,10 +318,10 @@ module.exports.profileImg = async (req, res) => {
 
         mongo.over();
         if (response.length > 0) {
-            debug.console('found data from mongo', response);
+            //debug.console('found data from mongo', response);
             res.json({
                 status: 1,
-                url: '/xtServer/api' + response[0].userData.img
+                url: response[0].userData.img
             })
         }
         else {
@@ -345,7 +344,7 @@ module.exports.userDetail = async (req, res) => {
 
         mongo.setCollection('Users');
         let result = await mongo.find({ 'userSocialData.email': req.userData.email });
-
+        await mongo.over();
 
         if (result.length > 0) {
             debug.console('entry found');
@@ -409,14 +408,14 @@ module.exports.userApplied = async (req, res) => {
 
         debug.console(' token email found ');
 
-        mongo = new alib('Work', process.env.MONGOSTRING);
+        let mongo = new alib('Work', process.env.MONGOSTRING);
         mongo.setCollection('Jobs');
 
         let Applied = await mongo.ag([{ $match: { 'no': parseInt(req.query.no) } },
         { $project: { Applied: 1 } }
         ])
         await mongo.over();
-        debug.console('applied : ', Applied);
+        // debug.console('applied : ', Applied);
 
         if (Applied.length > 0) {
             debug.console('the Applied data is found : ', Applied);
@@ -452,7 +451,7 @@ module.exports.isRegistered = async (req, res) => {
 
 
     if (req.userData) {
-        debug.console('found user', req.userData.email);
+        //  debug.console('found user', req.userData.email);
 
         let mongo = new alib('Work', process.env.MONGOSTRING);
         mongo.setCollection('Users');
@@ -461,7 +460,7 @@ module.exports.isRegistered = async (req, res) => {
             find({ 'userSocialData.email': req.userData.email });
 
         if (result.length > 0) {
-            debug.console('found result ', result);
+            //debug.console('found result ', result);
             res.json({
                 status: 1
             });
@@ -489,11 +488,11 @@ module.exports.register = async (req, res) => {
 
 
     req.body.data = utils.jsonParseIfString(req.body.data);
-    debug.console('the req.body.data : ', req.body.data);
+    // debug.console('the req.body.data : ', req.body.data);
 
 
 
-    debug.console('the req.file : ', req.file);
+    // debug.console('the req.file : ', req.file);
     if (req.body.data) {
 
         let upload = {};
@@ -546,7 +545,7 @@ module.exports.register = async (req, res) => {
 
         });
 
-        debug.console('result from server : ', result);
+        // debug.console('result from server : ', result);
 
 
         mongo.over();
@@ -577,11 +576,11 @@ module.exports.updateUserProfile = async (req, res) => {
 
 
     req.body.data = utils.jsonParseIfString(req.body.data);
-    debug.console('the req.body.data : ', req.body.data);
+    // debug.console('the req.body.data : ', req.body.data);
 
 
 
-    debug.console('the req.file : ', req.file);
+    // debug.console('the req.file : ', req.file);
     if (req.body.data) {
 
         let upload = {};
@@ -635,12 +634,12 @@ module.exports.updateUserProfile = async (req, res) => {
 
         if (req.file) {
             finalUpdate.userData.img = path.join(process.env.SERVER_BASE, req.file.path);
-            debug.console('the final update will be : ', finalUpdate);
+            //debug.console('the final update will be : ', finalUpdate);
         }
         else {
             finalUpdate.userData.img = tempUrl;
         }
-        debug.console('the final update will be : ', finalUpdate);
+        // debug.console('the final update will be : ', finalUpdate);
 
 
         let result = await mongo.updateOne(
@@ -648,7 +647,7 @@ module.exports.updateUserProfile = async (req, res) => {
             { $set: finalUpdate }
         );
 
-        debug.console('result from server : ', result);
+        //debug.console('result from server : ', result);
 
 
         mongo.over();
@@ -681,14 +680,14 @@ module.exports.search = async (req, res) => {
     if (req.body.data) {
         if (req.body.data.tags) {
 
-            debug.console('founded tags here :', req.body.data.tags)
+            // debug.console('founded tags here :', req.body.data.tags)
 
             let mongo = new alib("Work", process.env.MONGOSTRING);
             mongo.setCollection('Jobs');
             let result = await mongo.find({ "tags": { $in: req.body.data.tags } })
 
             if (result.length > 0) {
-                debug.console('result found : ', result);
+                //debug.console('result found : ', result);
 
                 res.json({
                     status: 1,
@@ -726,7 +725,7 @@ module.exports.apply = async (req, res) => {
         debug.console('the req.body :', req.body);
         req.body.data = utils.jsonParseIfString(req.body.data)
         debug.console("the job no is : ", req.body.data.job);
-        debug.console('file found', req.file);
+        // debug.console('file found', req.file);
 
         let fetchUser = new alib('Work', process.env.MONGOSTRING);
         fetchUser.setCollection('Users');
@@ -751,7 +750,7 @@ module.exports.apply = async (req, res) => {
         mongo.setCollection('Jobs');
 
 
-        debug.console('the final data of user : ', finalUserData);
+        //debug.console('the final data of user : ', finalUserData);
         let result = await mongo.updateOne({ no: req.body.data.job },
             {
                 $push: {
@@ -767,7 +766,7 @@ module.exports.apply = async (req, res) => {
 
         mongo.over();
         if (result) {
-            debug.console('found the result : ', result);
+            // debug.console('found the result : ', result);
             res.json({
                 status: 1,
                 message: "file found, must be uploaded",
@@ -790,3 +789,45 @@ module.exports.apply = async (req, res) => {
     }
 };
 
+module.exports.deleteWork = async (req, res) => {
+    debug.console('from deleteWork -- -- --');
+
+
+    if (req.query.no) {
+        debug.console("found the work to delete");
+
+        let deleteWork = new alib('Work', process.env.MONGOSTRING);
+        deleteWork.setCollection('Jobs');
+        let result = await deleteWork.deleteOne({ no: parseInt(req.query.no) });
+        await deleteWork.over();
+
+        debug.console('the result of delete is : ', result);
+        if (result) {
+            if (result.deletedCount) {
+                res.json({
+                    status: 1,
+                    message: 'Deleted Succesfully'
+                })
+            }
+            else {
+                res.json({
+                    status: 0,
+                    message: 'No delete '
+                })
+            }
+        } else {
+            res.json({
+                status: 0,
+                message: 'the result of delete is : ', result
+            })
+        }
+
+
+    } else {
+        debug.console("not found the no from the user, query");
+        res.json({
+            status: 0,
+            message: "no data found from query"
+        })
+    }
+};

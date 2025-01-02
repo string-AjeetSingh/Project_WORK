@@ -896,7 +896,7 @@ function ColorGetDiv({ color, onClick }) {
 
 function Section1({ children, animation = false,
     outOn, outOff, buttonHandle1, buttonHandle2,
-    OutReportFromInputs }) {
+    OutReportFromInputs, logout }) {
 
     const secElem = useRef(null);
     const { on, off } = useAnimationOnOff(secElem);
@@ -905,6 +905,7 @@ function Section1({ children, animation = false,
     const [getInputSpace, setGIS] = useState('');
     const { section1FinalInputReport } = useContext(MyContext);
     const { tryit } = useContext(MyContext);
+    const navigate = useNavigate();
 
 
 
@@ -1022,9 +1023,20 @@ function Section1({ children, animation = false,
 
                 <hr className="border m-1 border-green-800 "></hr>
 
-                <div className="flex flex-row justify-end
+                <div className="flex flex-row justify-between
         font-bold text-2xl">
+                    <button onClick={() => {
+                        logout();
 
+                    }}
+                        className=" m-1 p-2
+      pl-4 pr-4 flex flex-row items-center
+      justify-center hover:bg-green-900 active:bg-green-800 active:text-teal-950
+      bg-green-950 rounded-xl 
+      text-teal-700 
+      border border-green-800" >
+                        Cancel
+                    </button>
                     <Button handle={buttonHandle1}
                         stateVal={section1FinalInputReport}
                         mode={'next'}>

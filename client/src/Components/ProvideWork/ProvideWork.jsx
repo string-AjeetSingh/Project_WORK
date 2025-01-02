@@ -75,13 +75,14 @@ function ProvideWork({ isAuthenticated, email }) {
                         await ButtonAnimation(butt);
                         navigate('/createPost');
                     }}
-                    className=" m-4 border-2 border-green-700 font-serif ml-7
+                    className=" m-4 border border-green-800 font-serif ml-7
                  text-teal-600 overflow-hidden p-2 rounded-2xl bg-teal-950 
-                 flex flex-row justify-center items-center">
+                 flex flex-row justify-center items-center hover:border-green-600">
                     <img className="w-16 relative  " src="/provider2.png"></img>
                 </button>
             </div><hr className="border-green-800">
             </hr>
+
 
             <ProviderStatus isAuthenticated={isAuthenticated} />
 

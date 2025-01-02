@@ -6,7 +6,13 @@ const mg = require("mongodb");
 class alib {
     constructor(database, connectionString) {
         this.db = database;
-        this.client = new mg.MongoClient(connectionString);
+        this.client = new mg.MongoClient(connectionString, {
+            serverApi: {
+                version: mg.ServerApiVersion.v1,
+                strict: true,
+                deprecationErrors: true,
+            }
+        });
         this.collection = {};
         this.collectionName = null;
 
@@ -87,6 +93,27 @@ class alib {
                 return state;
             } catch (error) {
                 console.error('Error from alib.updateOne method  :', error);
+            }
+        }
+        else {
+
+            throw new Error("set collection first");
+
+        }
+    }
+
+    async deleteOne(matching) {
+
+
+        if (Object.keys(this.collection).length > 0) {
+            try {
+
+                let state = await this.collection[this.collectionName]
+                    .deleteOne(matching);
+
+                return state;
+            } catch (error) {
+                console.error('Error from alib.deleteOne method  :', error);
             }
         }
         else {

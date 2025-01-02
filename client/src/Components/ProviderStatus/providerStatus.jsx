@@ -40,14 +40,15 @@ function ProviderStatus({ isAuthenticated }) {
     return (
         <>
 
-            <h1 className="text-3xl text-green-800 
+            <h1 className="text-2xl text-green-300 
             font-serif m-1 p-1">
                 Provided Work :
             </h1>
 
+
             <div className="flex flex-row    ">
                 <CommonWrapper>
-                    <div className=" flex flex-row flex-wrap
+                    <div className=" flex flex-row flex-wrap 
              overflow-y-auto min-w-[350px]  m-1 w-full justify-center
             h-96">
                         {data instanceof Array ?

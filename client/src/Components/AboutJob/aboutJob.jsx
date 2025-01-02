@@ -293,4 +293,34 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
 
 }
 
-export { AboutJob };
+function DeleteWork({ handleButton, myRef }) {
+    let buttonRef = useRef(null);
+
+    useEffect(() => {
+        if (myRef) {
+            myRef = buttonRef;
+            console.log('the myRef is : ', myRef);
+        }
+        console.log('the buttonRef is : ', buttonRef);
+    }, [buttonRef.current])
+    return (
+        <>
+            <div className="flex flex-col items-center justify-between">
+                <span className=" m-1 font-serif
+                 p-2 text-3xl text-green-300">Delete This Job</span>
+                <button ref={buttonRef} onClick={() => {
+                    handleButton(buttonRef);
+                }} className=" m-1 p-2 relative bottom-2
+      pl-4 pr-4 flex flex-row items-center
+      justify-center hover:bg-red-600 active:bg-red-800 active:text-red-300
+      bg-red-700 rounded-xl 
+      text-red-100 
+      border-2 border-red-950">
+                    Delete
+                </button>
+            </div>
+        </>
+    );
+}
+
+export { AboutJob, DeleteWork };

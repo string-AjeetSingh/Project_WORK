@@ -360,7 +360,7 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
                     :
                     <div className='p-2 flex flex-col items-center  ' >
                         <div className='p-2 flex flex-col w-full 
-                        border rounded-2xl border-green-600
+                        border rounded-2xl border-green-800
                         max-w-[900px] min-w-[370px]'>
 
                             <ProfileImageSection screen={data.userData.color} imgSrc={data.userData.img}></ProfileImageSection>
