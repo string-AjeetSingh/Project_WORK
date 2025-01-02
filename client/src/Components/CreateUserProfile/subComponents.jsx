@@ -428,7 +428,10 @@ function GetInputArray({ index, name, inputName, totalInputLength = 100
     let boolPreviousVal = false;
     if (prevValue) {
         if (Object.hasOwn(prevValue, 'inputData')) {
-            boolPreviousVal = true;
+            if (prevValue.inputData.data) {
+
+                boolPreviousVal = true;
+            }
         }
     }
 

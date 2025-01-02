@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import list from '../Rough/list.json';
-import { Container, ContainerNav, Card } from './subComponents';
+import { Container, ContainerNav, Card, Filter } from './subComponents';
 import { useContext, createContext } from 'react';
 import { myContext as jobContext } from "./myContext"
 import { myContext } from '../HomeWithLogin/myContext';
@@ -192,10 +192,10 @@ function JobCards({ children, link, __note_this_component_use_context_and_i_am_a
 
 
 
-            <div className="flex flex-row  ">
-
+            <div className="flex flex-col  ">
                 <div className="flex flex-col w-full ">
 
+                    <Filter />
 
                     <Container >
                         <jobContext.Provider value={{ theClick: forwardToCard }} >

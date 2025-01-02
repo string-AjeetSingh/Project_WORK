@@ -186,5 +186,214 @@ function Card({ companyName, imgSrc, jobHeading,
     );
 }
 
+function Filter({ }) {
+    const [filterData, setfilterData] = useState({ prev: [], curr: [], app: [] });
+    console.log('the filter Data is : ', filterData);
+    const [panel, setPanel] = useState({
+        isActivated: false, activate: null,
+        deActivate: null
+    });
 
-export { Container, ContainerNav, Card };
+    function handleActivate() {
+        setPanel((prev) => {
+            let newOne = { ...prev };
+            newOne.isActivated = true;
+            return newOne;
+        })
+    }
+
+    function handleDeActivate() {
+
+        setPanel((prev) => {
+            let newOne = { ...prev };
+            newOne.isActivated = false;
+            return newOne;
+        })
+    }
+
+    function handlePanelCancle() {
+        if (isSameData()) {
+            handleDeActivate();
+        } else {
+            setfilterData((prev) => {
+                let newOne = { ...prev };
+                newOne.curr = [...newOne.prev];
+                return newOne;
+            })
+            handleDeActivate();
+        }
+    }
+
+
+    function handlePanelApply() {
+        setfilterData((prev) => {
+            let newOne = { ...prev };
+            newOne.app = [...newOne.curr];
+            newOne.prev = [...newOne.curr];
+            return newOne;
+        })
+        handleDeActivate();
+
+    }
+
+    function isSameData() {
+        if (filterData.prev.length === filterData.curr.length) {
+            let boolResult = true;
+
+            filterData.prev.forEach((item, index) => {
+                if (filterData.curr[index] !== item) {
+                    boolResult = false;
+                }
+            })
+            return boolResult;
+
+        } else {
+            return false;
+        }
+    }
+
+    useEffect(() => {
+        setPanel((prev) => {
+            prev.activate = handleActivate;
+            prev.deActivate = handleDeActivate;
+            return prev;
+        })
+    }, [])
+
+    return (
+        <>
+            <div className='flex flex-col items-center relative '>
+
+                <div className='flex flex-row items-center p-1 pt-2 pb-2 
+             w-full  overflow-x-auto bg-green-900 '>
+                    <FilterButtons index={1} name={'Remote'} color={'bg-orange-700'}
+                        fontColor={'text-red-100'} panelControl={panel}
+                        setData={setfilterData} data={filterData} />
+                    <FilterButtons index={2} name={'Part Time'} color="bg-red-800"
+                        fontColor="text-slate-300" panelControl={panel}
+                        setData={setfilterData} data={filterData} />
+                    <FilterButtons index={3} name={'Full Time'} color="bg-teal-800"
+                        fontColor="text-teal-200" panelControl={panel}
+                        setData={setfilterData} data={filterData} />
+                    <FilterButtons index={4} name={'Office'} color="bg-pink-800"
+                        fontColor="text-pink-300" panelControl={panel}
+                        setData={setfilterData} data={filterData} />
+
+
+
+                </div>
+                {panel.isActivated ?
+                    <div className='s relative p-1 w-full'>
+                        <FilterConfirmation cancel={handlePanelCancle} apply={handlePanelApply} />
+                    </div>
+                    : null}
+            </div>
+
+        </>
+    );
+}
+
+function FilterConfirmation({ apply, cancel }) {
+    return (<>
+
+        <div className='absolute flex flex-row items-center
+         bg-green-900 p-2 -bottom-16 right-0 '>
+            <button onClick={() => {
+
+                if (cancel) {
+                    cancel();
+                }
+            }} className=" m-1 p-2
+      pl-4 pr-4 flex flex-row items-center
+      justify-center hover:bg-green-900 active:bg-green-800 active:text-teal-950
+      bg-green-950 rounded-xl 
+      text-teal-700 
+      border border-green-800" >
+                Cancel
+            </button>
+            <button onClick={() => {
+                if (apply) {
+                    apply();
+                }
+            }} className=" m-1 p-2
+      pl-4 pr-4 flex flex-row items-center
+      justify-center hover:bg-green-900 active:bg-green-800 active:text-teal-950
+      bg-green-950 rounded-xl 
+      text-teal-700 
+      border border-green-800" >
+
+                Apply
+            </button>
+        </div>
+
+    </>)
+}
+
+function FilterButtons({ name, color, fontColor, index,
+    panelControl = { isActivated: null, activate: null, deActivate: null }, setData, data }) {
+    const checkbox = useRef(null);
+    const toggle = useRef(false);
+
+
+
+    useEffect(() => {
+        if (!data.curr[index]) {
+            checkbox.current.checked = false;
+            toggle.current = false;
+        } else {
+            checkbox.current.checked = true;
+            toggle.current = true;
+        }
+    }, [data])
+
+
+    function handleChange() {
+        if (!panelControl.isActivated) {
+            panelControl.activate();
+        }
+        if (checkbox.current.checked) {
+            setData((prev) => {
+                let newOne = { ...prev }
+                newOne.curr[index] = name;
+                return newOne;
+            })
+        } else {
+            setData((prev) => {
+                let newOne = { ...prev }
+                newOne.curr[index] = null;
+                return newOne;
+            })
+        }
+    }
+
+    function handleButton() {
+        if (toggle.current) {
+            toggle.current = false;
+            checkbox.current.checked = false;
+            handleChange();
+
+        } else {
+            toggle.current = true;
+            checkbox.current.checked = true;
+            handleChange();
+        }
+    }
+
+    return (
+        <>
+            <button onClick={() => {
+                handleButton();
+            }} className={`flex flex-row items-center p-1 mr-1 shrink-0
+            border rounded-lg  ${color} `}>
+                <input ref={checkbox} onChange={(e) => {
+                    //handleChange();
+                }}
+                    type='checkBox' name={name} value={name}></input>
+                <lable className={`ml-1 ${fontColor}`}>{name}</lable>
+            </button>
+        </>
+    );
+}
+
+
+export { Container, ContainerNav, Card, Filter };
