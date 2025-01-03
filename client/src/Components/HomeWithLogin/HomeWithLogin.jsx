@@ -23,11 +23,13 @@ const toServer = new requestServer
 function HomeWithLogin({ logout, user, isAuthenticated, useAsSearch, iAmReady }) {
     const size = useResizeValue(window.innerWidth);
     const [dataForAboutJob, setDataForAboutJob] = useState(null);
+    const originalData = useRef(null);
     const [dataFromServer, setdataFromServer] = useState(null);
     const { search } = useParams();
 
     //console.log('data from server : ', dataFromServer);
     //console.log(' aboutJob data : ', dataForAboutJob);
+
 
     async function fetchPosts() {
 
@@ -38,6 +40,7 @@ function HomeWithLogin({ logout, user, isAuthenticated, useAsSearch, iAmReady })
 
                 flushSync(() => {
                     setdataFromServer(res.json.data);
+                    originalData.current = res.json.data;
                 })
                 if (iAmReady.current) {
                     iAmReady.current.off();
@@ -94,6 +97,7 @@ function HomeWithLogin({ logout, user, isAuthenticated, useAsSearch, iAmReady })
         }
     }, [])
 
+
     if (dataFromServer) {
         if (dataFromServer.noSearchResult) {
             return (
@@ -132,7 +136,7 @@ function HomeWithLogin({ logout, user, isAuthenticated, useAsSearch, iAmReady })
             <main className="pb-2">
 
                 {dataFromServer ? <myContext.Provider value={{
-                    dataFromServer, setDataForAboutJob,
+                    dataFromServer, setDataForAboutJob, originalData,
                     dataForAboutJob, setdataFromServer
                 }}>
 

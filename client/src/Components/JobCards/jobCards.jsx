@@ -7,15 +7,18 @@ import { myContext } from '../HomeWithLogin/myContext';
 
 function JobCards({ children, link, __note_this_component_use_context_and_i_am_a_message__ }) {
 
-    const { dataFromServer, setDataForAboutJob, setdataFromServer } = useContext(myContext);
+    const { dataFromServer, setDataForAboutJob, setdataFromServer
+        , originalData
+    } = useContext(myContext);
 
     let [cardsArr, setCardsArr] = useState([]);
     let [navItemArr, setnavItemArr] = useState([]);
+    let [key1, setkey1] = useState(1);
     let forwardToCard = useRef(link ? 'link' : 'local');
 
     let docs;
 
-
+    //console.log('the data from server is : ', dataFromServer);
 
 
     if (dataFromServer) {
@@ -111,7 +114,7 @@ function JobCards({ children, link, __note_this_component_use_context_and_i_am_a
                 <ContainerNav
                     data={docs} common={navItemCommon}
                     setContainer={setContainer} isDefault={true}
-                    key={1} >
+                    key={key1} >
 
                     {calibrationData.navItemCount}
                 </ContainerNav>
@@ -183,6 +186,9 @@ function JobCards({ children, link, __note_this_component_use_context_and_i_am_a
         console.log(`the total no of data: ${docs.length - 1}`);
         console.log(result);
 
+        setkey1((prev) => {
+            return prev + 1;
+        })
 
         divideData(result);
 
@@ -195,7 +201,8 @@ function JobCards({ children, link, __note_this_component_use_context_and_i_am_a
             <div className="flex flex-col  ">
                 <div className="flex flex-col w-full ">
 
-                    <Filter data={dataFromServer} setData={setdataFromServer} />
+                    <Filter originalData={originalData}
+                        data={dataFromServer} setData={setdataFromServer} />
 
                     <Container >
                         <jobContext.Provider value={{ theClick: forwardToCard }} >

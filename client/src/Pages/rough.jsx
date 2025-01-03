@@ -9,7 +9,8 @@ import { TryConnection } from '../Components/Rough/tryConnectionServer';
 import { LoadingScreen } from '../Components/TranstitionScreen/LoadingScreen';
 import { useNavigate } from 'react-router-dom';
 import { use } from 'react';
-import { GetInputArray } from '../Components/CreatePost/subComponents';
+import { GetInputArray, GetCheckBox } from '../Components/CreatePost/subComponents';
+
 
 
 
@@ -27,10 +28,9 @@ function Rough({ children }) {
 
 
             {/*<LoadingScreen />*/}
-            <LoadingScreen outControl={loadingScreen} />
 
 
-            <div>
+            <div className="p-2">
                 {/*<JobCards></JobCards>*/}
                 {/*<AboutJob></AboutJob>*/}
                 {/*<CreatePost></CreatePost>*/}
@@ -38,20 +38,8 @@ function Rough({ children }) {
                 {/*<LoginTry /> */}
                 {/* <UserProfile /> */}
                 {/*<TryConnection /> */}
+                <GetCheckBox name="Job Types :" />
 
-                <button className="m-1  text-[1rem] rounded-md
-                        border-[2px] hover:bg-green-800 active:bg-green-900
-                        text-green-200 z-50
-                        border-green-950 p-1">
-                    On
-                </button>
-
-                <button className="m-1  text-[1rem] rounded-md
-                        border-[2px] hover:bg-green-800 active:bg-green-900
-                        text-green-200 z-50
-                        border-green-950 p-1">
-                    Off
-                </button>
 
 
 

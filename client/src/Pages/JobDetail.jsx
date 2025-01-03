@@ -65,28 +65,34 @@ function JobDetail({ }) {
 
     return (
         <>  {boolScreen ? <LoadingScreen outControl={loadingScreen} /> : null}
-            <header >
-                <commonContext.Provider value={{ user }}>
-                    <Header logout={nowLogout} search_Link ></Header>
-                </commonContext.Provider>
-            </header>
-            <hr className="border-[1px] 
-                                 border-green-950"></hr>
-            <main>
-                <div className="flex flex-row">
-
-                    {dataForAboutJob ?
-                        <commonContext.Provider value={{ dataForAboutJob }}>
-                            <AboutJob isAuthenicated={isAuthenicated}
-                                email={user.email}
-                                useInJobDetailjsx />
+            {isLoading ?
+                <h1>Loading Please wait</h1>
+                :
+                <>
+                    <header >
+                        <commonContext.Provider value={{ user }}>
+                            <Header logout={nowLogout} search_Link ></Header>
                         </commonContext.Provider>
-                        :
-                        <h1>No data from server</h1>
-                    }
-                </div>
+                    </header>
+                    <hr className="border-[1px] 
+            border-green-950"></hr>
+                    <main>
+                        <div className="flex flex-row">
 
-            </main>
+                            {dataForAboutJob ?
+                                <commonContext.Provider value={{ dataForAboutJob }}>
+                                    <AboutJob isAuthenicated={isAuthenicated}
+                                        email={user.email}
+                                        useInJobDetailjsx />
+                                </commonContext.Provider>
+                                :
+                                <h1>No data from server</h1>
+                            }
+                        </div>
+
+                    </main>
+                </>
+            }
 
         </>
     );

@@ -138,7 +138,7 @@ module.exports.createPost = async (req, res, next) => {
             "title", "desciption", "requirments",
             "qualifications", "responsibilities",
             "github", "email", "location",
-            "x", "companyName", "tags"
+            "x", "companyName", "tags", 'types'
         ]
 
         req.body.data.forEach((item) => {
@@ -179,7 +179,8 @@ module.exports.createPost = async (req, res, next) => {
             "location": upload.location,
             "no": theNo,
             "Applied": [],
-            "tags": upload.tags    //need  work pending ...
+            "tags": upload.tags ? upload.tags : [],
+            "types": upload.types ? upload.types : []
 
         });
 

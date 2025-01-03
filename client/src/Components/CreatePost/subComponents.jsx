@@ -513,6 +513,8 @@ function GetInputArray({ index, name, inputName, totalInputLength = 100
   );
 }
 
+
+
 function ArrayItem({ refCustom, index, delFunction, handleValues, val }) {
   const theInput = useRef(null);
 
@@ -552,6 +554,156 @@ function ArrayItem({ refCustom, index, delFunction, handleValues, val }) {
         hover:bg-red-800'>
           <img className='size-7' src='./stock/icon/minus.png'></img>
         </button>
+      </div>
+    </>
+  );
+}
+
+function GetCheckBox({ index, name, inputName, totalInputLength = 100
+  , inputHeight = 10, isReadOnly = false,
+  spaceOccupy = '40%', prevValue, isDisabled = false,
+  OutReport, isMendatory = false
+}) {
+
+  const [data, setData] = useState([]);
+
+  let boolPreviousVal = false;
+  if (prevValue) {
+    if (Object.hasOwn(prevValue, 'inputData')) {
+      boolPreviousVal = true;
+    }
+  }
+
+  const TheReport = useRef({
+    index: index,
+    isMendatory: isMendatory,
+    ok: false,
+    inputData: {
+      name: inputName,
+      data: [],
+
+    }
+  });
+
+  function refineData(arr) {
+    let newarr = [];
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i]) {
+        newarr[i] = arr[i];
+      }
+    }
+    TheReport.current.inputData.data = newarr;
+  }
+
+
+
+  useEffect(() => {
+
+    if (!OutReport) {
+      console.error('please provide Functinoality to the attribute OutReport of the GetInput to get the report of the component');
+    }
+
+
+    if (boolPreviousVal) {
+      setData((prev) => {
+        let newOne = [...prevValue.inputData.data];
+        return newOne
+      })
+    }
+  }, [])
+
+
+  useEffect(() => {
+
+    TheReport.current.inputData.data = [...data];
+    OutReport(TheReport.current);
+  }, [data])
+
+
+  return (
+    <>
+      <div className={`flex flex-col 
+       m-1 max-sm:w-[300px] max-md:w-[600px] 
+       max-w-[600px] min-w-[300px]
+       h-fit `} style={{
+          //width: spaceOccupy
+        }}>
+
+        <div className="text-[1.2rem] 
+      font-bold text-teal-600 m-1 
+      ">
+          <i>{name}</i>
+        </div>
+
+        <div className='flex flex-col items-start
+         border border-teal-600 rounded-xl p-3 text-teal-400  '>
+          <InputBlock setData={setData} data={data} index={1} name={'Full Time'} inputName={'c1'} /> <br></br>
+          <InputBlock setData={setData} data={data} index={2} name={'Part Time'} inputName={'c2'} /><br></br>
+          <InputBlock setData={setData} data={data} index={3} name={'Remote'} inputName={'c3'} /><br></br>
+          <InputBlock setData={setData} data={data} index={4} name={'Office'} inputName={'c4'} />
+        </div>
+
+      </div>
+    </>
+  );
+}
+
+function InputBlock({ inputName, name, setData, index, data }) {
+  const button = useRef(null);
+
+
+
+  useEffect(() => {
+    if (data[index]) {
+      button.current.checked = true;
+    } else {
+      button.current.checked = false;
+    }
+  }, [data])
+
+  function handleChange() {
+    if (button.current.checked) {
+      setData((prev) => {
+        let newOne = prev.slice();
+        newOne[index] = name;
+        return newOne;
+      })
+    } else {
+      remove();
+    }
+
+  }
+
+  function remove() {
+    setData((prev) => {
+      let newOne = prev.slice();
+      newOne[index] = null;
+      return newOne;
+    })
+  }
+
+  /* 
+  
+  useEffect(() => {
+    if (data) {
+      if (data[index]) {
+        button.current.checked = true;
+        handleChange();
+      }
+    } else {
+      button.current.checked = false;
+    remove();
+  }
+}, [data])
+*/
+  return (
+    <>
+      <div className='flex flex-row items-center '>
+
+        <input ref={button} onChange={() => {
+          handleChange();
+        }} className='size-5' type='checkbox' value={name} name={inputName} ></input>
+        <lable className=" text-[1.05rem] m-1 font-bold">{name}</lable>
       </div>
     </>
   );
@@ -915,25 +1067,30 @@ function Section2({ children, animation = false,
 
         <div className={getInputWrapperClassName}>
 
-          <GetInput inputName="desciption"
-            index={5} OutReport={OutReportFromInputs}
+          <GetCheckBox index={5} OutReport={OutReportFromInputs}
             prevValue={section2FinalInputReport[5]}
+            name={"Job Types"} inputName={'types'}
+          />
+
+          <GetInput inputName="desciption"
+            index={6} OutReport={OutReportFromInputs}
+            prevValue={section2FinalInputReport[6]}
             inputHeight="32" spaceOccupy={getInputSpace}
             name={"About"} totalInputLength={500}
             placeHolder="Your Job Discription"
           />
 
           <GetInput inputName="qualifications"
-            index={6} OutReport={OutReportFromInputs}
-            prevValue={section2FinalInputReport[6]}
+            index={7} OutReport={OutReportFromInputs}
+            prevValue={section2FinalInputReport[7]}
             inputHeight="32" spaceOccupy={getInputSpace}
             name={"Qualifications"} totalInputLength={500}
             placeHolder=" - Qualifications ...."
           />
 
           <GetInput inputName="requirments"
-            index={7} OutReport={OutReportFromInputs}
-            prevValue={section2FinalInputReport[7]}
+            index={8} OutReport={OutReportFromInputs}
+            prevValue={section2FinalInputReport[8]}
             inputHeight="32" spaceOccupy={getInputSpace}
             name={"Requirments"}
             totalInputLength={500}
@@ -941,18 +1098,18 @@ function Section2({ children, animation = false,
           />
 
           <GetInput inputName="responsibilities"
-            index={8} OutReport={OutReportFromInputs}
-            prevValue={section2FinalInputReport[8]}
+            index={9} OutReport={OutReportFromInputs}
+            prevValue={section2FinalInputReport[9]}
             inputHeight="32" spaceOccupy={getInputSpace}
             name={"Responsibilities"}
             totalInputLength={500}
             placeHolder="- Responsiblilities ...."
           />
 
-          <GetInputArray index={9}
+          <GetInputArray index={10}
             inputName={'tags'} name={'Search Tags'}
             OutReport={OutReportFromInputs}
-            prevValue={section2FinalInputReport[9]}
+            prevValue={section2FinalInputReport[10]}
           />
 
         </div>
@@ -1049,28 +1206,28 @@ function Section3({ children, animation = false,
         <div className={getInputWrapperClassName}>
 
           <GetInput inputName="email"
-            index={10} OutReport={OutReportFromInputs}
+            index={11} OutReport={OutReportFromInputs}
             inputHeight="10" spaceOccupy={getInputSpace}
             name={"Email Id"} typeToggle='input' totalInputLength={50}
-            prevValue={section3FinalInputReport[10]}
+            prevValue={section3FinalInputReport[11]}
             placeHolder="email@gmail.com"
           />
 
           <GetInput inputName="x"
-            index={11} OutReport={OutReportFromInputs}
+            index={12} OutReport={OutReportFromInputs}
             inputHeight="10" spaceOccupy={getInputSpace}
             name={"X"} typeToggle='input' totalInputLength={50}
-            prevValue={section3FinalInputReport[11]}
+            prevValue={section3FinalInputReport[12]}
             placeHolder="@twitter account"
 
           />
 
           <GetInput inputName="github"
-            index={12} OutReport={OutReportFromInputs}
+            index={13} OutReport={OutReportFromInputs}
             inputHeight="10" spaceOccupy={getInputSpace}
             name={"GitHub"} typeToggle='input'
             totalInputLength={100}
-            prevValue={section3FinalInputReport[12]}
+            prevValue={section3FinalInputReport[13]}
             placeHolder="github/UserName/YourRepository"
           />
 
@@ -1103,5 +1260,5 @@ function Section3({ children, animation = false,
 
 export {
   NavShow, Section1,
-  Section2, Section3, GetInputArray
+  Section2, Section3, GetInputArray, GetCheckBox
 }

@@ -152,7 +152,15 @@ function Card({ companyName, imgSrc, jobHeading,
          bg-green-900 rounded-r-2xl' ></div>
                             {tags.length > 0 ?
                                 tags.map((item) => {
-                                    return <Worktag name={item} />
+                                    let out = null;
+                                    Object.keys(filterColors).forEach((key) => {
+                                        if (key === item) {
+
+                                            out = <Worktag name={item} color={filterColors[key].color}
+                                                fontColor={filterColors[key].fontColor} />
+                                        }
+                                    })
+                                    return out;
                                 })
                                 : null}
 
@@ -215,7 +223,7 @@ function Card({ companyName, imgSrc, jobHeading,
     );
 }
 
-function Filter({ data, setData }) {
+function Filter({ data, setData, originalData }) {
     const [filterData, setfilterData] = useState({ prev: [], curr: [], app: [] });
     //console.log('the filter Data is : ', filterData);
     const [panel, setPanel] = useState({
@@ -303,11 +311,11 @@ function Filter({ data, setData }) {
             })
 
             if (containbool) {
-                if (data) {
-                    if (data.length > 0) {
+                if (originalData) {
+                    if (originalData.current.length > 0) {
                         let newArr = [];
                         let bool = false;
-                        data.forEach((dataItem) => {
+                        originalData.current.forEach((dataItem) => {
                             bool = false;
                             dataItem.types.forEach((type) => {
                                 filterData.app.forEach((appliedType) => {
@@ -321,9 +329,12 @@ function Filter({ data, setData }) {
                             }
                         })
                         console.log('the new array after apply : ', newArr);
-                        //setData(newArr);
+                        setData(newArr);
                     }
                 }
+            } else {
+                console.log('original data must be used now : ', originalData);
+                setData(originalData.current);
             }
         }
     }, [filterData.app])
@@ -403,6 +414,10 @@ function FilterButtons({ name, color, fontColor, index,
     panelControl = { isActivated: null, activate: null, deActivate: null }, setData, data }) {
     const checkbox = useRef(null);
     const toggle = useRef(false);
+    const style = {
+        button: "flex flex-row items-center p-1 mr-1 shrink-0 border rounded-lg " + color,
+        lable: `ml-1 ${fontColor ? fontColor : ""}`
+    }
 
 
 
@@ -453,13 +468,12 @@ function FilterButtons({ name, color, fontColor, index,
         <>
             <button onClick={() => {
                 handleButton();
-            }} className={`flex flex-row items-center p-1 mr-1 shrink-0
-            border rounded-lg  ${color} `}>
+            }} className={style.button}>
                 <input ref={checkbox} onChange={(e) => {
                     //handleChange();
                 }}
                     type='checkBox' name={name} value={name}></input>
-                <lable className={`ml-1 ${fontColor}`}>{name}</lable>
+                <lable className={style.lable}>{name}</lable>
             </button>
         </>
     );
