@@ -122,7 +122,8 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
                             ref={applyButton1}
                             onClick={() => {
                                 if (isApplied) {
-                                    alert('Already applied for this job')
+                                    //  alert('Already applied for this job')
+                                    handleApply()
                                 } else {
                                     email === dataForAboutJob.from ?
                                         alert('You cannot apply on your provided job') : handleApply()
@@ -271,11 +272,13 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
                         <div className="font-serif font-bold  text-green-300
                         text-[1.2rem]">Email : </div>
                         <span className="relative bottom-2">
-                            Mirosoft@gmail.com
-                            {dataForAboutJob.jobSocialData.email.length > 1 ?
-                                dataForAboutJob.jobSocialData.email
-                                :
-                                "Dummy@gmail.coim"}
+                            {dataForAboutJob.jobSocialData.email ?
+                                dataForAboutJob.jobSocialData.email.length > 1 ?
+                                    dataForAboutJob.jobSocialData.email
+                                    :
+                                    "Dummy@gmail.coim"
+                                : null}
+
                         </span>
 
                     </div>
@@ -283,12 +286,15 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
                         <div className="font-serif font-bold  text-green-300 
                         text-[1.2rem]">X : </div>
                         <span className="relative bottom-2">
-                            {dataForAboutJob.jobSocialData.x.length > 1 ?
-                                <Link to={dataForAboutJob.jobSocialData.x}>
-                                    {<span className="text-blue-400">
-                                        {dataForAboutJob.jobSocialData.x}</span>}</Link>
-                                :
-                                "Dummy@x"}
+                            {dataForAboutJob.jobSocialData.x ?
+                                dataForAboutJob.jobSocialData.x.length > 1 ?
+                                    <Link to={dataForAboutJob.jobSocialData.x}>
+                                        {<span className="text-blue-400">
+                                            {dataForAboutJob.jobSocialData.x}</span>}</Link>
+                                    :
+                                    "Dummy@x"
+                                : null}
+
 
                         </span>
                     </div>
@@ -297,12 +303,15 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
                         <div className="font-serif font-bold  text-green-300
                         text-[1.2rem]">GitHub : </div>
                         <span className="relative bottom-2">
-                            {dataForAboutJob.jobSocialData.github.length > 1 ?
-                                <Link to={dataForAboutJob.jobSocialData.github}>
-                                    {<span className="text-blue-400">
-                                        {dataForAboutJob.jobSocialData.github}</span>}</Link>
-                                :
-                                "Dummy@gihub"}
+                            {dataForAboutJob.jobSocialData.github ?
+                                dataForAboutJob.jobSocialData.github.length > 1 ?
+                                    <Link to={dataForAboutJob.jobSocialData.github}>
+                                        {<span className="text-blue-400">
+                                            {dataForAboutJob.jobSocialData.github}</span>}</Link>
+                                    :
+                                    "Dummy@gihub"
+                                : null}
+
                         </span>
                     </div>
 

@@ -532,7 +532,7 @@ module.exports.register = async (req, res) => {
                 "title": upload.title,
                 "description": upload.discription,
                 "experiance": upload.experiance,
-                "skills": upload.skills,        //make it array pending .... 
+                "skills": upload.skills ? upload.skills : [],
                 "education": upload.education,
                 "name": upload.name,
                 "img": req.file ? path.join(process.env.SERVER_BASE, req.file.path) : null,

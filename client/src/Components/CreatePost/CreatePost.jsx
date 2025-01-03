@@ -186,6 +186,7 @@ function CreatePost({ }) {
     if (res) {
 
       alert('Uploaded succesfully ');
+      navigate('/provider');
       console.log('the response from submit : ', res);
       return true;
 

@@ -38,7 +38,8 @@ function Rough({ children }) {
                 {/*<LoginTry /> */}
                 {/* <UserProfile /> */}
                 {/*<TryConnection /> */}
-                <GetCheckBox name="Job Types :" />
+                <CreateUserProfile></CreateUserProfile>
+
 
 
 

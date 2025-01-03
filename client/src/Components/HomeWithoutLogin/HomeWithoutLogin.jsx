@@ -17,9 +17,9 @@ function HomeWithoutLogin({ children, login, logout, user }) {
 
             <main>
 
-                <Section1></Section1>
-                <Section2></Section2>
-                <Section3></Section3>
+                <Section1 login={login}></Section1>
+                <Section2 login={login}></Section2>
+                <Section3 login={login}></Section3>
 
             </main>
 

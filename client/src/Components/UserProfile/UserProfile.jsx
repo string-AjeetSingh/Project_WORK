@@ -13,6 +13,7 @@ import { requestServer } from '../../MyLib/RequestServer/requestServer';
 import { useResizeValue } from '../../MyLib/MyHook/customHook';
 import { MyContext } from './myContext';
 import { useNavigate } from 'react-router-dom';
+import { flushSync } from 'react-dom';
 
 
 const toServer = new requestServer(process.env.REACT_APP_SERVER_URL + "/xtServer/api/updateUserProfile",
@@ -25,12 +26,48 @@ const toServer = new requestServer(process.env.REACT_APP_SERVER_URL + "/xtServer
 function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }) {
 
     const [data, setdata] = useState(null);
+
     const [sectionReport, setsectionReport] = useState([]);
     const [getInputWrapperClassName, setGIWC] = useState("");
     const [getInputSpace, setGIS] = useState('');
     const windowWidth = useResizeValue(window.innerWidth);
     const navigate = useNavigate();
 
+    function placeArrayToSectionInput(arr) {
+        setsectionReport((prev) => {
+            let newOne = prev.slice();
+            //  console.log('The arr from placeArrayToSectionInput', arr);
+            arr.forEach((item) => {
+                newOne[item.index] = { ...item }
+            })
+            return newOne;
+        })
+    }
+
+    function returnReportFormat(index, param = {
+        isMendatory: null, ok: null,
+        name: null, data: null, redNotice: null
+    }) {
+        if (param instanceof Object) {
+
+            const TheReport = {
+                index: index,
+                isMendatory: param.isMendatory,
+                ok: param.ok,
+                inputData: {
+                    name: param.name,
+                    data: param.data,
+                    redNotice: param.redNotice,
+                }
+            };
+
+            return TheReport
+        }
+        else {
+            console.error('param must be instance of Object');
+            return false;
+        }
+    }
 
     function placePreviousValue(index, param = {
         isMendatory: null, ok: null,
@@ -58,11 +95,13 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
     }
 
     function updateFinalInputReport(param) {   //update the report, work as outreport
+        flushSync(() => {
 
-        setsectionReport((prev) => {
-            let newReport = prev.slice();
-            newReport[param.index] = param;
-            return newReport;
+            setsectionReport((prev) => {
+                let newReport = prev.slice();
+                newReport[param.index] = param;
+                return newReport;
+            })
         })
     }
 
@@ -75,7 +114,7 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
 
 
         allData.forEach((item) => {
-            console.log('name of input : ', item.inputData.name);
+            //console.log('name of input : ', item.inputData.name);
         })
 
 
@@ -135,7 +174,7 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
             if (result.json.status) {
 
                 console.log('the user detail would be : ', result);
-                console.log(result.json.data);
+                //console.log(result.json.data);
 
                 setdata(result.json.data);
                 if (iAmReady) {
@@ -165,50 +204,63 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
 
     }, [])
 
+
     useEffect(() => {
         console.log('from useeffect the data is : ', data);
         if (data) {
-            placePreviousValue(1, {
+            let arr = [];
+            arr.push(returnReportFormat(1, {
                 data: [{ tempUrl: data.userData.img !== "" ? data.userData.img : null },
                 { color: data.userData.color }],
                 name: 'theImg'
-            })
-            placePreviousValue(2, {
+            }));
+
+            arr.push(returnReportFormat(2, {
                 data: data.userData.name,
                 name: 'name'
-            })
-            placePreviousValue(3, {
+            }));
+
+            arr.push(returnReportFormat(3, {
                 data: data.userData.title,
                 name: 'title'
-            })
-            placePreviousValue(4, {
+            }));
+
+            arr.push(returnReportFormat(4, {
                 data: data.userData.status,
                 name: 'status'
-            })
-            placePreviousValue(5, {
+            }));
+
+            arr.push(returnReportFormat(5, {
                 data: data.userData.description,
                 name: 'discription'
-            })
-            placePreviousValue(6, {
+            }));
+
+            arr.push(returnReportFormat(6, {
                 data: data.userData.education,
                 name: 'education'
-            })
-            placePreviousValue(7, {
+            }))
+
+            arr.push(returnReportFormat(7, {
                 data: data.userData.skills,
                 name: 'skills'
-            })
-            placePreviousValue(8, {
+            }))
+
+            arr.push(returnReportFormat(8, {
                 data: data.userData.experiance,
                 name: 'experiance'
-            })
-            placePreviousValue(10, {
+            }))
+
+            arr.push(returnReportFormat(10, {
                 data: data.userSocialData.github,
                 name: 'github'
-            })
-            placePreviousValue(11, {
+            }))
+
+            arr.push(returnReportFormat(11, {
                 data: data.userSocialData.x,
                 name: 'x'
-            })
+            }))
+
+            placeArrayToSectionInput(arr);
         }
     }, [data])
 
@@ -286,7 +338,7 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
 
                             <GetInput index="5" inputName="discription"
                                 inputHeight="32" spaceOccupy={getInputSpace}
-                                name={"Dewscription"}
+                                name={"Discription"}
                                 prevValue={sectionReport[5]}
                                 totalInputLength={200} OutReport={updateFinalInputReport}
                                 placeHolder="Tell Brife About You ..."

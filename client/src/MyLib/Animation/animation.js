@@ -1,4 +1,5 @@
 
+import { clear } from '@testing-library/user-event/dist/clear';
 import './animation.css'
 
 async function fade(elem, speed, updateCountValue, startFrom,
@@ -67,6 +68,8 @@ async function fade(elem, speed, updateCountValue, startFrom,
                     }
 
                 } catch (error) {
+                    clearInterval(inter);
+                    resolve();
                     console.error('Error - ', error.message);
 
                 }
@@ -300,15 +303,23 @@ async function up(elem, elemType = 'ref') {
     if (elemType === 'ref') {
 
         await new Promise((resolve, reject) => {
+            let inter;
+
             let counter = 0;
             let counterUpdate = 0.1;
-            let inter = setInterval(() => {
+            inter = setInterval(() => {
+                try {
 
-                finishInterval(inter, counter, 1, resolve, 'plus');
+                    finishInterval(inter, counter, 1, resolve, 'plus');
 
-                elem.current.style.transform = `scale(${counter})`
-                ///console.log('from button counter = '+counter);
-                counter += counterUpdate;
+                    elem.current.style.transform = `scale(${counter})`
+                    ///console.log('from button counter = '+counter);
+                    counter += counterUpdate;
+                } catch (error) {
+                    clearInterval(inter);
+                    resolve();
+                    console.error('Error -', error);
+                }
             }, 20)
         })
     }

@@ -35,6 +35,7 @@ function ProfileImage({ children,
 
         if (prevData) {
             console.log('from useeffect the prev effect from profieIMg is ,', prevData)
+            // alert("we found the prev data, see console ");
             if (prevData.inputData.data[1].color === '' || prevData.inputData.data[1].color === null
                 || prevData.inputData.data[1].color === undefined || prevData.inputData.data[1].color === false
             ) {
@@ -70,7 +71,8 @@ function ProfileImage({ children,
 
 
 
-                <UploadButton outSrcPimg={setsrc} useAsUpdate={useAsUpdate}
+                <UploadButton
+                    outSrcPimg={setsrc} useAsUpdate={useAsUpdate}
                     divToHaveEffect={funcdivColor}
                     mode={'pimg'} className="relative right-20 flex flex-row 
         justify-center items-center bg-green-950 rounded-xl p-1 scale-75
@@ -416,7 +418,6 @@ function GetInput({ name, inputName, index,
     );
 }
 
-
 function GetInputArray({ index, name, inputName, totalInputLength = 100
     , inputHeight = 10, isReadOnly = false,
     spaceOccupy = '40%', prevValue, isDisabled = false,
@@ -428,10 +429,7 @@ function GetInputArray({ index, name, inputName, totalInputLength = 100
     let boolPreviousVal = false;
     if (prevValue) {
         if (Object.hasOwn(prevValue, 'inputData')) {
-            if (prevValue.inputData.data) {
-
-                boolPreviousVal = true;
-            }
+            boolPreviousVal = true;
         }
     }
 
@@ -513,7 +511,6 @@ function GetInputArray({ index, name, inputName, totalInputLength = 100
         return childIndex.current
     }
 
-    // console.log('updated arr value is ', arr);
     useEffect(() => {
 
         if (!OutReport) {
@@ -521,9 +518,8 @@ function GetInputArray({ index, name, inputName, totalInputLength = 100
         }
 
         if (boolPreviousVal) {
-
             TheReport.current.inputData.data = prevValue.inputData.data;
-            //console.log('if prev val the Report is : ', TheReport);
+            console.log('if prev val the Report is : ', TheReport);
             let newarr = [];
             for (let i = 0; i < prevValue.inputData.data.length; i++) {
 
@@ -538,12 +534,12 @@ function GetInputArray({ index, name, inputName, totalInputLength = 100
             setarr(newarr);
         }
         else {
-            setarr([<ArrayItem index={0}
+            setarr([<ArrayItem index={childIndex.current}
                 handleValues={handleReport}
                 delFunction={del} />])
         }
 
-    }, [prevValue])
+    }, [])
 
     return (
         <>
@@ -590,6 +586,8 @@ function GetInputArray({ index, name, inputName, totalInputLength = 100
     );
 }
 
+
+
 function ArrayItem({ refCustom, index, delFunction, handleValues, val }) {
     const theInput = useRef(null);
 
@@ -601,7 +599,7 @@ function ArrayItem({ refCustom, index, delFunction, handleValues, val }) {
 
             theInput.current.value = val;
         }
-    }, [val])
+    }, [])
     return (
         <>
             <div className=' min-w-[250px] w-[45%] max-w-[290px]
@@ -797,7 +795,10 @@ function UploadButton({ outSrcPimg, __this_component_use_context_and_i_am_a_mess
         if (prevData) {
 
         } else {
-            OutReportFromInputs(TheReport.current);
+            if (!useAsUpdate) {
+
+                OutReportFromInputs(TheReport.current);
+            }
         }
 
     }, [prevData])
@@ -1131,12 +1132,10 @@ function Section2({ children, animation = false,
                         placeHolder=" Ex: BCA From Punjab University"
                     />
 
-                    <GetInput inputName="skills"
-                        index={7} OutReport={OutReportFromInputs}
-                        inputHeight="32" spaceOccupy={getInputSpace}
-                        name={"Skills"} totalInputLength={500}
+                    <GetInputArray index={7}
+                        inputName={'skills'} name={'Skills'}
+                        OutReport={OutReportFromInputs}
                         prevValue={section2FinalInputReport[7]}
-                        placeHolder="Tell About Your Professional Skills"
                     />
 
                     <GetInput inputName="experiance"

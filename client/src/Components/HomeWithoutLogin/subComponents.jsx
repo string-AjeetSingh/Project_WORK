@@ -1,23 +1,31 @@
 
 import { fade, ButtonAnimation } from '../../MyLib/Animation/animation';
 import { sAnimation } from "../../MyLib/ScrollAnimation/sAnimation";
+import { useNavigate } from 'react-router-dom';
 
 import { useEffect, useRef, useState } from 'react';
 
 
-function BigButton ({ children, className, resetClassName = false, AddOnClassName, aref }) {
+function BigButton({ children, className, resetClassName = false, AddOnClassName, aref,
+    handleClick
+}) {
     const bref = useRef(null);
 
-    useEffect(()=>{
-        if(aref){
+
+    useEffect(() => {
+        if (aref) {
 
             aref.current = bref.current;
         }
     }, [])
     return (
         <>
-            <button ref={bref}  onClick={async () => {
+            <button ref={bref} onClick={async () => {
                 await ButtonAnimation(bref);
+                if (handleClick) {
+                    alert('handleLogin')
+                    handleClick();
+                }
             }}
                 className={resetClassName ? className : `"hover:bg-green-800 hover:text-blue-400 
                                      active:bg-green-900
@@ -30,19 +38,20 @@ function BigButton ({ children, className, resetClassName = false, AddOnClassNam
     );
 }
 
-function Section1({ children }) {
+function Section1({ children, login }) {
     const iref = useRef(null);
     const href = useRef(null);
     const asectionref = useRef(null);
+    const navigate = useNavigate();
 
     const [size, setsize] = useState([window.innerWidth, window.innerHeight]);
 
     async function theAnimation() {
 
         if (size[0] <= 751) {
-             fade(asectionref.current, 15, 0.5, -30, 0, 'right', 'plus', 1);
+            fade(asectionref.current, 15, 0.5, -30, 0, 'right', 'plus', 1);
             //await fade(iref.current, 2, 0.5, -100, 0, 'top', 'plus', 1);
-             fade(href.current, 15, 0.5, -30, 0, 'left', 'plus', 1);
+            fade(href.current, 15, 0.5, -30, 0, 'left', 'plus', 1);
         }
         else {
             fade(href.current, 10, 0.5, -60, 0, 'right', 'plus', 1);
@@ -108,7 +117,10 @@ function Section1({ children }) {
                     </img>
 
 
-                    <BigButton AddOnClassName={`w-[60%] min-w-[19rem]`}>Let's Find It</BigButton>
+                    <BigButton handleClick={() => {
+                        login();
+                    }}
+                        AddOnClassName={`w-[60%] min-w-[19rem]`}>Let's Find It</BigButton>
 
 
                 </section> <hr className="border-[1px] 
@@ -150,7 +162,9 @@ function Section1({ children }) {
                              text-2xl font-serif font-bold "><u>WANT</u></span></h3>
                             </div>
                         </div>
-                        <BigButton>Let's Find It</BigButton>
+                        <BigButton handleClick={() => {
+                            login();
+                        }}>Let's Find It</BigButton>
                     </div>
 
                     <img ref={iref} className="size-48 m-4 
@@ -169,21 +183,21 @@ function Section1({ children }) {
 
 }
 
-function Section2({ children }) {
+function Section2({ children, login }) {
 
     const [size, setsize] = useState([window.innerWidth, window.innerHeight]);
     const headingref = useRef(null);
     const elemRef2 = useRef(null);
     const elemRef3 = useRef(null);
     const elemRef4 = useRef(null);
-        
+
 
 
     function handleSize() {
         setsize([window.innerWidth, window.innerHeight]);
     }
 
-   
+
 
     useEffect(() => {
 
@@ -227,11 +241,11 @@ function Section2({ children }) {
             startProperties, stopProperties
         );
         let aScrollAnimationObject2 = new sAnimation(elemRef3.current,
-           startelemRef3, stopelemRef3
+            startelemRef3, stopelemRef3
         );
         let aScrollAnimationObject3 = new sAnimation(elemRef2.current,
             startelemRef2, stopelemRef2
-         );
+        );
 
         function wrapper() {
             aScrollAnimationObject.theLogin();
@@ -243,7 +257,7 @@ function Section2({ children }) {
 
         window.addEventListener('scroll', wrapper);
 
-       
+
 
         return () => {
 
@@ -291,6 +305,7 @@ function Section2({ children }) {
 
 
                         <BigButton aref={elemRef2}
+                            handleClick={login}
                             AddOnClassName="font-bold absolute
                         bottom-7 left-5 
                         w-[50%] z-[1] min-w-[200px]
@@ -346,6 +361,7 @@ function Section2({ children }) {
                         </div>
 
                         <BigButton aref={elemRef2}
+                            handleClick={login}
                             AddOnClassName="font-bold absolute
                         bottom-1 left-5 opacity-0
                         w-[50%] z-[1] min-w-[200px]
@@ -371,7 +387,7 @@ function Section2({ children }) {
 }
 
 
-function Section3({ children }) {
+function Section3({ children, login }) {
 
     const [size, setsize] = useState([window.innerWidth, window.innerHeight]);
     const headingref = useRef(null);
@@ -426,20 +442,20 @@ function Section3({ children }) {
 
         let aScrollAnimationObject2 = new sAnimation(elemRef3.current,
             startelemRef3, stopelemRef3
-         );
-         let aScrollAnimationObject3 = new sAnimation(elemRef2.current,
-             startelemRef2, stopelemRef2
-          );
- 
-         function wrapper() {
-             aScrollAnimationObject.theLogin();
-             aScrollAnimationObject2.theLogin();
-             aScrollAnimationObject3.theLogin();
-         }
- 
-         window.addEventListener('resize', handleSize);
- 
-         window.addEventListener('scroll', wrapper);
+        );
+        let aScrollAnimationObject3 = new sAnimation(elemRef2.current,
+            startelemRef2, stopelemRef2
+        );
+
+        function wrapper() {
+            aScrollAnimationObject.theLogin();
+            aScrollAnimationObject2.theLogin();
+            aScrollAnimationObject3.theLogin();
+        }
+
+        window.addEventListener('resize', handleSize);
+
+        window.addEventListener('scroll', wrapper);
 
 
         window.addEventListener('resize', handleSize());
@@ -491,6 +507,7 @@ function Section3({ children }) {
 
 
                         <BigButton aref={elemRef2}
+                            handleClick={login}
                             AddOnClassName="font-bold absolute
                         bottom-7 right-5 
                         w-[50%] z-[1] min-w-[200px]
@@ -553,6 +570,7 @@ function Section3({ children }) {
                         </div>
 
                         <BigButton aref={elemRef2}
+                            handleClick={login}
                             AddOnClassName="font-bold absolute
                         bottom-1 right-5 opacity-0
                         w-[50%] z-[1] min-w-[200px]
@@ -573,4 +591,4 @@ function Section3({ children }) {
 }
 
 
-export {Section1, Section2, Section3, BigButton}
+export { Section1, Section2, Section3, BigButton }
