@@ -93,7 +93,7 @@ function Section1({ children, login }) {
                             w-12 rotate-90 top-[-25px] left-[240px]">
                                 <img className="w-full"
                                     alt="stock image"
-                                    src="./stock/leaf.png"></img>
+                                    src="/stock/leaf.png"></img>
                             </div>
 
                             To <br></br>Your Destination
@@ -113,7 +113,7 @@ function Section1({ children, login }) {
                     <img
                         ref={iref} className="size-48 m-2 
                         relative"
-                        src='./logo.png' alt="logo">
+                        src='/logo.png' alt="logo">
                     </img>
 
 
@@ -148,7 +148,7 @@ function Section1({ children, login }) {
                             w-14 rotate-90 left-[90px] top-[-20px]">
                                 <img className="w-full"
                                     alt="stock image"
-                                    src="./stock/leaf.png"></img>
+                                    src="/stock/leaf.png"></img>
                             </div>
                             To <br></br>Your Destination
 
@@ -169,7 +169,7 @@ function Section1({ children, login }) {
 
                     <img ref={iref} className="size-48 m-4 
                     relative opacity-0"
-                        src='./logo.png' alt="logo"></img>
+                        src='/logo.png' alt="logo"></img>
 
 
                 </section> <hr className="border-[1px] 
@@ -316,7 +316,7 @@ function Section2({ children, login }) {
                         <img ref={elemRef3} className="size-[50%]
                         max-w-[450px] min-w-[280px] opacity-0
                         relative ml-5 border-b-2 border-black "
-                            src='./stock/bussinessman1.png'
+                            src='/stock/bussinessman1.png'
                             alt="stock img"></img>
 
                     </div>
@@ -372,7 +372,7 @@ function Section2({ children, login }) {
                         <img ref={elemRef3} className="size-[50%]
                         max-w-[450px] min-w-[280px] opacity-0
                         relative ml-5 border-b-2 border-black"
-                            src='./stock/bussinessman1.png'
+                            src='/stock/bussinessman1.png'
                             alt="stock img"></img>
 
                     </div>
@@ -518,7 +518,7 @@ function Section3({ children, login }) {
                         <img ref={elemRef3} className="size-[50%] opacity-0
                         max-w-[450px] min-w-[280px]
                         relative ml-5 -left-20 "
-                            src='./stock/bussinessman2.png'
+                            src='/stock/bussinessman2.png'
                             alt="stock img"></img>
 
                     </div>
@@ -550,7 +550,7 @@ function Section3({ children, login }) {
                         <img ref={elemRef3} className="size-[50%] opacity-0
                         max-w-[450px] min-w-[280px]
                         relative ml-5 border-b-2 border-black "
-                            src='./stock/bussinessman2.png'
+                            src='/stock/bussinessman2.png'
                             alt="stock img"></img>
 
                         <div className="relative 
