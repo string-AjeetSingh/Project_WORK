@@ -78,6 +78,7 @@ function HomeWithLogin({ logout, user, isAuthenticated, useAsSearch, iAmReady })
                     iAmReady.current.off();
                 }
                 setdataFromServer(result.json.data);
+                originalData.current = result.json.data;
             } else {
                 // alert('no matching results');
                 if (iAmReady.current) {

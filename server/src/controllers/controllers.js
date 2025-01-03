@@ -740,7 +740,6 @@ module.exports.apply = async (req, res) => {
 
         let finalUserData = {
             email: req.userData.email,
-
         }
         if (user.length > 0) {
             fetchUser.img = user[0].userData.img;
@@ -767,7 +766,7 @@ module.exports.apply = async (req, res) => {
 
         mongo.over();
         if (result) {
-            // debug.console('found the result : ', result);
+            debug.console('found the result : ', result);
             res.json({
                 status: 1,
                 message: "file found, must be uploaded",

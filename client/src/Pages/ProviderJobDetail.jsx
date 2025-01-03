@@ -36,9 +36,17 @@ function ProviderJobDetail({ }) {
                 }, 5000)
                 return result.json.data;
             } else {
+                loadingScreen.current.off();
+                setTimeout(() => {
+                    setboolscreen(false);
+                }, 5000)
                 return false;
             }
         } else {
+            loadingScreen.current.off();
+            setTimeout(() => {
+                setboolscreen(false);
+            }, 5000)
             return false;
         }
     }
@@ -124,28 +132,28 @@ function ProviderJobDetail({ }) {
                 {isAuthenticated ?
                     <>
 
-                        <div className='p-2 flex flex-col w-full 
+                        {dataForAboutJob ?
+                            <div className='p-2 flex flex-col w-full 
                         border rounded-2xl border-green-600
                         max-w-[900px] min-w-[370px]'>
 
-                            {dataForAboutJob ?
                                 <commonContext.Provider value={{ dataForAboutJob }}>
                                     <AboutJob useInProviderJobDetailjsx
                                         isAuthenicated={isAuthenticated} />
                                     <hr className="w-full mt-7 mb-1 rounded-xl border-1 
                 border-green-800"></hr>
                                 </commonContext.Provider>
-                                :
-                                <h1>No data from server</h1>
-                            }
-                            {data ?
-                                <AppliedInd data={data} />
-                                : <h1>No User Applied</h1>}
-                            <hr className="w-full mt-7 mb-1 rounded-xl border-1 
+                                {data ?
+                                    <AppliedInd data={data} />
+                                    : <h1>No User Applied</h1>}
+                                <hr className="w-full mt-7 mb-1 rounded-xl border-1 
                 border-green-800"></hr>
-                            <DeleteWork handleButton={deleteJob} />
+                                <DeleteWork handleButton={deleteJob} />
 
-                        </div>
+                            </div>
+                            :
+                            <h1 className="text-3xl font-serif text-green-300">No data from server</h1>
+                        }
                     </>
 
                     : null}

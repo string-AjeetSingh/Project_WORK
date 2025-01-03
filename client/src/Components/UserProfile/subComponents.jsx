@@ -233,7 +233,7 @@ function Skills({ children }) {
 
 
     if (!(children instanceof Array)) {
-        console.error("the children must be a array");
+        //console.error("the children must be a array");
         return (
             <>
                 {null}

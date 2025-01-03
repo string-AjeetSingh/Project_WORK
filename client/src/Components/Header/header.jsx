@@ -188,7 +188,7 @@ function Header({ children, login, logout, key, search_Link }) {
 
                 <div className="flex flex-row items-center">
 
-                    {size < 505 ? <OtherPanel theSize={504} setPanel={setpanelno} /> :
+                    {size < 561 ? <OtherPanel theSize={504} setPanel={setpanelno} /> :
                         <>
                             <button onClick={() => {
                                 navigate('/');

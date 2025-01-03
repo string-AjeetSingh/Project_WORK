@@ -18,7 +18,7 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
     const applyButton3 = useRef(null);
     const fileButton = useRef(null);
     const [isApplied, setisApplied] = useState(null);
-    const [boolC, setboolC] = useState(false);
+    const [boolC, setboolC] = useState('ready');
     const { dataForAboutJob } =
         useContext(useInJobDetailjsx || useInProviderJobDetailjsx ? commonContext : myContext);
     const [applyPanel, setapplyPanel] = useState(null);
@@ -35,6 +35,9 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
     }
 
     async function requestApply(e) {
+        flushSync(() => {
+            setboolC('processing');
+        })
         let toApply = new requestServer(process.env.REACT_APP_SERVER_URL
             + '/xtServer/api/apply', { method: 'POST' });
         toApply.setAuthorizedFlag(isAuthenicated);
@@ -47,26 +50,29 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
             if (result.json.status === 1) {
 
                 flushSync(() => {
-                    setboolC(true);
+                    setboolC('complete');
                 })
                 await pleaseWait(1000);
                 handleRemovePanle()
                 alert('you are succesfully applied for job');
-                setboolC(false);
+                setboolC('ready');
 
             } else if (result.json.status === 0) {
                 alert('Error from server uploading data');
-
+                setboolC('ready');
             }
             else if (result.json.status === -1) {
                 alert(result.json.message);
+                setboolC('ready');
             }
             else if (result.json.status === -2) {
                 alert('file too large, provide below 3 MB');
+                setboolC('ready');
             }
         }
         else {
-            alert('bad response from server')
+            alert('bad response from server');
+            setboolC('ready');
         }
 
         toApply.resetFormData();
@@ -122,8 +128,8 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
                             ref={applyButton1}
                             onClick={() => {
                                 if (isApplied) {
-                                    //  alert('Already applied for this job')
-                                    handleApply()
+                                    alert('Already applied for this job')
+                                    //handleApply()
                                 } else {
                                     email === dataForAboutJob.from ?
                                         alert('You cannot apply on your provided job') : handleApply()
@@ -163,17 +169,28 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
                         p-0 pb-3 rounded-xl border-2 border-slate-800 hover:bg-slate-600 
                         bg-slate-700
                        ">
-                                    {boolC ?
+                                    {boolC === 'processing' ?
+                                        <div className="font-bold text-[1.0rem] mt-1 text-slate-300
+                                      ">
+                                            Processing ...
+
+                                        </div>
+                                        : null}
+                                    {boolC === 'complete' ?
                                         <div className="font-bold text-[1.0rem] mt-1 text-slate-300
                             ">
                                             Succesfully Applied
 
                                         </div>
                                         :
+                                        null
+                                    }
+
+                                    {boolC === 'ready' ?
                                         <>
                                             <img className=" size-28 rounded-lg" src="/stock/upload.png"></img>
                                             <div className="font-bold text-[1.0rem] mt-1 text-slate-300
-                         ">
+                  ">
                                                 Upload Resume Pdf
                                                 <input ref={fileButton} onClick={(e) => {
                                                     e.stopPropagation();
@@ -184,7 +201,7 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
                                                 }} type="file" className="hidden"></input>
                                             </div>
                                         </>
-                                    }
+                                        : null}
 
                                 </button>
                             </div>
