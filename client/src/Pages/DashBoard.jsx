@@ -34,15 +34,15 @@ function DashBoard({ }) {
         {boolscreen ? <LoadingScreen outControl={loadingScreen} /> : null}
         {isAuthenticated ?
             <>
-                <div className="p-1">
 
-                    <header >
-                        <commonContext.Provider value={{ user }}>
-                            <Header logout={nowLogout} search_Link ></Header>
-                        </commonContext.Provider>
-                    </header>
-                    <hr className="border-[1px] 
+                <header >
+                    <commonContext.Provider value={{ user }}>
+                        <Header logout={nowLogout} search_Link ></Header>
+                    </commonContext.Provider>
+                </header>
+                <hr className="border-[1px] 
                                  border-green-950"></hr>
+                <div className="pb-1">
                     <main>
 
                         <UserProfile isAuthenticated={isAuthenticated} iAmReady={offLoadingScreenFromChild} />

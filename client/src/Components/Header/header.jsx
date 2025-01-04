@@ -15,14 +15,14 @@ function Header({ children, login, logout, key, search_Link }) {
     const { isAuthenticated, setdataFromServer } = useContext(commonContext);
 
     const panel = [
-        <div className="flex flex-col absolute  z-20
-         w-full p-1 h-[80vh] overflow-y-auto border border-green-800 bg-green-900
+        <div className="flex flex-col absolute  z-20 
+         w-[100%] p-1 h-[80vh] overflow-y-auto border border-black bg-green-900
          "
             style={{
                 top: '55px'
             }}
         >
-            <div className="   flex flex-row justify-between items-center">
+            <div className="   flex flex-row justify-between items-center ">
                 <input ref={refSearch} className="rounded-md   w-[80%]
               bg-green-950 border-t border-t-green-600 
               placeholder-green-200 text-green-200
