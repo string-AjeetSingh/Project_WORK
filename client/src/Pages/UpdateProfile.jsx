@@ -45,9 +45,12 @@ function UpdateProfile({ }) {
     return (<>
         {boolscreen ? <LoadingScreen outControl={loadingScreen} /> : null}
         {isAuthenticated ?
-            <UserProfile isAuthenticated={isAuthenticated}
-                email={user.email}
-                useAsUpdate />
+            <div className="p-1">
+
+                <UserProfile isAuthenticated={isAuthenticated}
+                    email={user.email}
+                    useAsUpdate />
+            </div>
             :
             <h1>You are not authenticated</h1>
         }

@@ -69,28 +69,31 @@ function JobDetail({ }) {
                 <h1>Loading Please wait</h1>
                 :
                 <>
-                    <header >
-                        <commonContext.Provider value={{ user }}>
-                            <Header logout={nowLogout} search_Link ></Header>
-                        </commonContext.Provider>
-                    </header>
-                    <hr className="border-[1px] 
+                    <div className="p-1">
+
+                        <header >
+                            <commonContext.Provider value={{ user }}>
+                                <Header logout={nowLogout} search_Link ></Header>
+                            </commonContext.Provider>
+                        </header>
+                        <hr className="border-[1px] 
             border-green-950"></hr>
-                    <main>
-                        <div className="flex flex-row">
+                        <main>
+                            <div className="flex flex-row">
 
-                            {dataForAboutJob ?
-                                <commonContext.Provider value={{ dataForAboutJob }}>
-                                    <AboutJob isAuthenicated={isAuthenicated}
-                                        email={user.email}
-                                        useInJobDetailjsx />
-                                </commonContext.Provider>
-                                :
-                                <h1>No data from server</h1>
-                            }
-                        </div>
+                                {dataForAboutJob ?
+                                    <commonContext.Provider value={{ dataForAboutJob }}>
+                                        <AboutJob isAuthenicated={isAuthenicated}
+                                            email={user.email}
+                                            useInJobDetailjsx />
+                                    </commonContext.Provider>
+                                    :
+                                    <h1>No data from server</h1>
+                                }
+                            </div>
 
-                    </main>
+                        </main>
+                    </div>
                 </>
             }
 

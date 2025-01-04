@@ -105,10 +105,6 @@ aRouter.use(middleware.errors);
 aRouter.post('/rough', uploadToMemory.single('theImg'),
     utils.profileImgCheck, controllers.rough);
 
-aRouter.post('/roughPdf', uploadToMemory.single('thePdf'),
-    utils.pdfCheck, controllers.rough);
-
-aRouter.get('/roughGetFile', controllers.roughGetFile);
 aRouter.get('/tryIt',
     middleware.jwtVerification,
     controllers.tryConnection);

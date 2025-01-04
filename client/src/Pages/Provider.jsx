@@ -44,23 +44,26 @@ function Provider({ }) {
             {boolscreen ? <LoadingScreen outControl={loadingScreen} /> : null}
             {isAuthenticated ?
                 <>
-                    <header >
-                        <commonContext.Provider value={{ user }}>
-                            <Header logout={nowLogout} search_Link ></Header>
-                        </commonContext.Provider>
-                    </header><hr className="border-[1px] 
+                    <div className="p-1">
+
+                        <header >
+                            <commonContext.Provider value={{ user }}>
+                                <Header logout={nowLogout} search_Link ></Header>
+                            </commonContext.Provider>
+                        </header><hr className="border-[1px] 
                               border-green-950"></hr>
-                    <main className="flex flex-row justify-center p-3">
-                        <div className='p-2 flex flex-col w-full 
+                        <main className="flex flex-row justify-center p-3">
+                            <div className='p-2 flex flex-col w-full 
                         border rounded-2xl border-green-800
                         max-w-[900px] min-w-[370px]'>
-                            <ProvideWork isAuthenticated={isAuthenticated} email={user ? user.email : null} />
-                        </div>
-                    </main>
+                                <ProvideWork isAuthenticated={isAuthenticated} email={user ? user.email : null} />
+                            </div>
+                        </main>
 
-                    <footer>
-                        <Footer></Footer>
-                    </footer>
+                        <footer>
+                            <Footer></Footer>
+                        </footer>
+                    </div>
                 </>
                 : null}
 

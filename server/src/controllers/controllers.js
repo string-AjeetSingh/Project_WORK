@@ -44,6 +44,81 @@ module.exports.rough = async (req, res) => {
     }
 };
 
+module.exports.developerUpdateServerData = async (req, res) => {
+    debug.console("from developerUpdateServerData -- -- -- ");
+
+    try {
+        if (req.file && req.body.data) {
+            debug.console("the file found  : ", req.file)
+            req.body.data = utils.jsonParseIfString(req.body.data);
+
+            let mongo = new alib('Work', process.env.MONGOSTRING);
+            let fileData = await utils.uploadFileToMongo(mongo, req.file, req.body.data.type);
+            if (!fileData) {
+                res.json({
+                    status: 0,
+                    message: 'unable to upload the file'
+                })
+                return;
+            }
+            let updateData = new alib('Work', process.env.MONGOSTRING);
+            if (req.body.data.no) {
+
+                updateData.setCollection('Jobs');
+                let result = await updateData.updateOne({ no: parseInt(req.body.data.no) },
+                    { $set: { img: '/xtServer/api/fetchJobImg?fileName=' + fileData.fileName } }
+                )
+                updateData.over();
+                debug.console('the result is : ', result);
+
+                if (result) {
+                    res.json({
+                        message: 'file ' + fileData.fileName + 'must be upldated to job'
+                    })
+                    return;
+                }
+                else {
+                    res.json({
+                        message: 'unsucssesfull update to mongodb'
+                    })
+                    return;
+                }
+            }
+            else if (req.body.data.email) {
+                updateData.setCollection('Users');
+                let result = await updateData.updateOne({ 'userSocialData.email': req.body.data.email },
+                    { $set: { "userData.img": '/xtServer/api/fetchProfileImg?fileName=' + fileData.fileName } }
+                )
+                updateData.over();
+                if (result) {
+                    res.json({
+                        message: 'file ' + fileData.fileName + 'must be upldated to user'
+                    })
+                    return;
+                } else {
+                    res.json({
+                        message: 'unsucssesfull update to mongodb'
+                    })
+                    return;
+                }
+            } else {
+                res.json({
+                    message: 'please provide no/email to server'
+                })
+                return;
+            }
+
+        } else {
+            res.json({
+                status: 0,
+                message: 'No file provided or body data provided'
+            })
+        }
+    } catch (error) {
+        console.error('Error From developerUpdateServerData Control : ', error);
+    }
+};
+
 module.exports.roughGetFile = async (req, res) => {
     debug.console('from roughGetFile -- -- -- ');
     if (req.query.fileName) {

@@ -55,6 +55,7 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
                 await pleaseWait(1000);
                 handleRemovePanle()
                 alert('you are succesfully applied for job');
+                window.location.reload(true);
                 setboolC('ready');
 
             } else if (result.json.status === 0) {

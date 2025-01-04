@@ -13,7 +13,7 @@ function WelcomeUser({ }) {
             return (
                 <>
 
-                    <main>
+                    <main className="p-1">
                         <CreateUserProfile logout={nowLogout} email={user.email}
                             isAuthenticated={isAuthenticated} />
                     </main>
