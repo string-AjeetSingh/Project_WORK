@@ -88,9 +88,8 @@ module.exports.profileImgCheck = (req, res, next) => {
             next();
         }
     } else {
-        res.json({
-            message: 'no file recieved'
-        })
+        debug.console('no file recieved');
+        next();
     }
 };
 
@@ -125,9 +124,8 @@ module.exports.pdfCheck = (req, res, next) => {
             next();
         }
     } else {
-        res.json({
-            message: 'no file recieved'
-        })
+        debug.console('no provided file');
+        next();
     }
 };
 

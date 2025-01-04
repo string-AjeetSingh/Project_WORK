@@ -1,5 +1,6 @@
 
-const { buffer } = require('stream/consumers');
+
+const { utimesSync } = require('fs');
 const isDebugging = require('./../myLib/ifDebugging/ifDebugging');
 const alib = require('./../myLib/PracLib/alib');
 const utils = require('./../utils/utils');
@@ -176,11 +177,22 @@ module.exports.createPost = async (req, res, next) => {
     debug.console('From CreatePost -');
 
     req.body.data = utils.jsonParseIfString(req.body.data);
-    //debug.console('the req.body.data : ', req.body.data);
+    let fileData = null;
+    if (req.file) {
+        let uploadFile = new alib('Work', process.env.MONGOSTRING);
+        fileData = await utils.uploadFileToMongo(uploadFile, req.file, 'jobimg');
 
+        if (fileData) {
+            debug.console('found fileName after upload : ', fileData.fileName);
+        } else {
 
-
-    //debug.console('the req.file : ', req.file);
+            res.json({
+                status: 0,
+                message: 'unable to upload the file'
+            })
+            return;
+        }
+    }
     if (req.body.data) {
 
         let upload = {};
@@ -225,7 +237,7 @@ module.exports.createPost = async (req, res, next) => {
                 "x": upload.x
             },
             "companyName": upload.companyName,
-            "img": req.file ? path.join(process.env.SERVER_BASE, req.file.path) : null,
+            "img": fileData ? '/xtServer/api/fetchJobImg?fileName=' + fileData.fileName : null,
             "location": upload.location,
             "no": theNo,
             "Applied": [],
@@ -572,6 +584,24 @@ module.exports.register = async (req, res) => {
 
 
     // debug.console('the req.file : ', req.file);
+
+    let fileData = null;
+    if (req.file) {
+        let uploadFile = new alib('Work', process.env.MONGOSTRING);
+        fileData = await utils.uploadFileToMongo(uploadFile, req.file, 'profileimg');
+
+        if (fileData) {
+            debug.console('found fileName after upload : ', fileData.fileName);
+        } else {
+
+            res.json({
+                status: 0,
+                message: 'unable to upload the file'
+            })
+            return;
+        }
+    }
+
     if (req.body.data) {
 
         let upload = {};
@@ -613,7 +643,7 @@ module.exports.register = async (req, res) => {
                 "skills": upload.skills ? upload.skills : [],
                 "education": upload.education,
                 "name": upload.name,
-                "img": req.file ? path.join(process.env.SERVER_BASE, req.file.path) : null,
+                "img": fileData ? '/xtServer/api/fetchProfileImg?fileName=' + fileData.fileName : null,
                 "color": upload.color
             },
             "userSocialData": {
@@ -712,7 +742,23 @@ module.exports.updateUserProfile = async (req, res) => {
         }
 
         if (req.file) {
-            finalUpdate.userData.img = path.join(process.env.SERVER_BASE, req.file.path);
+            let fileData = null;
+
+            let uploadFile = new alib('Work', process.env.MONGOSTRING);
+            fileData = await utils.uploadFileToMongo(uploadFile, req.file, 'profileimg');
+
+            if (fileData) {
+                debug.console('found fileName after upload : ', fileData.fileName);
+            } else {
+
+                res.json({
+                    status: 0,
+                    message: 'unable to upload the file'
+                })
+                return;
+            }
+
+            finalUpdate.userData.img = '/xtServer/api/fetchProfileImg?fileName=' + fileData.fileName;
             //debug.console('the final update will be : ', finalUpdate);
         }
         else {
@@ -806,6 +852,24 @@ module.exports.apply = async (req, res) => {
         debug.console("the job no is : ", req.body.data.job);
         // debug.console('file found', req.file);
 
+        let fileData = null;
+
+        let uploadFile = new alib('Work', process.env.MONGOSTRING);
+        fileData = await utils.uploadFileToMongo(uploadFile, req.file, 'userspdf');
+
+        if (fileData) {
+            debug.console('found fileName after upload : ', fileData.fileName);
+        } else {
+
+            res.json({
+                status: 0,
+                message: 'unable to upload the file'
+            })
+            return;
+        }
+
+
+
         let fetchUser = new alib('Work', process.env.MONGOSTRING);
         fetchUser.setCollection('Users');
 
@@ -835,9 +899,7 @@ module.exports.apply = async (req, res) => {
                     Applied:
                     {
                         ...finalUserData,
-                        pdfUrl: process.env.SERVER_PROTOCOL + "://" + process.env.SERVER_NAME +
-                            ":" + process.env.PORT
-                            + path.join(process.env.SERVER_BASE, req.file.path)
+                        pdfUrl: '/xtServer/api/fetchJobPdf?fileName=' + fileData.fileName
                     },
                 }
             })
@@ -918,6 +980,92 @@ module.exports.fetchTempImg = async (req, res, next) => {
         debug.console("the fileName provided is : ", req.query.fileName);
         let mongo = new alib('Work', process.env.MONGOSTRING);
         let result = await utils.fetchFileFromMongo(mongo, req.query.fileName, 'temp');
+
+        if (!result) {
+            res.json({
+                status: 0,
+                message: 'Error fetching the file'
+            })
+            return;
+        }
+
+        res.type(result.file.mimetype).send(Buffer.from(result.file.buffer, "base64"));
+
+    } else {
+        res.json({
+            status: 0,
+            message: 'provide the fileName to have the file'
+        })
+    }
+
+};
+
+module.exports.fetchProfileImg = async (req, res, next) => {
+    debug.console("from fetchProfileImg");
+
+    if (req.query.fileName) {
+
+        debug.console("the fileName provided is : ", req.query.fileName);
+        let mongo = new alib('Work', process.env.MONGOSTRING);
+        let result = await utils.fetchFileFromMongo(mongo, req.query.fileName, 'profileimg');
+
+        if (!result) {
+            res.json({
+                status: 0,
+                message: 'Error fetching the file'
+            })
+            return;
+        }
+
+        res.type(result.file.mimetype).send(Buffer.from(result.file.buffer, "base64"));
+
+    } else {
+        res.json({
+            status: 0,
+            message: 'provide the fileName to have the file'
+        })
+    }
+
+};
+
+
+module.exports.fetchJobImg = async (req, res, next) => {
+    debug.console("from fetchJobImg");
+
+    if (req.query.fileName) {
+
+        debug.console("the fileName provided is : ", req.query.fileName);
+        let mongo = new alib('Work', process.env.MONGOSTRING);
+        let result = await utils.fetchFileFromMongo(mongo, req.query.fileName, 'jobimg');
+
+        if (!result) {
+            res.json({
+                status: 0,
+                message: 'Error fetching the file'
+            })
+            return;
+        }
+
+        res.type(result.file.mimetype).send(Buffer.from(result.file.buffer, "base64"));
+
+    } else {
+        res.json({
+            status: 0,
+            message: 'provide the fileName to have the file'
+        })
+    }
+
+};
+
+
+module.exports.fetchJobPdf = async (req, res, next) => {
+    debug.console("from fetchJobPdf");
+
+    if (req.query.fileName) {
+
+        debug.console("the fileName provided is : ", req.query.fileName);
+        let mongo = new alib('Work', process.env.MONGOSTRING);
+        let result = await utils.fetchFileFromMongo(mongo, req.query.fileName, 'userspdf');
 
         if (!result) {
             res.json({

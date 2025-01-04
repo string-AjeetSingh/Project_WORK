@@ -30,21 +30,22 @@ function AppliedCards({ name, img, pdf, email }) {
                 </div>
                 {pdf ?
 
-                    <Link to={pdf} target="blanck">
-                        <button onClick={() => {
 
-                        }}
-                            className=" m-1 p-2 border 
+                    <button onClick={() => {
+                        window.open(pdf, '_blank');
+
+                    }}
+                        className=" m-1 p-2 border 
                             border-green-800 rounded-xl 
 hover:bg-green-800 self-center active:bg-green-700  ">
-                            <div className="flex flex-row items-center
+                        <div className="flex flex-row items-center
                                  justify-center">
-                                <img className="size-10 "
-                                    src="/stock/icon/resume.png"></img>
-                                <span className="ml-2">Resume</span>
-                            </div>
-                        </button>
-                    </Link>
+                            <img className="size-10 "
+                                src="/stock/icon/resume.png"></img>
+                            <span className="ml-2">Resume</span>
+                        </div>
+                    </button>
+
 
                     : <h1>No pdf found</h1>
                 }

@@ -132,20 +132,26 @@ aRouter.post('/temp', middleware.authorize,
 )
 
 aRouter.post('/createPost', middleware.authorize
-    , middleware.jwtVerification, upload.single('theImg')
+    , middleware.jwtVerification, uploadToMemory.single('theImg'),
+    utils.profileImgCheck
     , controllers.createPost);
 
 aRouter.post('/register', middleware.authorize
-    , middleware.jwtVerification, profileImg.single('theImg')
+    , middleware.jwtVerification, uploadToMemory.single('theImg'),
+    utils.profileImgCheck
     , controllers.register);
 
 aRouter.post('/updateUserProfile', middleware.authorize
-    , middleware.jwtVerification, profileImg.single('theImg')
+    , middleware.jwtVerification, uploadToMemory.single('theImg'),
+    utils.profileImgCheck
     , controllers.updateUserProfile);
 
 aRouter.post('/fetchPosts', controllers.fetchPosts);
 aRouter.get('/fetchPosts', controllers.fetchPosts);
 aRouter.get('/fetchTempImg', controllers.fetchTempImg);
+aRouter.get('/fetchJobImg', controllers.fetchJobImg);
+aRouter.get('/fetchProfileImg', controllers.fetchProfileImg);
+aRouter.get('/fetchJobPdf', controllers.fetchJobPdf);
 
 aRouter.get('/fetchAPost', middleware.authorize, middleware.jwtVerification,
     controllers.fetchAPosts
@@ -174,36 +180,8 @@ aRouter.post('/search', middleware.authorize, middleware.jwtVerification,
 )
 
 aRouter.post('/apply', middleware.authorize, middleware.jwtVerification,
-    (req, res, next) => {
-        uploadPdf(req, res, (err) => {
-            if (err) {
-
-                if (err instanceof multer.MulterError) {
-
-                    res.json({
-                        status: -2,
-                        message: err.message
-                    })
-                    console.error('Multer error found at apply  : ', err.message);
-
-                    return;
-                }
-                if (err.message) {
-                    console.error('Plesase provide pdf to apply');
-                    res.json({
-                        status: -1,
-                        message: 'expected pdf, please provide pdf file'
-                    })
-                    return;
-                }
-                res.status(500).end();
-                console.error('error found at apply  : ', err.message);
-                return;
-            } else {
-                next();
-            }
-        })
-    }, controllers.apply
+    uploadToMemory.single('thePdf'), utils.pdfCheck
+    , controllers.apply
 )
 
 aRouter.use('/', (req, res) => {
