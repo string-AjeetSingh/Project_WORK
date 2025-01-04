@@ -10,6 +10,7 @@ import { LoadingScreen } from '../Components/TranstitionScreen/LoadingScreen';
 import { useNavigate } from 'react-router-dom';
 import { use } from 'react';
 import { GetInputArray, GetCheckBox } from '../Components/CreatePost/subComponents';
+import { requestServer } from '../MyLib/RequestServer/requestServer';
 
 
 
@@ -19,7 +20,41 @@ import { GetInputArray, GetCheckBox } from '../Components/CreatePost/subComponen
 function Rough({ children }) {
     const navigate = useNavigate();
     const loadingScreen = useRef(null);
+    const fileinput = useRef(null);
 
+    async function uploadImg(e) {
+        console.log("from uploadImg -- -- -- ");
+
+        const upload = new requestServer('/xtServer/api/rough', {
+            method: 'POST',
+        });
+
+        console.log('the file is : ', e.target.files[0]);
+        upload.setFormData("theImg", e.target.files[0]);
+        let result = await upload.fetchNoStringify();
+        upload.resetFormData();
+
+        if (result) {
+            console.log('the result from server is : ', result);
+        }
+    }
+
+    async function uploadPdf(e) {
+        console.log("from uploadPdf -- -- -- ");
+
+        const upload = new requestServer('/xtServer/api/roughPdf', {
+            method: 'POST',
+        });
+
+        console.log('the file is : ', e.target.files[0]);
+        upload.setFormData("thePdf", e.target.files[0]);
+        let result = await upload.fetchNoStringify();
+        upload.resetFormData();
+
+        if (result) {
+            console.log('the result from server is : ', result);
+        }
+    }
 
 
 
@@ -38,7 +73,22 @@ function Rough({ children }) {
                 {/*<LoginTry /> */}
                 {/* <UserProfile /> */}
                 {/*<TryConnection /> */}
-                <CreateUserProfile></CreateUserProfile>
+                Upload Image :
+                <input onChange={(e) => {
+                    uploadImg(e);
+                }}
+                    ref={fileinput} className="text-2xl font-bold " type="file">
+                </input> <br />
+
+                Upload pdf :
+                <input onChange={(e) => {
+                    uploadPdf(e);
+                }}
+                    ref={fileinput} className="text-2xl font-bold " type="file">
+                </input> <br />
+
+
+
 
 
 

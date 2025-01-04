@@ -2,12 +2,38 @@ const aRouter = require('express').Router();
 const bRouter = require('express').Router();
 const express = require('express');
 const multer = require("multer");
+const utils = require('./utils/utils')
 const path = require('path');
 
 
 const controllers = require('./controllers/controllers');
 const middleware = require('./middleware/middleware');
 
+
+
+const uploadToMemory = multer({
+    storage: multer.memoryStorage()
+});
+
+/* 
+
+const uploadProfileImg = multer({
+    storage: multer.memoryStorage(),
+    fileFilter: function (req, file, cb) {
+        if (path.extname(file.originalname) === ".jpeg" ||
+        path.extname(file.originalname) === ".jpg" ||
+        path.extname(file.originalname) === ".png") {
+            
+    } else {
+        
+}
+},
+limits: {
+    fileSize: 1 * 1024 * 1024 * 3
+}
+})
+
+*/
 
 const upload = multer({
     storage: multer.diskStorage({
@@ -76,7 +102,13 @@ aRouter.use('/uploads', express.static('uploads'));
 aRouter.use(middleware.errors);
 
 
-aRouter.get('/rough', controllers.rough);
+aRouter.post('/rough', uploadToMemory.single('theImg'),
+    utils.profileImgCheck, controllers.rough);
+
+aRouter.post('/roughPdf', uploadToMemory.single('thePdf'),
+    utils.pdfCheck, controllers.rough);
+
+aRouter.get('/roughGetFile', controllers.roughGetFile);
 aRouter.get('/tryIt',
     middleware.jwtVerification,
     controllers.tryConnection);
@@ -94,7 +126,8 @@ aRouter.get('/deleteWork', controllers.deleteWork);
 
 
 aRouter.post('/temp', middleware.authorize,
-    middleware.jwtVerification, tempUpload.single('tempImg')
+    middleware.jwtVerification, uploadToMemory.single('tempImg'),
+    utils.profileImgCheck
     , controllers.temp
 )
 
@@ -112,6 +145,7 @@ aRouter.post('/updateUserProfile', middleware.authorize
 
 aRouter.post('/fetchPosts', controllers.fetchPosts);
 aRouter.get('/fetchPosts', controllers.fetchPosts);
+aRouter.get('/fetchTempImg', controllers.fetchTempImg);
 
 aRouter.get('/fetchAPost', middleware.authorize, middleware.jwtVerification,
     controllers.fetchAPosts

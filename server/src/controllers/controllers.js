@@ -1,4 +1,5 @@
 
+const { buffer } = require('stream/consumers');
 const isDebugging = require('./../myLib/ifDebugging/ifDebugging');
 const alib = require('./../myLib/PracLib/alib');
 const utils = require('./../utils/utils');
@@ -8,19 +9,68 @@ const path = require('path');
 const debug = new isDebugging(process.env.IS_DEBUGGING);
 
 module.exports.rough = async (req, res) => {
+    debug.console("from rough -- -- -- ");
+    try {
+        if (req.file) {
+            debug.console("the file found  : ", req.file)
 
-    let theNo = await utils.setPrevNo('Jobs');
-    if (theNo) {
-        res.json({
-            status: 1,
-            message: `the new no is : ${theNo}`
-        })
+            let mongo = new alib('Work', process.env.MONGOSTRING);
+            mongo.setCollection('usersImg');
+            let result = await mongo.insertOne({
+                document: 'img',
+                fileName: req.file.fieldname + new Date().toLocaleString(),
+                mimetype: req.file.mimetype,
+                buffer: req.file.buffer.toString("base64")
+            });
+
+            mongo.over();
+            debug.console('the result we found is : ', result);
+            if (result.acknowledged) {
+
+            }
+            res.json({
+                status: 1,
+                message: 'Found the file provided, the file name is : ' + req.file.fieldname
+            })
+        } else {
+            res.json({
+                status: 0,
+                message: 'No file provided'
+            })
+        }
+    } catch (error) {
+        console.error('Error From Rough Control : ', error);
+    }
+};
+
+module.exports.roughGetFile = async (req, res) => {
+    debug.console('from roughGetFile -- -- -- ');
+    if (req.query.fileName) {
+        debug.console('found the provided fileName : ', req.query.fileName.trim("\""));
+        let mongo = new alib('Work', process.env.MONGOSTRING);
+        mongo.setCollection('usersImg');
+        let result = await mongo.find({ fileName: req.query.fileName });
+
+        mongo.over();
+        if (result.length > 0) {
+            // debug.console('the result is : ', result);
+            res.type(result[0].mimetype);
+            res.send(Buffer.from(result[0].buffer, "base64"));
+        }
+        else {
+            res.json({
+                status: 0,
+                message: 'not found the file from the server'
+            })
+        }
+
     } else {
         res.json({
             status: 0,
-            message: `false from setPrevNo()`
+            message: "no found the file Name provided"
         })
     }
+
 };
 
 module.exports.login = function (req, res, next) {
@@ -288,15 +338,43 @@ module.exports.fetchUserPosts = async (req, res) => {
 
 };
 
-module.exports.temp = (req, res) => {
+module.exports.temp = async (req, res) => {
     debug.console('from temp -  ');
     if (req.file) {
 
         //  debug.console('the req.file : ', req.file);
+        //uploading the file
+        let mongo = new alib('Work', process.env.MONGOSTRING);
+        let result = await utils.uploadFileToMongo(mongo, req.file, 'temp')
+        debug.console('the result from the utils.uploadFileToMongo is : ', result);
+
+        if (!result) {
+            res.json({
+                status: 0,
+                message: 'Error uploading the file'
+            })
+            return;
+        }
+
+
+        // now fetching the file
+        mongo = new alib('Work', process.env.MONGOSTRING);
+        result = await utils.fetchFileFromMongo(mongo, result.fileName, 'temp');
+
+        if (!result) {
+            res.json({
+                status: 0,
+                message: 'Error fetching the file'
+            })
+            return;
+        }
+
         res.status(200).json({
-            message: 'file is found here',
-            filePath: path.join(process.env.SERVER_BASE, req.file.path)
+            message: 'file is fetched here',
+            filePath: "/xtServer/api/fetchTempImg?fileName=" + result.file.fileName
         })
+
+        debug.console('succesfully done with operation of temp control --');
         return;
     }
     else {
@@ -830,4 +908,32 @@ module.exports.deleteWork = async (req, res) => {
             message: "no data found from query"
         })
     }
+};
+
+module.exports.fetchTempImg = async (req, res, next) => {
+    debug.console("from fetchTempImg");
+
+    if (req.query.fileName) {
+
+        debug.console("the fileName provided is : ", req.query.fileName);
+        let mongo = new alib('Work', process.env.MONGOSTRING);
+        let result = await utils.fetchFileFromMongo(mongo, req.query.fileName, 'temp');
+
+        if (!result) {
+            res.json({
+                status: 0,
+                message: 'Error fetching the file'
+            })
+            return;
+        }
+
+        res.type(result.file.mimetype).send(Buffer.from(result.file.buffer, "base64"));
+
+    } else {
+        res.json({
+            status: 0,
+            message: 'provide the fileName to have the file'
+        })
+    }
+
 };
