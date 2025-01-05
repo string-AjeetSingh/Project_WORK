@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from "react";
-import { useSearchParams } from "react-router-dom";
 import { commonContext } from "../../MyLib/commonContext";
 import { useContext } from "react";
 import { useResizeValue } from "../../MyLib/MyHook/customHook";
@@ -33,7 +32,7 @@ function UserButton({ login, logout, __note_this_component_use_context_and_i_am_
                 onClick={() => {
                     login ? login() : navigate('/dashboard');
                 }}> <img className="size-8 rounded-2xl mr-2"
-                    src="./stock/icon/dashboard.png"></img> DashBoard</button> : null}
+                    src="/stock/icon/dashboard.png"></img> DashBoard</button> : null}
 
             {login ? <button className="m-1  flex flex-row w-fit self-end
             text-[1rem] rounded-md justify-center items-center
@@ -41,7 +40,7 @@ function UserButton({ login, logout, __note_this_component_use_context_and_i_am_
                       text-green-200  bg-slate-600
                        border-green-950 p-1"
                 onClick={login}> <img className="size-8 rounded-2xl mr-2"
-                    src="./stock/icon/login.png"></img>
+                    src="/stock/icon/login.png"></img>
                 login</button> : null}
 
             {logout ? <button className="m-1 flex flex-row w-fit self-end
@@ -50,7 +49,7 @@ function UserButton({ login, logout, __note_this_component_use_context_and_i_am_
                       text-green-200 bg-slate-600
                        border-green-950 p-1"
                 onClick={logout}> <img className="size-7 rounded-2xl mr-2"
-                    src="./stock/icon/logout.png"></img>
+                    src="/stock/icon/logout.png"></img>
                 logout</button> : null}
 
         </div>, null]

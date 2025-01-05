@@ -180,9 +180,9 @@ function Header({ children, login, logout, key, search_Link }) {
                     <div className="flex flex-row justify-center items-end   m-1 p-1">
                         <div className="text-green-800 text-4xl 
                         font-serif font-bold">W</div>
-                        <div className="text-2xl font-serif mr-1">ORK</div>
+                        <div className="text-2xl font-serif mr-1 text-black">ORK</div>
                     </div>
-                    <img className="size-9" src="/logo.png" alt="Logo" />
+                    <img className="size-12" src="/logoSmall.png" alt="Logo" />
                 </div>
                 {/* Above fist side of the nav */}
 

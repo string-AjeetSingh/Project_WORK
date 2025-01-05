@@ -49,7 +49,7 @@ function ProviderStatus({ isAuthenticated }) {
             <div className="flex flex-row    ">
                 <CommonWrapper>
                     <div className=" flex flex-row flex-wrap 
-             overflow-y-auto min-w-[350px]  m-1 w-full justify-center
+             overflow-y-auto min-w-[300px]  m-1 w-full justify-center 
             h-96">
                         {data instanceof Array ?
                             data.map((item) => {

@@ -79,29 +79,34 @@ function Section1({ children, login }) {
             <>
                 <section ref={asectionref}
                     className="flex flex-col justify-center
-            items-center m-1 mb-10 mt-2 p-1  ">
+            items-center m-1 mb-10 mt-2 p-1    ">
 
                     <div ref={href} className="flex flex-col justify-center
             items-center m-1 mb-5 mt-2 p-1 relative opacity-0 " >
 
                         <div
                             className="font-serif text-5xl  relative
-                        text-center font-semibold m-2 
+                        text-center font-semibold m-2  flex flex-col items-center
+                        h-fit 
                         text-green-800 ">
 
-                            <div className="absolute opacity-50
-                            w-12 rotate-90 top-[-25px] left-[240px]">
-                                <img className="w-full"
-                                    alt="stock image"
-                                    src="/stock/leaf.png"></img>
+
+                            <div className=' flex flex-row justify-center relative '>
+                                <div className="absolute opacity-50
+                            w-12 rotate-90 top-[-25px] left-[50px]">
+                                    <img className="w-full"
+                                        alt="stock image"
+                                        src="/stock/leaf.png"></img>
+                                </div>
+                                To
                             </div>
 
-                            To <br></br>Your Destination
+                            Your Destination
                         </div>
 
 
                         <h3
-                            className="font-normal font-serif">Do <span className=" text-green-800 font-serif
+                            className="font-normal font-serif text-black">Do <span className=" text-green-800 font-serif
                         text-2xl font-bold "><u>WORK</u>
                             </span> you <span className=" text-green-800
             text-2xl font-serif font-bold "><u>WANT</u></span>
@@ -277,10 +282,10 @@ function Section2({ children, login }) {
 
                     <div className="flex flex-row 
                     font-serif font-bold text-green-900
-                    items-center justify-start mb-[2px] ">
+                    items-center justify-start mb-3">
                         <h2 ref={headingref}
                             className="text-[2.9rem] relative opacity-0" >Unemployed</h2>
-                        <h1 className="text-8xl">?</h1>
+                        <h1 className={`${size[0] < 380 ? "text-5xl" : "text-7xl"}`}>?</h1>
                     </div>
 
                     <div className="relative 
@@ -492,10 +497,10 @@ function Section3({ children, login }) {
                         </br>On WORK Platform ...
                         <p className="text-slate-950 text-sm ml-2">
                             <ul className="list-disc">
-                                <li>Login As 'Provider'</li>
-                                <li>Set Profile</li>
+                                <li>Login </li>
+                                <li>Switch To Provider</li>
                                 <li>Create Job</li>
-                                <li>finally - Post It </li>
+                                <li>Finally - Post It </li>
                             </ul>
                         </p>
                     </div>
@@ -561,10 +566,10 @@ function Section3({ children, login }) {
                             </br>On WORK Platform ...
                             <p className="text-slate-950 text-sm ml-2">
                                 <ul className="list-disc">
-                                    <li>Login As 'Provider'</li>
-                                    <li>Set Profile</li>
+                                    <li>Login </li>
+                                    <li>Switch To Provider</li>
                                     <li>Create Job</li>
-                                    <li>finally - Post It </li>
+                                    <li>Finally - Post It </li>
                                 </ul>
                             </p>
                         </div>

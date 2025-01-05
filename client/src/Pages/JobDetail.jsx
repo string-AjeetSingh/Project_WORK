@@ -69,15 +69,15 @@ function JobDetail({ }) {
                 <h1>Loading Please wait</h1>
                 :
                 <>
-                    <div className="p-1">
 
-                        <header >
-                            <commonContext.Provider value={{ user }}>
-                                <Header logout={nowLogout} search_Link ></Header>
-                            </commonContext.Provider>
-                        </header>
-                        <hr className="border-[1px] 
+                    <header >
+                        <commonContext.Provider value={{ user }}>
+                            <Header logout={nowLogout} search_Link ></Header>
+                        </commonContext.Provider>
+                    </header>
+                    <hr className="border-[1px] 
             border-green-950"></hr>
+                    <div className="p-1">
                         <main>
                             <div className="flex flex-row">
 

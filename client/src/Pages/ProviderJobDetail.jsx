@@ -135,7 +135,7 @@ function ProviderJobDetail({ }) {
                         {dataForAboutJob ?
                             <div className='p-2 flex flex-col w-full 
                         border rounded-2xl border-green-600
-                        max-w-[900px] min-w-[370px]'>
+                        max-w-[900px] min-w-[360px]'>
 
                                 <commonContext.Provider value={{ dataForAboutJob }}>
                                     <AboutJob useInProviderJobDetailjsx

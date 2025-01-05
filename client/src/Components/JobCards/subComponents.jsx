@@ -60,7 +60,8 @@ function ContainerNav({ data, common, setCommon, setContainer, children, isDefau
 
             <button ref={aref} onClick={handleClick}
                 className={` ${lstate} m-1 p-3 font-serif 
-                hover:bg-green-700 border-2  text-green-200
+                hover:bg-green-700 border-2 border-green-300
+                  text-green-200
                text-[1.2rem] rounded-md`}>
                 {children}
             </button>

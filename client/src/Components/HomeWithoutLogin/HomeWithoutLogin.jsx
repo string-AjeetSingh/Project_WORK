@@ -8,15 +8,15 @@ function HomeWithoutLogin({ children, login, logout, user }) {
 
     return (
         <>
-            <div className="p-1 ">
 
-                <header>
-                    <commonContext.Provider value={{ user }}>
-                        <Header login={login} logout={logout}></Header>
-                    </commonContext.Provider>
-                </header><hr className="border-[1px] 
+            <header>
+                <commonContext.Provider value={{ user }}>
+                    <Header login={login} logout={logout}></Header>
+                </commonContext.Provider>
+            </header><hr className="border-[1px] 
      border-green-950"></hr>
 
+            <div className="p-1 ">
                 <main>
 
                     <Section1 login={login}></Section1>
