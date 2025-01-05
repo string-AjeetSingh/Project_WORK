@@ -109,8 +109,8 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
 
         let allData = combineArraysToOne(stateVal);
         //let allData = stateVal;
-        console.log('all data is below');
-        console.log(allData);
+        //console.log('all data is below');
+        //console.log(allData);
 
 
         allData.forEach((item) => {
@@ -142,7 +142,7 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
         toServer.resetFormData();
         if (res) {
             if (res.json.status) {
-                console.log('the response from submit : ', res);
+                //console.log('the response from submit : ', res);
                 return true;
             }
             else {
@@ -173,7 +173,7 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
         if (result) {
             if (result.json.status) {
 
-                console.log('the user detail would be : ', result);
+                // console.log('the user detail would be : ', result);
                 //console.log(result.json.data);
 
                 setdata(result.json.data);

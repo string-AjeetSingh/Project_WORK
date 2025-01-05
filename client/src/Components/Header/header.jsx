@@ -85,7 +85,7 @@ function Header({ children, login, logout, key, search_Link }) {
 
         if (refSearch.current.value.length > 0) {
             tags = tagsForSearch(refSearch.current.value);
-            // console.log('the tags from :', tags);
+            // //console.log('the tags from :', tags);
         }
         else {
             alert('please write some thing to search for');
@@ -103,7 +103,7 @@ function Header({ children, login, logout, key, search_Link }) {
         search.setBodyProperty('data', { tags: tags });
         let result = await search.requestJson();
         if (result) {
-            console.log('the response from search :', result);
+            //console.log('the response from search :', result);
             if (result.json.status) {
                 setdataFromServer(result.json.data);
             } else {
@@ -116,17 +116,17 @@ function Header({ children, login, logout, key, search_Link }) {
     }
 
     async function ProfileImg() {
-        console.log('from ProfileImg -- -- - -');
+        //console.log('from ProfileImg -- -- - -');
         let job = new requestServer(process.env.REACT_APP_SERVER_URL
             + '/xtServer/api/profileImg', { method: 'GET' }, true);
         job.setAuthorizedFlag(isAuthenticated);
         job.noBody();
         let result = await job.requestJson();
-        console.log('From ProfileImg the result is :  ', result);
+        //console.log('From ProfileImg the result is :  ', result);
 
         if (result) {
             if (result.json.status) {
-                console.log('From ProfileImg the data we found : ', result);
+                //console.log('From ProfileImg the data we found : ', result);
                 return result.json.url;
             } else {
                 return false;

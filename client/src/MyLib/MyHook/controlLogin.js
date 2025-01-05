@@ -65,7 +65,7 @@ function useControlLogin(isHomePage = false) {
                 toServer.setBodyCustom({ userData: user });
                 let res = await toServer.requestJson();
                 if (res) {
-                    debug.console('the response from request if authenticated : ', res);
+                    //debug.console('the response from request if authenticated : ', res);
                 }
 
 

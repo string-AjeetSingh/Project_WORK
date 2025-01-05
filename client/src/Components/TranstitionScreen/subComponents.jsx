@@ -139,7 +139,7 @@ function TheLoopAnimation({ toggleTo = 'undefined' }) {
             startAnimationType("The Loop Animation", refLoopAnimationId
                 , refLoopAnimationClose, async (closeBool) => {
 
-                    console.log("running animation cycle");
+                    //console.log("running animation cycle");
                     elemImg2.current.style.opacity = 0;
                     await upDown(elemImg1, 'ref', closeBool);
                     await fadeAgainAgain(elemImg2, 'ref',
@@ -154,7 +154,7 @@ function TheLoopAnimation({ toggleTo = 'undefined' }) {
         }
 
         else if (toggleTo === 'off') {
-            console.log('animation off');
+            // console.log('animation off');
 
             refLoopAnimationClose.current = true;
             cancelAnimationFrame(refLoopAnimationId.current);
@@ -164,7 +164,7 @@ function TheLoopAnimation({ toggleTo = 'undefined' }) {
         }
 
         else if (toggleTo === 'undefined') {
-            console.log('toggle to on will start the animations, you must also able to control it');
+            // console.log('toggle to on will start the animations, you must also able to control it');
         }
         else if (toggleTo === 'cancel') {
             refLoopAnimationClose.current = true;

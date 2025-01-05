@@ -71,7 +71,7 @@ function HomeWithLogin({ logout, user, isAuthenticated, useAsSearch, iAmReady })
         let result = await searchServer.requestJson();
         if (result) {
 
-            console.log('the response from search :', result);
+            // console.log('the response from search :', result);
 
             if (result.json.status) {
                 if (iAmReady.current) {

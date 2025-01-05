@@ -34,7 +34,7 @@ function ProfileImage({ children,
     useEffect(() => {
 
         if (prevData) {
-            console.log('from useeffect the prev effect from profieIMg is ,', prevData)
+            //console.log('from useeffect the prev effect from profieIMg is ,', prevData)
             // alert("we found the prev data, see console ");
             if (prevData.inputData.data[1].color === '' || prevData.inputData.data[1].color === null
                 || prevData.inputData.data[1].color === undefined || prevData.inputData.data[1].color === false
@@ -64,8 +64,9 @@ function ProfileImage({ children,
                 <div className={`${divColor} p-5 flex flex-row
            rounded-2xl border-2 border-green-800 w-full  `}>
                     <div className="size-28 relative top-14
-            border-2 border-green-900 
+            border-2 border-green-900  overflow-hidden
              rounded-full bg-slate-500 ">
+                        {src ? <img className='w-full' src={src} ></img> : null}
                     </div>
                 </div>
 
@@ -110,8 +111,10 @@ font-bold">
                 <div className={`${divColor} p-5 flex flex-row
            rounded-2xl border-2 border-green-800 w-full  `}>
                     <div className="size-28 relative top-12
-            border-2 border-green-900
-             rounded-full bg-slate-500 "></div>
+            border-2 border-green-900 overflow-hidden
+             rounded-full bg-slate-500 ">
+                        {src ? <img className='w-full' src={src} ></img> : null}
+                    </div>
                 </div>
 
 
@@ -344,8 +347,8 @@ function GetInput({ name, inputName, index,
 
 
         if (boolPreviousVal) {
-            console.log('have prev value');
-            console.log(prevValue);
+            // console.log('have prev value');
+            // console.log(prevValue);
             aref.current.value = prevValue.inputData.data;
         } else {
             if (isMendatory) {
@@ -481,8 +484,8 @@ function GetInputArray({ index, name, inputName, totalInputLength = 100
     }
 
     function handleReport(locindex, val, remove = false) {
-        console.log('from handlReport val is :', val);
-        console.log('from handlReport locindex is :', locindex);
+        // console.log('from handlReport val is :', val);
+        //console.log('from handlReport locindex is :', locindex);
         if (remove) {
             TheReport.current.inputData.data[locindex] = null;
             //console.log('from handleReport, new report : ', TheReport);
@@ -733,7 +736,7 @@ function UploadButton({ outSrcPimg, __this_component_use_context_and_i_am_a_mess
     }
 
     async function handleChangeFile(e) {
-        console.log('Changing file');
+        //console.log('Changing file');
 
         let url = await requestTempImg(e.target.files[0]);
         outSrcPimg(url);
@@ -790,8 +793,8 @@ function UploadButton({ outSrcPimg, __this_component_use_context_and_i_am_a_mess
     }
 
     useEffect(() => {
-        console.log("previous data is below");
-        console.log(prevData);
+        //console.log("previous data is below");
+        //console.log(prevData);
         if (prevData) {
 
         } else {

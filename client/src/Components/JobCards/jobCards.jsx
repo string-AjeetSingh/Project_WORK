@@ -18,16 +18,16 @@ function JobCards({ children, link, __note_this_component_use_context_and_i_am_a
 
     let docs;
 
-    //console.log('the data from server is : ', dataFromServer);
+    ////console.log('the data from server is : ', dataFromServer);
 
 
     if (dataFromServer) {
-        // console.log('getted the goind to use this data in JobCards : ', dataFromServer);
+        // //console.log('getted the goind to use this data in JobCards : ', dataFromServer);
         docs = dataFromServer;
     }
     else {
         alert('using old data ');
-        console.log('using old data ');
+        //console.log('using old data ');
         docs = list.docs;
     }
 
@@ -63,7 +63,7 @@ function JobCards({ children, link, __note_this_component_use_context_and_i_am_a
         if (docs) {
             let arr = [];
             for (let i = 0; i < docs.length; i++) {
-                //console.log('the console about docs : ', docs);
+                ////console.log('the console about docs : ', docs);
                 arr.push(
                     <Card key={docs[i].index}
                         prev={prevCard} index={docs[i].index} dataToSetOnState={docs[i]} location={docs[i].location}
@@ -156,7 +156,7 @@ function JobCards({ children, link, __note_this_component_use_context_and_i_am_a
                         counter++;
                     }
                 }
-                // console.log("type of setCommon : ", typeof setCommon);
+                // //console.log("type of setCommon : ", typeof setCommon);
                 arr2.push(<ContainerNav
                     data={[...arr1]} common={navItemCommon}
                     setCommon={setCommon}
@@ -168,9 +168,9 @@ function JobCards({ children, link, __note_this_component_use_context_and_i_am_a
                 </ContainerNav>);
             }
 
-            // console.log(`counter = ${counter}`);
-            // console.log(`arr2 below :`);
-            // console.log(arr2);
+            // //console.log(`counter = ${counter}`);
+            // //console.log(`arr2 below :`);
+            // //console.log(arr2);
 
             setnavItemArr([...arr2]);
 
@@ -182,9 +182,9 @@ function JobCards({ children, link, __note_this_component_use_context_and_i_am_a
         forwardToCard.current = link ? 'link' : 'local';
 
         let result = calibrate(10, docs.length === 1 ? docs.length : docs.length - 1);
-        console.log(`the calibrated data below : `);
-        console.log(`the total no of data: ${docs.length - 1}`);
-        console.log(result);
+        //console.log(`the calibrated data below : `);
+        //console.log(`the total no of data: ${docs.length - 1}`);
+        //console.log(result);
 
         setkey1((prev) => {
             return prev + 1;

@@ -28,7 +28,7 @@ function ProvideWork({ isAuthenticated, email }) {
             alert('some kind of error from server');
         }
     }
-    console.log('the data is : ', data);
+    //console.log('the data is : ', data);
     useEffect(() => {
         providerDetail();
     }, [])

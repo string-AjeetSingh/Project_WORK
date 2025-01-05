@@ -14,7 +14,7 @@ function ProviderStatus({ isAuthenticated }) {
         fetchPosts.setAuthorizedFlag(isAuthenticated);
         let result = await fetchPosts.requestJson();
 
-        console.log('from FetchUserPosts, the response is ', result);
+        // console.log('from FetchUserPosts, the response is ', result);
         if (result) {
             if (result.json.status) {
                 // alert('found the data');
@@ -29,7 +29,7 @@ function ProviderStatus({ isAuthenticated }) {
         }
     }
 
-    console.log('the data is ', data);
+    //console.log('the data is ', data);
     useEffect(() => {
         fetchUserPosts().then((res) => {
             if (res) {

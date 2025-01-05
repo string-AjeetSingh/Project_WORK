@@ -70,14 +70,14 @@ async function fade(elem, speed, updateCountValue, startFrom,
                 } catch (error) {
                     clearInterval(inter);
                     resolve();
-                    console.error('Error - ', error.message);
+                    //console.error('Error - ', error.message);
 
                 }
 
             }, speed)
 
         } catch (error) {
-            console.error(error.message);
+            //console.error(error.message);
         }
 
     })
@@ -128,19 +128,19 @@ function startAnimationType(loopName, RefAnimationId, RefCloseAnimation, functio
 
         try {
             if (RefCloseAnimation.current) {
-                ///console.log(`The attemp to close render ${loopName}`); 
+                /////console.log(`The attemp to close render ${loopName}`); 
                 return;
             }
 
             await functionToRun(RefCloseAnimation);
-            /////console.log(`Animation loop running with cycle count = ${animationCycleCount}`);
-            ///console.log(`${loopName} running with cycle count`);
+            ///////console.log(`Animation loop running with cycle count = ${animationCycleCount}`);
+            /////console.log(`${loopName} running with cycle count`);
             animationCycleCount++;
             RefAnimationId.current = requestAnimationFrame(animate);
 
         } catch (error) {
 
-            console.error(error);
+            //console.error(error);
         }
     }
     RefAnimationId.current = requestAnimationFrame(animate);
@@ -155,7 +155,7 @@ async function ButtonAnimation(butt) {
             finishInterval(inter, counter, 0.85, resolve, 'minus');
 
             butt.current.style.transform = `scale(${counter})`
-            ///console.log('from button counter = '+counter);
+            /////console.log('from button counter = '+counter);
             counter -= counterUpdate;
         }, 10)
     })
@@ -167,7 +167,7 @@ async function ButtonAnimation(butt) {
             finishInterval(inter, counter, 1, resolve, 'plus');
 
             butt.current.style.transform = `scale(${counter})`
-            ///console.log('from button counter = '+counter);
+            /////console.log('from button counter = '+counter);
             counter += counterUpdate;
         }, 10)
     })
@@ -199,7 +199,7 @@ async function fadeAgainAgain(elem, elemType = "ref",
 
                     if (shouldTerminate.current) {
 
-                        //console.log('closed the fade againagian animation');
+                        ////console.log('closed the fade againagian animation');
 
                         resolve();
                         clearInterval(interval);
@@ -220,7 +220,7 @@ async function fadeAgainAgain(elem, elemType = "ref",
 
 
                 } catch (error) {
-                    //console.log(error);
+                    ////console.log(error);
                 }
 
             }, 20)
@@ -246,10 +246,10 @@ async function upDown(elem, elemType = 'ref',
 
                 try {
 
-                    // console.log('running up down animation');
+                    // //console.log('running up down animation');
                     if (shouldTerminate.current) {
 
-                        //console.log('closed the updown animation');
+                        ////console.log('closed the updown animation');
                         resolve();
                         clearInterval(inter);
                     }
@@ -257,10 +257,10 @@ async function upDown(elem, elemType = 'ref',
                     finishInterval(inter, counter, 0.85, resolve, 'minus');
 
                     elem.current.style.transform = `scale(${counter})`
-                    ///console.log('from button counter = '+counter);
+                    /////console.log('from button counter = '+counter);
                     counter -= counterUpdate;
                 } catch (error) {
-                    // console.log(error);
+                    // //console.log(error);
                 }
             }, 10)
         })
@@ -270,10 +270,10 @@ async function upDown(elem, elemType = 'ref',
             let inter = setInterval(() => {
                 try {
 
-                    // console.log('running up down animation');
+                    // //console.log('running up down animation');
                     if (shouldTerminate.current) {
 
-                        //console.log('closed the updown animation');
+                        ////console.log('closed the updown animation');
                         resolve();
                         clearInterval(inter);
                     }
@@ -281,10 +281,10 @@ async function upDown(elem, elemType = 'ref',
                     finishInterval(inter, counter, 1, resolve, 'plus');
 
                     elem.current.style.transform = `scale(${counter})`
-                    ///console.log('from button counter = '+counter);
+                    /////console.log('from button counter = '+counter);
                     counter += counterUpdate;
                 } catch (error) {
-                    // console.log(error);
+                    // //console.log(error);
                 }
             }, 10)
         })
@@ -313,12 +313,12 @@ async function up(elem, elemType = 'ref') {
                     finishInterval(inter, counter, 1, resolve, 'plus');
 
                     elem.current.style.transform = `scale(${counter})`
-                    ///console.log('from button counter = '+counter);
+                    /////console.log('from button counter = '+counter);
                     counter += counterUpdate;
                 } catch (error) {
                     clearInterval(inter);
                     resolve();
-                    console.error('Error -', error);
+                    //console.error('Error -', error);
                 }
             }, 20)
         })

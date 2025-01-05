@@ -1,7 +1,10 @@
 class ifDebugging {
 
     constructor(isDebugging, level = 'log') {
-        this.isDebugging = isDebugging;
+        this.isDebugging = null;
+        if (isDebugging) {
+            parseInt(isDebugging);
+        }
         this.level = level
 
     }
