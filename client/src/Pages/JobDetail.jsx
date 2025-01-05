@@ -11,14 +11,14 @@ import { LoadingScreen } from "../Components/TranstitionScreen/LoadingScreen";
 function JobDetail({ }) {
     const loadingScreen = useRef(null);
     const { no } = useParams()
-    console.log('the id is : ', no);
+    //console.log('the id is : ', no);
     const [dataForAboutJob, setdataForAboutJob] = useState(null);
-    console.log('the data is  : ', dataForAboutJob);
+    //console.log('the data is  : ', dataForAboutJob);
     const [boolScreen, setboolscreen] = useState(true);
     const { isAuthenicated, user, isLoading, nowLogout } = useControlLogin();
 
     async function fetchData() {
-        console.log('from fetchData -- -- - -');
+        //console.log('from fetchData -- -- - -');
         let job = new requestServer(process.env.REACT_APP_SERVER_URL
             + '/xtServer/api/fetchAPost' + `?no=${no}`, { method: 'GET' });
         job.setAuthorizedFlag(isAuthenicated);
@@ -27,7 +27,7 @@ function JobDetail({ }) {
 
         if (result) {
             if (result.json.status) {
-                //console.log('the data we found : ', result);
+                ////console.log('the data we found : ', result);
                 loadingScreen.current.off();
                 setTimeout(() => {
                     setboolscreen(false);
@@ -52,7 +52,7 @@ function JobDetail({ }) {
 
     useEffect(() => {
         //alert("running loadingscreen effect");
-        console.log('from userEffect');
+        //console.log('from userEffect');
         if (loadingScreen.current) {
 
             loadingScreen.current.on();

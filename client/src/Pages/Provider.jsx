@@ -14,7 +14,7 @@ function Provider({ }) {
 
 
     useEffect(() => {
-        console.log('from userEffect');
+        //console.log('from userEffect');
         if (loadingScreen.current) {
 
             loadingScreen.current.on();

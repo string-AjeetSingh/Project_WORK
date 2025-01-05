@@ -14,7 +14,7 @@ function Search({ }) {
         user, loginWithRedirect, nowLogout } = useControlLogin(true);
 
     useEffect(() => {
-        console.log('from userEffect');
+        //console.log('from userEffect');
         if (loadingScreen.current) {
             offLoadingScreenFromChild.current = {
                 off: () => {

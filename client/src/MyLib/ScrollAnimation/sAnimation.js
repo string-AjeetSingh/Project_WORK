@@ -3,11 +3,11 @@ import { fade, pleaseWait } from "../Animation/animation";
 class sAnimation {
 
     constructor(elem, startAnimationProperties = {
-        timerMillisecond : null, updaingVal : null, startPos : null, stopPos: null,
-        direction : null, type : null, opacityOperation : null
-    }, endAnimationProperties  = {
-        timerMillisecond : null, updaingVal : null, startPos : null, stopPos: null,
-        direction : null, type : null, opacityOperation : null
+        timerMillisecond: null, updaingVal: null, startPos: null, stopPos: null,
+        direction: null, type: null, opacityOperation: null
+    }, endAnimationProperties = {
+        timerMillisecond: null, updaingVal: null, startPos: null, stopPos: null,
+        direction: null, type: null, opacityOperation: null
     }) {
 
         this.elem = elem;
@@ -22,7 +22,7 @@ class sAnimation {
         this.endAnimationProperties = endAnimationProperties;
 
 
-       
+
 
         if (!this.elem) {
             throw new Error('sAnimation constructor with falsey elem argument');
@@ -40,7 +40,7 @@ class sAnimation {
     async theLogin() {
 
         this.posofit = this.elem.getBoundingClientRect();
-        console.log(this.posofit.top);
+        //console.log(this.posofit.top);
 
 
 
@@ -53,7 +53,7 @@ class sAnimation {
                 await sAnimation.terminateRunningAnimationAndConfirm(this.boolTerminate);
                 this.boolTerminate[0] = false;
                 this.boolTerminate[1] = false;
-               
+
 
                 this.iAmRunning = false;
             }
@@ -62,12 +62,12 @@ class sAnimation {
             this.headingswitch = true;
             sAnimation.animation(this.boolRunning,
                 this.startAnimationProperties, this.endAnimationProperties,
-                 this.elem, true, this.boolTerminate);
+                this.elem, true, this.boolTerminate);
 
         }
         else if (this.posofit.top > this.unAppear[0] && this.posofit.top >= 0 && this.headingswitch) {
 
-            
+
             if (this.boolRunning[0] && !this.iAmRunning) {
                 this.iAmRunning = true;
                 await sAnimation.terminateRunningAnimationAndConfirm(this.boolTerminate);
@@ -75,50 +75,50 @@ class sAnimation {
                 this.boolTerminate[1] = false;
                 /* 
                 
-    console.log('am i running multiple tinmes');
+    //console.log('am i running multiple tinmes');
     
     await sAnimation.terminateRunningAnimationAndConfirm(this.boolTerminate);
-    console.log(`val of the terminates before reset = ${this.boolTerminate}`);
+    //console.log(`val of the terminates before reset = ${this.boolTerminate}`);
     
     sAnimation.resetTerminateVariable(this.boolTerminate);
     // sAnimation.resetElemOpacity(this.elem);
     */
-    this.iAmRunning = false;
-}
+                this.iAmRunning = false;
+            }
 
             this.headingswitch = false;
-         
-                sAnimation.animation(this.boolRunning,
-                    this.startAnimationProperties, this.endAnimationProperties,
-                     this.elem, false, this.boolTerminate);
+
+            sAnimation.animation(this.boolRunning,
+                this.startAnimationProperties, this.endAnimationProperties,
+                this.elem, false, this.boolTerminate);
         }
 
     }
 
     static async animation(boolswitch, start, end, elem, mode, terminate) {
-        console.log('From the static animation version');
-        console.log('waiting');
+        //console.log('From the static animation version');
+        //console.log('waiting');
         boolswitch[0] = true;
 
-        if (mode) {    
-            console.log('waiting to complete animation start --');
+        if (mode) {
+            //console.log('waiting to complete animation start --');
             await fade(elem, start.timerMillisecond, start.updatingVal,
-            start.startPos, start.stopPos, 
-            start.direction, start.type, start.opacityOperation, terminate);
-            console.log('Finally animation start closed --');
+                start.startPos, start.stopPos,
+                start.direction, start.type, start.opacityOperation, terminate);
+            //console.log('Finally animation start closed --');
         }
-     
-        
+
+
         else if (!mode) {
             await fade(elem, end.timerMillisecond, end.updatingVal,
-                end.startPos, end.stopPos, 
+                end.startPos, end.stopPos,
                 end.direction, end.type, end.opacityOperation, terminate);
-          
-    }
-      
+
+        }
+
 
         boolswitch[0] = false;
-        console.log('done');
+        //console.log('done');
     }
 
     static getViewPortHeight(variable, appear, unAppear) {
@@ -132,7 +132,7 @@ class sAnimation {
         terminate[0] = true;
         await new Promise((resolve, reject) => {
             let inter = setInterval(() => {
-                console.log('terminating..');
+                //console.log('terminating..');
                 if (terminate[1] == true) {
                     resolve();
                     clearInterval(inter);
@@ -145,12 +145,12 @@ class sAnimation {
         terminate = [false, false];
     }
 
-    static resetElemOpacity(elem){
-      
+    static resetElemOpacity(elem) {
+
         elem.style.opacity = 0;
     }
 
-  
+
 
 
 }

@@ -2,7 +2,8 @@ const jwt = require('jsonwebtoken');
 let ifDebugging = require('./../myLib/ifDebugging/ifDebugging');
 const utils = require('./../utils/utils');
 
-const debug = new ifDebugging(process.env.IS_DEBUGGING);
+const debug = new ifDebugging(parseInt(process.env.IS_DEBUGGING));
+
 
 module.exports.authorize = (req, res, next) => {
     debug.console('from authorize');
@@ -13,7 +14,7 @@ module.exports.authorize = (req, res, next) => {
 
     debug.console('req.body is ', req.body);
     debug.console('req.query : ', req.query);
-    console.log('from authorize the method of communication : ', req.method)
+    // console.log('from authorize the method of communication : ', req.method)
 
     if ('authorized' in req.headers) {
         if (req.headers.authorized) {
@@ -64,7 +65,7 @@ module.exports.jwtVerification = (req, res, next) => {
 module.exports.errors = (err, req, res, next) => {
 
     if (err) {
-        console.log('semmes a error occure', err);
+        //console.log('semmes a error occure', err);
         res.status(500).json({
             status: -1,
             message: 'semmes a error occure'

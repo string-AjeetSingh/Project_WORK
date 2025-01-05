@@ -1,7 +1,10 @@
 class ifDebugging {
 
     constructor(isDebugging, level = 'log') {
-        this.isDebugging = isDebugging;
+        this.isDebugging = false;
+        if (isDebugging && isDebugging.length > 0) {
+            this.isDebugging = true;
+        }
         this.level = level
 
     }

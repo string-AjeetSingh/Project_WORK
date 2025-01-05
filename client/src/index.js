@@ -8,7 +8,7 @@ import reportWebVitals from './reportWebVitals';
 
 
 const ReactContainer = document.getElementsByTagName('ReactContainer');
-console.log(ReactContainer);
+
 
 const root = ReactDOM.createRoot(ReactContainer[0]);
 

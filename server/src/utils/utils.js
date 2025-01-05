@@ -1,19 +1,19 @@
 const alib = require('./../myLib/PracLib/alib');
 const isDebugging = require('./../myLib/ifDebugging/ifDebugging');
 const path = require('path');
-const debug = new isDebugging(process.env.IS_DEBUGGING);
+const debug = new isDebugging(parseInt(process.env.IS_DEBUGGING));
 
 module.exports.jsonParseIfString = (val) => {
-    console.log('from jsonParseIfString() Util');
-    console.log('type of : ', typeof val);
+    debug.console('from jsonParseIfString() Util');
+    debug.console('type of : ', typeof val);
     if (typeof val == 'string') {
         let result;
-        console.log('provided val is string', val);
+        debug.console('provided val is string', val);
         result = JSON.parse(val);
         return result;
     }
     else {
-        console.log('no modifications');
+        debug.console('no modifications');
         return val;
     }
 }
@@ -62,11 +62,11 @@ module.exports.profileImgCheck = (req, res, next) => {
         if (path.extname(file.originalname) === ".jpeg" ||
             path.extname(file.originalname) === ".jpg" ||
             path.extname(file.originalname) === ".png") {
-            console.log('no found error from uploadToMemory -- -- --, the ext is ', path.extname(file.originalname));
+            debug.console('no found error from uploadToMemory -- -- --, the ext is ', path.extname(file.originalname));
         } else {
 
 
-            console.log('found error from uploadToMemory -- -- --, the ext is ', path.extname(file.originalname));
+            debug.console('found error from uploadToMemory -- -- --, the ext is ', path.extname(file.originalname));
             res.json({
                 status: 0,
                 message: " Only provide png / jped / jpg , try again"
@@ -76,7 +76,7 @@ module.exports.profileImgCheck = (req, res, next) => {
 
         }
         if (file.size > 1 * 1024 * 1024 * 3) {
-            console.log('found error from uploadToMemory -- -- --, the size is large than 3 mb ', file.size);
+            debug.console('found error from uploadToMemory -- -- --, the size is large than 3 mb ', file.size);
             res.json({
                 status: 0,
                 message: " Only provide less than 3 Mb"
@@ -98,11 +98,11 @@ module.exports.pdfCheck = (req, res, next) => {
         let file = req.file;
         let pass = true;
         if (path.extname(file.originalname) === ".pdf") {
-            console.log('no found error from uploadToMemory -- -- --, the ext is ', path.extname(file.originalname));
+            debug.console('no found error from uploadToMemory -- -- --, the ext is ', path.extname(file.originalname));
         } else {
 
 
-            console.log('found error from uploadToMemory -- -- --, the ext is ', path.extname(file.originalname));
+            debug.console('found error from uploadToMemory -- -- --, the ext is ', path.extname(file.originalname));
             res.json({
                 status: 0,
                 message: " Only provide pdf, try again"
@@ -112,7 +112,7 @@ module.exports.pdfCheck = (req, res, next) => {
 
         }
         if (file.size > 1 * 1024 * 1024 * 3) {
-            console.log('found error from uploadToMemory -- -- --, the size is large than 3 mb ', file.size);
+            debug.console('found error from uploadToMemory -- -- --, the size is large than 3 mb ', file.size);
             res.json({
                 status: 0,
                 message: " Only provide less than 3 Mb"
@@ -173,13 +173,13 @@ module.exports.uploadFileToMongo = async (mongo, file, type) => {
                 await mongo.over();
                 debug.console('the result we found is : ', result);
                 if (result.acknowledged) {
-                    console.log('Succesfully inserted the file : ', file.fieldname);
+                    debug.console('Succesfully inserted the file : ', file.fieldname);
                     return {
                         status: true,
                         fileName: finalFileName
                     };
                 } else {
-                    console.log('unable to insert the file : ', file.fieldname);
+                    debug.console('unable to insert the file : ', file.fieldname);
                     return false;
                 }
 
@@ -236,13 +236,13 @@ module.exports.fetchFileFromMongo = async (mongo, fileName, type) => {
                 await mongo.over();
                 debug.console('the result we found is : ', result);
                 if (result.length > 0) {
-                    console.log('Succesfully have the file: ', result[0].fileName);
+                    debug.console('Succesfully have the file: ', result[0].fileName);
                     return {
                         status: true,
                         file: result[0]
                     };
                 } else {
-                    console.log('unable to have the file : ', fieldname);
+                    debug.console('unable to have the file : ', fieldname);
                     return false;
                 }
 

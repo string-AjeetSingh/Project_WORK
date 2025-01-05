@@ -26,14 +26,14 @@ function Rough({ children }) {
     const theInputs = useRef({ type: '', email: '' });
 
     async function uploadImg(e) {
-        console.log("from uploadImg -- -- -- ");
+        //console.log("from uploadImg -- -- -- ");
         let otherData = {};
         if (theInputs.current.type.length > 0 && theInputs.current.email.length > 0) {
             otherData = {
                 type: theInputs.current.type,
                 no: theInputs.current.email
             }
-            console.log('the otherData is  : ', otherData);
+            //console.log('the otherData is  : ', otherData);
         } else {
             alert('provide type and no please');
             console.error('provide type and no.');
@@ -45,32 +45,32 @@ function Rough({ children }) {
             method: 'POST',
         });
 
-        console.log('the file is : ', e.target.files[0]);
+        //console.log('the file is : ', e.target.files[0]);
         upload.setFormData('data', otherData, true);
         upload.setFormData("theImg", e.target.files[0]);
         let result = await upload.fetchNoStringify();
         upload.resetFormData();
 
         if (result) {
-            console.log('the result from server is : ', result);
+            //console.log('the result from server is : ', result);
         }
 
     }
 
     async function uploadPdf(e) {
-        console.log("from uploadPdf -- -- -- ");
+        //console.log("from uploadPdf -- -- -- ");
 
         const upload = new requestServer('/xtServer/api/roughPdf', {
             method: 'POST',
         });
 
-        console.log('the file is : ', e.target.files[0]);
+        //console.log('the file is : ', e.target.files[0]);
         upload.setFormData("thePdf", e.target.files[0]);
         let result = await upload.fetchNoStringify();
         upload.resetFormData();
 
         if (result) {
-            console.log('the result from server is : ', result);
+            //console.log('the result from server is : ', result);
         }
     }
 
@@ -96,7 +96,7 @@ function Rough({ children }) {
                     <div className='text-teal-500 m-1 '>
                         <label>Type : </label><input onChange={(e) => {
                             theInputs.current.type = e.target.value;
-                            console.log(theInputs.current.type);
+                            //console.log(theInputs.current.type);
                         }}
                             className='placeholder:text-teal-700 p-1
                         bg-teal-900'

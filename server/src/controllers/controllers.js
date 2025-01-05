@@ -7,7 +7,7 @@ const utils = require('./../utils/utils');
 const path = require('path');
 
 
-const debug = new isDebugging(process.env.IS_DEBUGGING);
+const debug = new isDebugging(parseInt(process.env.IS_DEBUGGING));
 
 module.exports.rough = async (req, res) => {
     debug.console("from rough -- -- -- ");

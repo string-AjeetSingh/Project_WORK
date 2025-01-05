@@ -11,8 +11,8 @@ function useAnimationOnOff(secElem) {
             onOffSwitch.current = true;
         }
         else {
-            alert('wrong call to on() of section1');
-            console.error('wrong call to on() of section1');
+            // alert('wrong call to on() of section1');
+            // console.error('wrong call to on() of section1');
         }
     }
 
@@ -23,8 +23,8 @@ function useAnimationOnOff(secElem) {
             onOffSwitch.current = false;
         }
         else {
-            alert('wrong call to off() of section1');
-            console.error('wrong call to off() of section1');
+            // alert('wrong call to off() of section1');
+            //console.error('wrong call to off() of section1');
         }
     }
 

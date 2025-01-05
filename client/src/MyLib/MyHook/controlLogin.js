@@ -42,10 +42,10 @@ function useControlLogin(isHomePage = false) {
 
         if (result) {
             if (result.json.status) {
-                console.log('is registered');
+                //console.log('is registered');
                 return true;
             } else {
-                console.log('is not registered');
+                //console.log('is not registered');
                 return false;
             }
         }

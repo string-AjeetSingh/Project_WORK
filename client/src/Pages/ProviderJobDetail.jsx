@@ -20,7 +20,7 @@ function ProviderJobDetail({ }) {
         user, loginWithRedirect, nowLogout } = useControlLogin(true);
 
     async function fetchData() {
-        console.log('from fetchData -- -- - -');
+        //console.log('from fetchData -- -- - -');
         let job = new requestServer(process.env.REACT_APP_SERVER_URL
             + '/xtServer/api/fetchAPost' + `?no=${no}`, { method: 'GET' });
         job.setAuthorizedFlag(isAuthenticated);
@@ -29,7 +29,7 @@ function ProviderJobDetail({ }) {
 
         if (result) {
             if (result.json.status) {
-                //console.log('the data we found : ', result);
+                ////console.log('the data we found : ', result);
                 loadingScreen.current.off();
                 setTimeout(() => {
                     setboolscreen(false);
@@ -52,17 +52,17 @@ function ProviderJobDetail({ }) {
     }
 
     async function appliedDetail() {
-        console.log('from appliedDetail -- -- - -');
+        //console.log('from appliedDetail -- -- - -');
         let job = new requestServer(process.env.REACT_APP_SERVER_URL
             + '/xtServer/api/usersApplied' + `?no=${no}`, { method: 'GET' }, true);
         job.setAuthorizedFlag(isAuthenticated);
         job.noBody();
         let result = await job.requestJson();
-        console.log('From appliedDetail the result is :  ', result);
+        //console.log('From appliedDetail the result is :  ', result);
 
         if (result) {
             if (result.json.status) {
-                console.log('From appliedDetail the data we found : ', result);
+                //console.log('From appliedDetail the data we found : ', result);
                 return result.json.applied;
             } else {
                 return false;
@@ -74,19 +74,19 @@ function ProviderJobDetail({ }) {
     }
 
     async function deleteJob(deleteButton) {
-        console.log('from deleteJob -- -- - -');
-        console.log('the deleteButton is : ', deleteButton);
+        //console.log('from deleteJob -- -- - -');
+        //console.log('the deleteButton is : ', deleteButton);
         deleteButton.current.innerHTML = 'Processing';
         let job = new requestServer(process.env.REACT_APP_SERVER_URL
             + '/xtServer/api/deleteWork' + `?no=${no}`, { method: 'GET' }, true);
         job.setAuthorizedFlag(isAuthenticated);
         job.noBody();
         let result = await job.requestJson();
-        console.log('From deleteJob the result is :  ', result);
+        //console.log('From deleteJob the result is :  ', result);
 
         if (result) {
             if (result.json.status) {
-                console.log('From deleteJob the data we found : ', result);
+                //console.log('From deleteJob the data we found : ', result);
                 alert('Deleted');
                 navigate('/provider');
             } else {
@@ -100,7 +100,7 @@ function ProviderJobDetail({ }) {
 
     }
 
-    console.log("the data is : ", data);
+    //console.log("the data is : ", data);
     useEffect(() => {
         fetchData().
             then((res) => {
@@ -116,7 +116,7 @@ function ProviderJobDetail({ }) {
 
     useEffect(() => {
         //alert("running loadingscreen effect");
-        console.log('from userEffect');
+        //console.log('from userEffect');
         if (loadingScreen.current) {
             loadingScreen.current.on();
         }

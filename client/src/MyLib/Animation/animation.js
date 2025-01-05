@@ -199,7 +199,7 @@ async function fadeAgainAgain(elem, elemType = "ref",
 
                     if (shouldTerminate.current) {
 
-                        console.log('closed the fade againagian animation');
+                        //console.log('closed the fade againagian animation');
 
                         resolve();
                         clearInterval(interval);
@@ -220,7 +220,7 @@ async function fadeAgainAgain(elem, elemType = "ref",
 
 
                 } catch (error) {
-                    console.log(error);
+                    //console.log(error);
                 }
 
             }, 20)
@@ -246,10 +246,10 @@ async function upDown(elem, elemType = 'ref',
 
                 try {
 
-                    console.log('running up down animation');
+                    // console.log('running up down animation');
                     if (shouldTerminate.current) {
 
-                        console.log('closed the updown animation');
+                        //console.log('closed the updown animation');
                         resolve();
                         clearInterval(inter);
                     }
@@ -260,7 +260,7 @@ async function upDown(elem, elemType = 'ref',
                     ///console.log('from button counter = '+counter);
                     counter -= counterUpdate;
                 } catch (error) {
-                    console.log(error);
+                    // console.log(error);
                 }
             }, 10)
         })
@@ -270,10 +270,10 @@ async function upDown(elem, elemType = 'ref',
             let inter = setInterval(() => {
                 try {
 
-                    console.log('running up down animation');
+                    // console.log('running up down animation');
                     if (shouldTerminate.current) {
 
-                        console.log('closed the updown animation');
+                        //console.log('closed the updown animation');
                         resolve();
                         clearInterval(inter);
                     }
@@ -284,7 +284,7 @@ async function upDown(elem, elemType = 'ref',
                     ///console.log('from button counter = '+counter);
                     counter += counterUpdate;
                 } catch (error) {
-                    console.log(error);
+                    // console.log(error);
                 }
             }, 10)
         })
