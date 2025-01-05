@@ -23,7 +23,7 @@ function BigButton({ children, className, resetClassName = false, AddOnClassName
             <button ref={bref} onClick={async () => {
                 await ButtonAnimation(bref);
                 if (handleClick) {
-                    alert('handleLogin')
+                    //alert('handleLogin')
                     handleClick();
                 }
             }}

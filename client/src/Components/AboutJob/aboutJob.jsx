@@ -25,7 +25,7 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
 
     function handleApply() {
 
-        console.log('from handleApply');
+        //console.log('from handleApply');
         setapplyPanel(true);
     }
 
@@ -46,7 +46,7 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
         let result = await toApply.fetchNoStringify();
 
         if (result) {
-            console.log('the result from requestAppy : ', result);
+            //console.log('the result from requestAppy : ', result);
             if (result.json.status === 1) {
 
                 flushSync(() => {
@@ -349,9 +349,9 @@ function DeleteWork({ handleButton, myRef }) {
     useEffect(() => {
         if (myRef) {
             myRef = buttonRef;
-            console.log('the myRef is : ', myRef);
+            //console.log('the myRef is : ', myRef);
         }
-        console.log('the buttonRef is : ', buttonRef);
+        //console.log('the buttonRef is : ', buttonRef);
     }, [buttonRef.current])
     return (
         <>

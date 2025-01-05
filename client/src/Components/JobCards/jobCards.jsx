@@ -156,7 +156,7 @@ function JobCards({ children, link, __note_this_component_use_context_and_i_am_a
                         counter++;
                     }
                 }
-                console.log("type of setCommon : ", typeof setCommon);
+                // console.log("type of setCommon : ", typeof setCommon);
                 arr2.push(<ContainerNav
                     data={[...arr1]} common={navItemCommon}
                     setCommon={setCommon}
@@ -168,9 +168,9 @@ function JobCards({ children, link, __note_this_component_use_context_and_i_am_a
                 </ContainerNav>);
             }
 
-            console.log(`counter = ${counter}`);
-            console.log(`arr2 below :`);
-            console.log(arr2);
+            // console.log(`counter = ${counter}`);
+            // console.log(`arr2 below :`);
+            // console.log(arr2);
 
             setnavItemArr([...arr2]);
 

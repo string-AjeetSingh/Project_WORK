@@ -36,7 +36,7 @@ function ContainerNav({ data, common, setCommon, setContainer, children, isDefau
         }
 
         if (setCommon) {
-            console.log('from ContainerNav , the typeof setcommon : ', typeof setCommon);
+            // console.log('from ContainerNav , the typeof setcommon : ', typeof setCommon);
             setCommon({ previous: setOff, previousKey: thekey });
         }
 
@@ -329,12 +329,12 @@ function Filter({ data, setData, originalData }) {
                                 newArr.push(dataItem);
                             }
                         })
-                        console.log('the new array after apply : ', newArr);
+                        // console.log('the new array after apply : ', newArr);
                         setData(newArr);
                     }
                 }
             } else {
-                console.log('original data must be used now : ', originalData);
+                //console.log('original data must be used now : ', originalData);
                 setData(originalData.current);
             }
         }

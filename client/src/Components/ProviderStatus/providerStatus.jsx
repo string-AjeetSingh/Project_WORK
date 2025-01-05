@@ -18,7 +18,7 @@ function ProviderStatus({ isAuthenticated }) {
         if (result) {
             if (result.json.status) {
                 // alert('found the data');
-                console.log('the userPosts is  :', result.json);
+                // console.log('the userPosts is  :', result.json);
                 return result.json.data;
             }
             else {

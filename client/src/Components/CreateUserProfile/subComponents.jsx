@@ -466,14 +466,14 @@ function GetInputArray({ index, name, inputName, totalInputLength = 100
             delFunction={del} />])
     }
     function del(index) {
-        console.log('From del arr  : ', arr)
+        //console.log('From del arr  : ', arr)
         handleReport(index, null, true);
         setarr((prev) => {
             let newarr = prev.slice();
-            console.log('arr sliced : ', newarr)
+            // console.log('arr sliced : ', newarr)
 
             newarr[index] = null;
-            console.log('new arr is : ', newarr)
+            // console.log('new arr is : ', newarr)
             return newarr;
         });
         /* 
@@ -485,13 +485,13 @@ function GetInputArray({ index, name, inputName, totalInputLength = 100
         console.log('from handlReport locindex is :', locindex);
         if (remove) {
             TheReport.current.inputData.data[locindex] = null;
-            console.log('from handleReport, new report : ', TheReport);
+            //console.log('from handleReport, new report : ', TheReport);
             refineData(TheReport.current.inputData.data);
             OutReport(TheReport.current);
             return true;
         }
         TheReport.current.inputData.data[locindex] = val;
-        console.log('from handleReport, new report : ', TheReport);
+        // console.log('from handleReport, new report : ', TheReport);
         OutReport(TheReport.current);
     }
 
@@ -519,7 +519,7 @@ function GetInputArray({ index, name, inputName, totalInputLength = 100
 
         if (boolPreviousVal) {
             TheReport.current.inputData.data = prevValue.inputData.data;
-            console.log('if prev val the Report is : ', TheReport);
+            //console.log('if prev val the Report is : ', TheReport);
             let newarr = [];
             for (let i = 0; i < prevValue.inputData.data.length; i++) {
 
@@ -530,7 +530,7 @@ function GetInputArray({ index, name, inputName, totalInputLength = 100
                         val={prevValue.inputData.data[i]} />
                 }
             }
-            console.log('if prev val the new arr is : ', newarr);
+            // console.log('if prev val the new arr is : ', newarr);
             setarr(newarr);
         }
         else {
@@ -726,7 +726,7 @@ function UploadButton({ outSrcPimg, __this_component_use_context_and_i_am_a_mess
         tempImg.setFormData('tempImg', file);
         let result = await tempImg.fetchNoStringify();
         if (result) {
-            console.log('found tempImgSrc is : ', result.json);
+            // console.log('found tempImgSrc is : ', result.json);
             return result.json.filePath;
         }
         return false;

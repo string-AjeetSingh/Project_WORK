@@ -76,11 +76,11 @@ function CreatePost({ }) {
       buttonHandle1={handleSectionButtons1} />)
 
   async function tryit() {
-    console.log('from try it function ,below the state');
-    console.log(section1FinalInputReport);
-    console.log(section2FinalInputReport);
-    console.log(section3FinalInputReport);
-    console.log('from try it function ,Over ----------------- ');
+    ////console.log('from try it function ,below the state');
+    //console.log(section1FinalInputReport);
+    //console.log(section2FinalInputReport);
+    //console.log(section3FinalInputReport);
+    //console.log('from try it function ,Over ----------------- ');
   }
 
   async function handleSectionButtons1(val, stateVal) {
@@ -124,7 +124,7 @@ function CreatePost({ }) {
         await animationSwitch.current.on();
 
       }
-      console.log(initialValues.current.currentSection);
+      //console.log(initialValues.current.currentSection);
     }
   }
 
@@ -151,15 +151,15 @@ function CreatePost({ }) {
       await animationSwitch.current.on();
 
     }
-    console.log(initialValues.current.currentSection);
+    //console.log(initialValues.current.currentSection);
   }
 
   async function handleSectionButtons3(stateVal) {
 
 
     let allData = combineArraysToOne(stateVal);
-    console.log('all data is below');
-    console.log(allData);
+    //console.log('all data is below');
+    //console.log(allData);
 
     if (allData.length < 1) {
       alert('not data, please provide data to submit');
@@ -169,16 +169,16 @@ function CreatePost({ }) {
 
 
     if (allData[0].index === 1) {
-      alert('file contained may be');
+      // alert('file contained may be');
       if (allData[0].inputData.data[0].files) {
-        alert('file contained here');
+        //  alert('file contained here');
         toServer.setFormData('theImg', allData[0].inputData.data[0].files);
         toServer.setFormData('data', allData.slice(1, allData.length), true);
       }
     } else {
       toServer.setFormData('data', allData, true);
     }
-    //console.log('the file is : ', allData[0].inputData.data[0].files);
+    ////console.log('the file is : ', allData[0].inputData.data[0].files);
     //toServer.setContentType('multipart/form-data');
 
     let res = await toServer.fetchNoStringify();
@@ -187,7 +187,7 @@ function CreatePost({ }) {
 
       alert('Uploaded succesfully ');
       navigate('/provider');
-      console.log('the response from submit : ', res);
+      //console.log('the response from submit : ', res);
       return true;
 
     } else {

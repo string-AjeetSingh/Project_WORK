@@ -393,14 +393,14 @@ function GetInputArray({ index, name, inputName, totalInputLength = 100
       delFunction={del} />])
   }
   function del(index) {
-    console.log('From del arr  : ', arr)
+    //console.log('From del arr  : ', arr)
     handleReport(index, null, true);
     setarr((prev) => {
       let newarr = prev.slice();
-      console.log('arr sliced : ', newarr)
+      //console.log('arr sliced : ', newarr)
 
       newarr[index] = null;
-      console.log('new arr is : ', newarr)
+      //console.log('new arr is : ', newarr)
       return newarr;
     });
     /* 
@@ -408,17 +408,17 @@ function GetInputArray({ index, name, inputName, totalInputLength = 100
   }
 
   function handleReport(locindex, val, remove = false) {
-    console.log('from handlReport val is :', val);
-    console.log('from handlReport locindex is :', locindex);
+    //console.log('from handlReport val is :', val);
+    //console.log('from handlReport locindex is :', locindex);
     if (remove) {
       TheReport.current.inputData.data[locindex] = null;
-      console.log('from handleReport, new report : ', TheReport);
+      //console.log('from handleReport, new report : ', TheReport);
       refineData(TheReport.current.inputData.data);
       OutReport(TheReport.current);
       return true;
     }
     TheReport.current.inputData.data[locindex] = val;
-    console.log('from handleReport, new report : ', TheReport);
+    //console.log('from handleReport, new report : ', TheReport);
     OutReport(TheReport.current);
   }
 
@@ -446,7 +446,7 @@ function GetInputArray({ index, name, inputName, totalInputLength = 100
 
     if (boolPreviousVal) {
       TheReport.current.inputData.data = prevValue.inputData.data;
-      console.log('if prev val the Report is : ', TheReport);
+      //console.log('if prev val the Report is : ', TheReport);
       let newarr = [];
       for (let i = 0; i < prevValue.inputData.data.length; i++) {
 
@@ -457,7 +457,7 @@ function GetInputArray({ index, name, inputName, totalInputLength = 100
             val={prevValue.inputData.data[i]} />
         }
       }
-      console.log('if prev val the new arr is : ', newarr);
+      //console.log('if prev val the new arr is : ', newarr);
       setarr(newarr);
     }
     else {
@@ -788,7 +788,7 @@ function UploadButton({ setImg,
 
     if (result.status === 200) {
       alert('succesfully send temp data');
-      console.log('from sending temp data  : ', result);
+      //console.log('from sending temp data  : ', result);
 
       if (result.json) {
         setImg(result.json.filePath);
@@ -797,12 +797,12 @@ function UploadButton({ setImg,
     }
     else {
       alert("fail to send temp data");
-      console.log('from sending temp data  : ', result);
+      //console.log('from sending temp data  : ', result);
     }
   }
 
   async function handleChangeFile(e) {
-    console.log('Changing file');
+    //console.log('Changing file');
 
 
 
@@ -825,8 +825,8 @@ function UploadButton({ setImg,
 
 
   useEffect(() => {
-    console.log("previous data is below");
-    console.log(prevData);
+    //console.log("previous data is below");
+    //console.log(prevData);
     if (prevData) {
       // alert('found previous data');
       if (prevData.inputData.src) {
@@ -890,14 +890,14 @@ function Section1({ children, animation = false,
     else {
       if (outOn) {
         outOn(() => {
-          alert('to use on() for section1, set animation to true first');
+          //  alert('to use on() for section1, set animation to true first');
           console.error('to use on() for section1, set animation to true first');
 
         })
       }
       if (outOff) {
         outOff(() => {
-          alert('to use off() for section1, set animation to true first');
+          // alert('to use off() for section1, set animation to true first');
           console.error('to use off() for section1, set animation to true first');
 
         })
@@ -1020,14 +1020,14 @@ function Section2({ children, animation = false,
     else {
       if (outOn) {
         outOn(() => {
-          alert('to use on() for section1, set animation to true first');
+          // alert('to use on() for section1, set animation to true first');
           console.error('to use on() for section1, set animation to true first');
 
         })
       }
       if (outOff) {
         outOff(() => {
-          alert('to use off() for section1, set animation to true first');
+          // alert('to use off() for section1, set animation to true first');
           console.error('to use off() for section1, set animation to true first');
 
         })
@@ -1158,14 +1158,14 @@ function Section3({ children, animation = false,
     else {
       if (outOn) {
         outOn(() => {
-          alert('to use on() for section1, set animation to true first');
+          // alert('to use on() for section1, set animation to true first');
           console.error('to use on() for section1, set animation to true first');
 
         })
       }
       if (outOff) {
         outOff(() => {
-          alert('to use off() for section1, set animation to true first');
+          // alert('to use off() for section1, set animation to true first');
           console.error('to use off() for section1, set animation to true first');
 
         })

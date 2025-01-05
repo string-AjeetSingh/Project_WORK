@@ -164,7 +164,7 @@ function CreateUserProfile({ isAuthenticated, email, logout }) {
             await animationSwitch.current.on();
 
         }
-        console.log(initialValues.current.currentSection);
+        //console.log(initialValues.current.currentSection);
     }
     async function handleSectionButtons3(stateVal) {
 
@@ -184,9 +184,9 @@ function CreateUserProfile({ isAuthenticated, email, logout }) {
 
 
         if (allData[0].inputData.data[0].files) {
-            alert('file contained may be');
+            // alert('file contained may be');
             if (allData[0].inputData.data[0].files) {
-                alert('file contained here');
+                // alert('file contained here');
                 toServer.setFormData('theImg', allData[0].inputData.data[0].files);
                 toServer.setFormData('data', allData, true);
             }

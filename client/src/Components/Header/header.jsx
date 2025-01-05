@@ -67,7 +67,7 @@ function Header({ children, login, logout, key, search_Link }) {
 
     async function theSearch() {
         if (search_Link) {
-            alert('goina use link ');
+            // alert('goina use link ');
 
             if (refSearch.current.value.length > 0) {
                 navigate('/theSearch/' + refSearch.current.value)
@@ -85,7 +85,7 @@ function Header({ children, login, logout, key, search_Link }) {
 
         if (refSearch.current.value.length > 0) {
             tags = tagsForSearch(refSearch.current.value);
-            console.log('the tags from :', tags);
+            // console.log('the tags from :', tags);
         }
         else {
             alert('please write some thing to search for');

@@ -126,9 +126,9 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
 
 
         if (allData[0].inputData.data[0].files) {
-            alert('file contained may be');
+            // alert('file contained may be');
             if (allData[0].inputData.data[0].files) {
-                alert('file contained here');
+                // alert('file contained here');
                 toServer.setFormData('theImg', allData[0].inputData.data[0].files);
                 toServer.setFormData('data', allData, true);
             }
@@ -206,7 +206,7 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
 
 
     useEffect(() => {
-        console.log('from useeffect the data is : ', data);
+        // console.log('from useeffect the data is : ', data);
         if (data) {
             let arr = [];
             arr.push(returnReportFormat(1, {
