@@ -117,7 +117,10 @@ function Card({ companyName, imgSrc, jobHeading,
         <>
             {theClick.current === 'link' ?
                 <Link to={'/jobDetail/' + dataToSetOnState.no}>
-                    <div ref={aref} onClick={handleClick}
+                    <div style={{
+                        backgroundColor: '#316602'
+                    }}
+                        ref={aref} onClick={handleClick}
                         className={` flex flex-col m-2 p-2 
              items-start border 
              ${lstate} rounded-lg  text-green-200
@@ -143,7 +146,7 @@ function Card({ companyName, imgSrc, jobHeading,
                         <div className='text-[0.8rem] relative bottom-1 
          
          '>{location ? location : "DumyBad, India"}</div>
-                        <hr className='w-full m-1 border-1 border-green-800 rounded-md'></hr>
+
 
 
                         <div className='flex flex-row flex-wrap 
@@ -170,7 +173,11 @@ function Card({ companyName, imgSrc, jobHeading,
                     </div>
                 </Link>
                 :
-                <div ref={aref} onClick={handleClick}
+                <div
+                    style={{
+                        backgroundColor: '#204201'
+                    }}
+                    ref={aref} onClick={handleClick}
                     className={` flex flex-col m-2 p-2 
              items-start border 
              ${lstate} rounded-lg  text-green-200
@@ -194,7 +201,7 @@ function Card({ companyName, imgSrc, jobHeading,
                     <div className='text-[0.8rem] relative bottom-1 
          
          '>{location ? location : "DumyBad, India"}</div>
-                    <hr className='w-full m-1 border-1 border-green-800 rounded-md'></hr>
+
 
                     <div className='flex flex-row flex-wrap 
                     h-fit items-center'>

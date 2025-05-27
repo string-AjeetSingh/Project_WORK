@@ -24,19 +24,13 @@ function Provider({ }) {
     useEffect(() => {
         if (!isLoading) {
 
-            if (isAuthenticated) {
-                loadingScreen.current.off();
-                setTimeout(() => {
-                    setboolscreen(false);
-                }, 5000)
-            } else {
-                loadingScreen.current.off();
-                setTimeout(() => {
-                    setboolscreen(false);
-                }, 5000);
-            }
+            loadingScreen.current.off();
+            setTimeout(() => {
+                setboolscreen(false);
+            }, 5000)
+
         }
-    }, [isAuthenticated, isLoading])
+    }, [isLoading])
 
 
     return (

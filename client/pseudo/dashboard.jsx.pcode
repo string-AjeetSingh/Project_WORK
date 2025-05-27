@@ -1,0 +1,60 @@
+
+Psudo Code for DashBoard.jsx
+
+COMPONENT DashBoard
+
+-> Objective : 
+    - To show loadingScreen and if authenticated show UserProfile Comp
+
+-> Inputs : 
+    # No Inputs
+
+-> Initializations : 
+    - useControlLogin hook returs : 
+        - isAuthenticated
+        - isLoading
+        - user
+        - nowLogout
+        - loginWithRedirect
+
+    - loadingScreen (Ref <- loading functionalities from LoadingScreen Comp)
+    - boolScreen (state <- boolen)
+    - offLoadingScreenFromChild (Ref <- off Loading Screen for child Comp>)
+    
+-> Render : 
+    # If boolScreen then Render LoadingScreen Comp
+
+    IF(isAuthenticated)
+        RENDER : 
+            <header>
+                commonContext <- {user}
+                    Header Comp
+                end context
+            <header/>
+
+            <main>
+                UserProfile Comp
+            <main/>
+
+            <footer>
+                Footer Comp
+            <footer/>
+        END RENDER
+    ELSE
+        # show information to user about being unauthenticated.
+
+-> Effect - 1 (initial loadingScreen and set other functionlality)
+    IF(loadingScreen variable exists)
+        offLoadingScreenFromChild <- FUNCTION : 
+        
+                loadingScreen.off()
+                #set timeout 5 sec for setBoolScreen Null.
+        
+            END FUNCTION
+        loadingScreen.on();
+    END IF
+
+    Dependencies : [loadingScreen]
+
+END COMPONENT
+

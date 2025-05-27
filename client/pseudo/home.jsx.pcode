@@ -1,0 +1,77 @@
+Psudo code for - Home.jsx(page).
+
+COMPONENT Home
+
+- > Inputs : 
+     # no inputs
+
+- > Initialization :
+    - loadingSCreen (Ref)
+    - offLoadingScreenFromChild(Ref)
+    - boolScreen (state)
+    - otherWise (state)
+    - isAuthentication, isLoading, user, nowLogout, loginWithRedirect (hook : useControlLogin)
+    - noUser (function)
+
+- > Render :
+    # If boolScreen then LoadingScreen Comp , else Null.
+    
+    IF(isAuthenticated)
+        IF(ifRegistered)
+            HomeWithLogin Comp.
+        END IF
+        otherWise (state)
+    END IF
+
+- > Effect - 1
+
+    IF(loadingScreen ref exists)
+        
+        offLoadingScreenFormChild <- FUNCTION :
+        
+        loadingScreen.off();
+        setTime out 5000 ms to setBoolScreen to Null.
+        
+        END FUNCTION
+
+        loadingScreen.on();
+    END IF
+
+    DEPENDENCY : [loadingScreen]
+
+- > Effect - 2
+
+  # if !isLoading AND !isAuthenticated then noUser();
+
+    DEPENDENCY : [isAuthenticated, isLoading]
+
+END COMPONENT 
+
+
+FUNCTION noUser
+
+- > Objectives :
+    - off loading screen.
+    - set the user without login.
+
+- > Inputs :
+    - scope Inputs:
+        --loadingScreen (Ref)
+        --setBoolScreen (state)
+        --setOtherWise (state)
+        --pleaseWait (function)
+        --HomeWithoutLogin (React component)
+        --props from useControlLogin (hook)
+
+- > Body : 
+    # off loadingscreen and wait for few seconds
+        - loadingScreen.off();
+        - pleaseWait(2900);
+    
+    # setBoolScreen to null with 5000 second of timeout.
+    # setOtherWise state to with HomeWithoutLogin providing the below props.
+        - props to HomeWithoutLogin Comp
+            --login : loginWithRedirect(from hook useControlLogin).
+            --user : user(from hook useControlLogin).
+
+END FUNCTION 

@@ -28,18 +28,15 @@ function ProviderJobDetail({ }) {
         let result = await job.requestJson();
 
         if (result) {
+
+            loadingScreen.current.off();
+            setTimeout(() => {
+                setboolscreen(false);
+            }, 5000)
+
             if (result.json.status) {
-                ////console.log('the data we found : ', result);
-                loadingScreen.current.off();
-                setTimeout(() => {
-                    setboolscreen(false);
-                }, 5000)
                 return result.json.data;
             } else {
-                loadingScreen.current.off();
-                setTimeout(() => {
-                    setboolscreen(false);
-                }, 5000)
                 return false;
             }
         } else {
@@ -84,6 +81,8 @@ function ProviderJobDetail({ }) {
         let result = await job.requestJson();
         //console.log('From deleteJob the result is :  ', result);
 
+        deleteButton.current.innerHTML = 'Delete';
+
         if (result) {
             if (result.json.status) {
                 //console.log('From deleteJob the data we found : ', result);
@@ -92,10 +91,8 @@ function ProviderJobDetail({ }) {
             } else {
                 alert(result.json.message);
             }
-            deleteButton.current.innerHTML = 'Delete';
         } else {
             alert('Some kind of error from server');
-            deleteButton.current.innerHTML = 'Delete';
         }
 
     }

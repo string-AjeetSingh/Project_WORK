@@ -23,19 +23,11 @@ function UpdateProfile({ }) {
     useEffect(() => {
         if (!isLoading) {
 
-            if (!isAuthenticated) {
-                loadingScreen.current.off();
+            loadingScreen.current.off();
+            setTimeout(() => {
+                setboolscreen(null);
+            }, 5000)
 
-                setTimeout(() => {
-                    setboolscreen(null);
-                }, 5000)
-            }
-            else {
-                loadingScreen.current.off();
-                setTimeout(() => {
-                    setboolscreen(null);
-                }, 5000)
-            }
         }
     }, [isAuthenticated, isLoading])
 

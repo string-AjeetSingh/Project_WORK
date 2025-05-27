@@ -13,7 +13,7 @@ function JobDetail({ }) {
     const { no } = useParams()
     //console.log('the id is : ', no);
     const [dataForAboutJob, setdataForAboutJob] = useState(null);
-    //console.log('the data is  : ', dataForAboutJob);
+    //console.log('the data is  : ', dataForAboutJob); 
     const [boolScreen, setboolscreen] = useState(true);
     const { isAuthenicated, user, isLoading, nowLogout } = useControlLogin();
 
