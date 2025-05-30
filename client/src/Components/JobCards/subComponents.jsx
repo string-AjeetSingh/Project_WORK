@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useContext } from 'react';
+import { useEffect, useRef, useState, useContext, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { myContext } from './myContext';
@@ -69,6 +69,8 @@ function ContainerNav({ data, common, setCommon, setContainer, children, isDefau
     );
 }
 
+
+
 function Card({ companyName, imgSrc, jobHeading,
     timeAgo, prev, index, location, tags,
     dataToSetOnState, setState, isDefault, __note_this_component_use_context_and_i_am_a_message__ }) {
@@ -76,11 +78,20 @@ function Card({ companyName, imgSrc, jobHeading,
     const { theClick } = useContext(myContext);
     // console.log('from Card : the theClick : ', theClick)
     const aref = useRef(null);
-    const [lstate, setlstate] = useState('border-green-900');
+    const [lstate, setlstate] = useState(null);
+    const [hoverClass, sethoverClass] = useState()
     const navigate = useNavigate();
 
+    const cssClass = {
+        card: {
+            sizeIncrease: 'incSizeCard',
+            opacityDecrease: 'decOpacity',
+            backgroundColorRemove: 'removeBackground'
+        }
+    }
+
     function off() {
-        setlstate('border-green-900');
+        setlstate(null);
     }
 
     function handleClick() {
@@ -92,7 +103,7 @@ function Card({ companyName, imgSrc, jobHeading,
         }
 
         //console.log('from card : ', dataToSetOnState.no);
-        setlstate('border-slate-400');
+        setlstate(cssClass.card.backgroundColorRemove);
         setState(dataToSetOnState);
         //console.log('from cards the state function ; ', setState);
         // console.log('the data to set on state : ', dataToSetOnState);
@@ -101,6 +112,81 @@ function Card({ companyName, imgSrc, jobHeading,
         }
         prev.current = { index: index, off: off }
     }
+
+    const hoverEffect = {
+        mouseEnter: useCallback(() => {
+            sethoverClass(cssClass.card.sizeIncrease);
+        }, []),
+        mouseLeave: useCallback(() => {
+            sethoverClass(null)
+        }, [])
+    }
+
+
+    const Ago = useCallback(({ children }) => {
+        return (
+
+            <div className="flex flex-row text-[0.8rem] 
+                            justify-between w-full">
+                <div>{children ? children + ' ago' : null}</div>
+            </div>
+
+        );
+    }, [])
+
+    const Company = useCallback(({ companyName, src }) => {
+        return (
+
+            <div className='flex flex-row flex-wrap m-1
+                            flex-start w-full items-center'>
+                <img className='m-[2px] size-10 rounded-full' src={src} alt='company image'></img>
+                <div className=' font-bold  text-2xl
+                            ml-2'>{companyName}</div>
+
+            </div>
+
+        );
+    }, [])
+
+
+    const TheJob = useCallback(({ location, jobHeading }) => {
+        return (
+            <>
+                <div style={{
+                    lineHeight: '1'
+                }} className='text-[1rem]  mt-1 mb-3 '>{jobHeading}</div>
+                <div className='text-[0.8rem] relative bottom-1 
+         
+         '>{location ? location : "DumyBad, India"}</div>
+
+            </>
+        );
+    }, [])
+
+    const Tags = useCallback(({ tags, Worktag }) => {
+        return (
+
+            <div className='flex flex-col flex-wrap 
+                    h-fit '>
+
+                {tags.length > 0 ?
+                    tags.map((item) => {
+                        let out = null;
+                        Object.keys(filterColors).forEach((key) => {
+                            if (key === item) {
+
+                                out = <Worktag name={item} color={filterColors[key].color}
+                                    fontColor={filterColors[key].fontColor} />
+                            }
+                        })
+                        return out;
+                    })
+                    : null}
+
+            </div>
+
+        );
+    }, [])
 
     useEffect(() => {
 
@@ -113,116 +199,75 @@ function Card({ companyName, imgSrc, jobHeading,
 
     }, [theClick.current])
 
+    useEffect(() => {
+        if (aref.current) {
+            aref.current.addEventListener('mouseenter', hoverEffect.mouseEnter);
+            aref.current.addEventListener('mouseleave', hoverEffect.mouseLeave);
+        }
+        return (() => {
+            if (aref.current) {
+                aref.current.removeEventListener('mouseenter', hoverEffect.mouseEnter);
+                aref.current.removeEventListener('mouseleave', hoverEffect.mouseLeave);
+            }
+        })
+    }, [])
+
     return (
         <>
             {theClick.current === 'link' ?
                 <Link to={'/jobDetail/' + dataToSetOnState.no}>
+
                     <div style={{
-                        backgroundColor: '#316602'
+                        backgroundColor: 'rgba(4, 77, 28, 1)'
                     }}
                         ref={aref} onClick={handleClick}
-                        className={` flex flex-col m-2 p-2 
-             items-start border 
-             ${lstate} rounded-lg  text-green-200
-             hover:bg-green-900 active:bg-green-800`}>
+                        className={`transitionsForCard  flex flex-row justify-between m-2 p-2
+                        rounded-lg `}>
 
-                        <div className="flex flex-row text-[0.8rem] 
-         justify-between w-full">
-                            <div>{timeAgo} Ago</div> <div className='p-1
-              text-slate-500 text-[0.8rem] bg-blue-950'></div>
-                        </div>
+                        <div className={` flex flex-col  
+             items-start 
+               text-green-200
+            `}>
+                            <Ago>
+                                {timeAgo}
+                            </Ago>
 
-                        <div className='flex flex-row flex-wrap
-         flex-start w-full items-center'>
+                            <Company companyName={companyName} src={imgSrc} />
 
-                            <img className='m-1 size-8 rounded-full'
-                                src={imgSrc ? imgSrc : null} alt='company image'></img>
-                            <div className='text-[1.2rem] text-green-600
-             font-serif ml-2
-             '>{companyName}</div>
-                        </div>
-
-                        <div className='text-[1rem] mt-1 '>{jobHeading}</div>
-                        <div className='text-[0.8rem] relative bottom-1 
-         
-         '>{location ? location : "DumyBad, India"}</div>
-
-
-
-                        <div className='flex flex-row flex-wrap 
-                    h-fit items-center'>
-                            <div className='p-1 m-1 mr-3 text-green-300 
-         font-serif  text-[0.8rem]
-         bg-green-900 rounded-r-2xl' ></div>
-                            {tags.length > 0 ?
-                                tags.map((item) => {
-                                    let out = null;
-                                    Object.keys(filterColors).forEach((key) => {
-                                        if (key === item) {
-
-                                            out = <Worktag name={item} color={filterColors[key].color}
-                                                fontColor={filterColors[key].fontColor} />
-                                        }
-                                    })
-                                    return out;
-                                })
-                                : null}
+                            <TheJob location={location} jobHeading={jobHeading} />
 
                         </div>
+
+                        <Tags tags={tags} Worktag={Worktag} />
 
                     </div>
                 </Link>
+
                 :
-                <div
-                    style={{
-                        backgroundColor: '#204201'
-                    }}
+                <div style={{
+
+                }}
                     ref={aref} onClick={handleClick}
-                    className={` flex flex-col m-2 p-2 
-             items-start border 
-             ${lstate} rounded-lg  text-green-200
-             hover:bg-green-900 active:bg-green-800`}>
+                    className={` transitionsForCard flex flex-row justify-between m-2 p-2
+                     ${lstate} ${hoverClass} rounded-lg  `}>
 
-                    <div className="flex flex-row text-[0.8rem] 
-         justify-between w-full">
-                        <div>{timeAgo} Ago</div> <div className='p-1
-              text-slate-500 text-[0.8rem] bg-blue-950'></div>
+                    <div
+                        style={{
+                            color: '#d5e7f4'
+                        }} className={` flex flex-col  
+             items-start  
+             
+            `}>
+                        <Ago>
+                            {timeAgo}
+                        </Ago>
+
+                        <Company companyName={companyName} src={imgSrc} />
+
+                        <TheJob location={location} jobHeading={jobHeading} />
                     </div>
 
-                    <div className='flex flex-row flex-wrap
-         flex-start w-full items-center'>
-                        <img className='m-1 size-8 rounded-full' src={imgSrc} alt='company image'></img>
-                        <div className='text-[1.2rem] text-green-600
-             font-serif ml-2
-             '>{companyName}</div>
-                    </div>
-
-                    <div className='text-[1rem] mt-1 '>{jobHeading}</div>
-                    <div className='text-[0.8rem] relative bottom-1 
-         
-         '>{location ? location : "DumyBad, India"}</div>
-
-
-                    <div className='flex flex-row flex-wrap 
-                    h-fit items-center'>
-                        <div className='p-1 m-1 mr-3 text-green-300 
-         font-serif  text-[0.8rem]
-         bg-green-900 rounded-r-2xl' ></div>
-                        {tags.length > 0 ?
-                            tags.map((item) => {
-                                let out = null;
-                                Object.keys(filterColors).forEach((key) => {
-                                    if (key === item) {
-
-                                        out = <Worktag name={item} color={filterColors[key].color}
-                                            fontColor={filterColors[key].fontColor} />
-                                    }
-                                })
-                                return out;
-                            })
-                            : null}
-
-                    </div>
+                    <Tags tags={tags} Worktag={Worktag} />
 
                 </div>
             }
@@ -353,7 +398,7 @@ function Filter({ data, setData, originalData }) {
         <>
             <div className='flex flex-col items-center relative '>
 
-                <div className='flex flex-row items-center p-1 pt-2 pb-2 
+                <div className='flex flex-row items-center text-[0.8rem] font-bold p-1 pt-2 pb-2 
              w-full  overflow-x-auto bg-green-900 '>
                     <FilterButtons index={1} name={'Remote'} color={filterColors.Remote.color}
                         fontColor={filterColors.Remote.fontColor} panelControl={panel}
@@ -423,7 +468,7 @@ function FilterButtons({ name, color, fontColor, index,
     const checkbox = useRef(null);
     const toggle = useRef(false);
     const style = {
-        button: "flex flex-row items-center p-1 mr-1 shrink-0 border rounded-lg " + color,
+        button: "flex flex-row items-center p-1 mr-1 shrink-0 border rounded-md " + color,
         lable: `ml-1 ${fontColor ? fontColor : ""}`
     }
 
@@ -490,7 +535,7 @@ function FilterButtons({ name, color, fontColor, index,
 function Worktag({ name, color, fontColor }) {
     return (
         <>
-            <div className={`flex flex-row items-center p-1 mr-1 shrink-0
+            <div className={`flex flex-row items-center font-bold justify-center p-1 m-1    mr-1 shrink-0
             border rounded-md  ${color} `}>
                 <lable className={` text-[0.8rem] ${fontColor}`}>{name}</lable>
             </div>

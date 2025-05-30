@@ -4,6 +4,7 @@ import { Container, ContainerNav, Card, Filter } from './subComponents';
 import { useContext, createContext } from 'react';
 import { myContext as jobContext } from "./myContext"
 import { myContext } from '../HomeWithLogin/myContext';
+import './jobCards.css';
 
 function JobCards({ children, link, __note_this_component_use_context_and_i_am_a_message__ }) {
 

@@ -98,7 +98,7 @@ function AboutJob({ children, isAuthenicated, email, useInJobDetailjsx, useInPro
     if (dataForAboutJob) {
         return (<>
             <div style={{
-                backgroundColor: '#204201'
+
             }}
                 className="p-2 text-green-200 w-full 
             overflow-y-auto h-fit  min-w-[350px] ">

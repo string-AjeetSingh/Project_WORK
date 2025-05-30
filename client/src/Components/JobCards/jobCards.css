@@ -1,0 +1,17 @@
+.transitionsForCard {
+    transition: transform 100ms ease-out, background-color 500ms ease-out;
+    background-color: rgba(4, 77, 28, 1);
+    ;
+}
+
+.incSizeCard {
+    transform: scale(0.9);
+}
+
+.decOpacity {
+    opacity: 0;
+}
+
+.removeBackground {
+    background-color: rgba(4, 77, 28, 0.1);
+}
