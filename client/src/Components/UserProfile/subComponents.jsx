@@ -88,6 +88,52 @@ function ProfileSection2({ children, userName, email, title }) {
     </>);
 }
 
+function NewProfileSection({ status, title, name }) {
+    return (
+        <div className=" flex flex-row justify-center mt-1  ">
+
+            <table style={{
+                minWidth: '342px',
+                backgroundColor: 'rgba(4, 77, 28, 1)',
+                padding: '5px'
+            }}
+                className="  w-[80%] rounded-xl ">
+                <tr className="border" >
+                    <TableLable>Name</TableLable> <TableValue>{name}</TableValue>
+                </tr>
+                <tr >
+                    <TableLable>Is</TableLable> <TableValue>{title}</TableValue>
+                </tr>
+                <tr>
+                    <TableLable>Status</TableLable> <TableValue>{status}</TableValue>
+                </tr>
+            </table>
+        </div>
+
+    );
+}
+
+function TableLable({ children }) {
+    return (
+        <td width="30%" style={{
+            color: '#d5e7f4'
+        }} className=" text-center text-2xl font-bold ">{children}</td>
+    );
+}
+function TableValue({ children }) {
+    return (
+        <td className="p-2 font-bold ">
+            <div style={{
+                backgroundColor: '#d5e7f4',
+                color: 'rgba(4, 77, 28, 1)'
+
+            }}
+                className="p-1 pl-2  rounded-xl "
+            >{children}</div></td>
+    );
+}
+
+
 function Status({ children }) {
     const theInput = useRef(null);
 
@@ -326,5 +372,5 @@ function SocialMedia({ email, github, x }) {
 export {
     ProfileImageSection,
     ProfileSection2, Status, Discription,
-    Skills, SocialMedia, Education, Experiance
+    Skills, SocialMedia, Education, Experiance, NewProfileSection
 };

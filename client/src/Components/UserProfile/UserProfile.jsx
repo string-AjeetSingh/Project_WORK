@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import {
     ProfileImageSection,
     ProfileSection2, Status, Education, Experiance
-    , Skills, Discription, SocialMedia
+    , Skills, Discription, SocialMedia,
+    NewProfileSection
 } from './subComponents';
 import {
     Button, GetInput,
@@ -411,8 +412,10 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
                     </div>
                     :
                     <div className='p-2 flex flex-col items-center  ' >
-                        <div className='p-2 flex flex-col w-full 
-                        border border-green-800 rounded-2xl  
+                        <div style={{
+                            backgroundColor: 'rgba(4, 77, 28, 0.3)'
+                        }} className='p-2 flex flex-col w-full 
+                         rounded-2xl 
                         max-w-[900px] min-w-[360px]'>
 
                             <ProfileImageSection screen={data.userData.color} imgSrc={data.userData.img}></ProfileImageSection>
@@ -449,6 +452,10 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
                                 </div>
                             </button>
 
+                            <NewProfileSection name={data?.userData?.name ? data.userData.name : 'undefined'}
+                                title={data?.userData?.title ? data?.userData?.title : 'undefined'}
+                                status={data?.userData?.status ? data?.userData?.status : 'undefined'}
+                            />
                             <ProfileSection2 userName={data.userData.name}
                                 title={data.userData.title}
                                 email={data.userSocialData.email} />
