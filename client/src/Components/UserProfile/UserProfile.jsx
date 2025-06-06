@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import {
-    ProfileImageSection,
-    ProfileSection2, Status, Education, Experiance
+    ProfileImageSection, NewDescription,
+    ProfileSection2, Education, Experiance
     , Skills, Discription, SocialMedia,
-    NewProfileSection
+    NewProfileSection, NewSocialMedia
 } from './subComponents';
 import {
     Button, GetInput,
@@ -15,6 +15,7 @@ import { useResizeValue } from '../../MyLib/MyHook/customHook';
 import { MyContext } from './myContext';
 import { useNavigate } from 'react-router-dom';
 import { flushSync } from 'react-dom';
+import './userProfile.css';
 
 
 const toServer = new requestServer(process.env.REACT_APP_SERVER_URL + "/xtServer/api/updateUserProfile",
@@ -413,8 +414,9 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
                     :
                     <div className='p-2 flex flex-col items-center  ' >
                         <div style={{
-                            backgroundColor: 'rgba(4, 77, 28, 0.3)'
-                        }} className='p-2 flex flex-col w-full 
+                            backgroundColor: 'var(--greenLight-trans)',
+                            paddingBottom: '50px'
+                        }} className='p-2  flex flex-col w-full 
                          rounded-2xl 
                         max-w-[900px] min-w-[360px]'>
 
@@ -456,21 +458,19 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
                                 title={data?.userData?.title ? data?.userData?.title : 'undefined'}
                                 status={data?.userData?.status ? data?.userData?.status : 'undefined'}
                             />
-                            <ProfileSection2 userName={data.userData.name}
-                                title={data.userData.title}
-                                email={data.userSocialData.email} />
                             <br></br>
                             <div className='flex flex-col'>
-
-                                <Status>{data.userData.status}</Status>
+                                <NewDescription>{data.userData.description}</NewDescription>
                                 <Discription>{data.userData.description}</Discription>
                                 <Skills>{data.userData.skills}</Skills>
                                 <Education>{data.userData.education} </Education>
                                 <Experiance>{data.userData.experiance}</Experiance>
                             </div>
-                            <hr className='border-green-800'></hr>
-                            <SocialMedia email={data.userSocialData.email}
+
+
+                            <NewSocialMedia email={data.userSocialData.email}
                                 github={data.userSocialData.github} x={data.userSocialData.x} />
+
                         </div>
                     </div>
 

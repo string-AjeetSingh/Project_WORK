@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 
+
 function ProfileImageSection({ screen, imgSrc }) {
 
     const [width, setwidth] = useState(window.innerWidth);
@@ -88,84 +89,283 @@ function ProfileSection2({ children, userName, email, title }) {
     </>);
 }
 
-function NewProfileSection({ status, title, name }) {
+function Wrapper({ children, style }) {
     return (
-        <div className=" flex flex-row justify-center mt-1  ">
+        <>
+            <div style={style} className="flex flex-col items-center justify-center mt-1">
+                {children}
+            </div>
+        </>
+    );
+}
+
+function NewProfileSection({ status = 'undefined', title = 'undefined', name = 'undefined' }) {
+    return (
+        <div className=" flex flex-row justify-center mt-1   ">
 
             <table style={{
                 minWidth: '342px',
                 backgroundColor: 'rgba(4, 77, 28, 1)',
-                padding: '5px'
+                padding: '10px'
             }}
                 className="  w-[80%] rounded-xl ">
-                <tr className="border" >
-                    <TableLable>Name</TableLable> <TableValue>{name}</TableValue>
-                </tr>
-                <tr >
-                    <TableLable>Is</TableLable> <TableValue>{title}</TableValue>
-                </tr>
-                <tr>
-                    <TableLable>Status</TableLable> <TableValue>{status}</TableValue>
-                </tr>
+                <tbody>
+
+                    <tr className="" >
+                        <TableLable color={'#d5e7f4'} paddingTop={20}>Name</TableLable><TableValue color={'rgba(4, 77, 28, 1)'} backgroundColor={'#d5e7f4'} paddingTop={20}>{name}</TableValue>
+                    </tr>
+                    <tr >
+                        <TableLable color={'#d5e7f4'}>Is</TableLable><TableValue color={'rgba(4, 77, 28, 1)'} backgroundColor={'#d5e7f4'}>{title}</TableValue>
+                    </tr>
+                    <tr>
+                        <TableLable color={'#d5e7f4'} paddingBottom={20}>Status</TableLable><TableValue color={'rgba(4, 77, 28, 1)'} backgroundColor={'#d5e7f4'} paddingBottom={20}>{status}</TableValue>
+                    </tr>
+                </tbody>
             </table>
         </div>
 
     );
 }
 
-function TableLable({ children }) {
+function NewSocialMedia({ email = 'undefined', github = 'undefined', x = 'undefined' }) {
     return (
-        <td width="30%" style={{
-            color: '#d5e7f4'
-        }} className=" text-center text-2xl font-bold ">{children}</td>
+        <>
+            <div className=" flex flex-col items-center justify-center text-center mt-1   ">
+
+                <table style={{
+                    minWidth: '342px',
+                    backgroundColor: 'var(--blueVeryLight)',
+                    padding: '10px'
+                }}
+                    className="w-[80%] rounded-xl ">
+                    <thead>
+
+                        <tr >
+                            <th style={{
+                                color: 'var(--greenLight)',
+                                padding: '5px'
+                            }}
+                                className="text-2xl  " colSpan={2}>Social Media</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr >
+                            <TableLable color={'rgba(4, 77, 28, 1)'} paddingTop={10}>Email</TableLable><TableValue color={'#8aceff'} backgroundColor={'rgba(4, 77, 28, 1)'} paddingTop={10}>{email}</TableValue>
+                        </tr>
+                        <tr >
+                            <TableLable color={'rgba(4, 77, 28, 1)'}>X</TableLable><TableValue color={'#8aceff'} backgroundColor={'rgba(4, 77, 28, 1)'}>{x}</TableValue>
+                        </tr>
+                        <tr>
+                            <TableLable color={'rgba(4, 77, 28, 1)'} paddingBottom={20}>Github</TableLable><TableValue color={'#8aceff'} backgroundColor={'rgba(4, 77, 28, 1)'} paddingBottom={20}>{github}</TableValue>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </>
     );
 }
-function TableValue({ children }) {
+
+function TableLable({ children, paddingTop, paddingBottom, color }) {
     return (
-        <td className="p-2 font-bold ">
+        <td width="30%" style={{
+            color: color ? color : null,
+            paddingTop: paddingTop ? paddingTop + 'px' : null,
+            paddingBottom: paddingBottom ? paddingBottom + 'px' : null,
+            fontSize: '1.3rem'
+        }} className=" text-center font-bold ">{children}</td>
+    );
+}
+function TableValue({ children, paddingTop, paddingBottom, backgroundColor, color }) {
+    return (
+        <td style={{
+            paddingTop: paddingTop ? paddingTop + 'px' : null,
+            paddingBottom: paddingBottom ? paddingBottom + 'px' : null,
+        }}
+            className="p-2 font-bold ">
             <div style={{
-                backgroundColor: '#d5e7f4',
-                color: 'rgba(4, 77, 28, 1)'
+                backgroundColor: backgroundColor ? backgroundColor : null,
+                color: color ? color : null,
 
             }}
-                className="p-1 pl-2  rounded-xl "
+                className="p-1 pl-5 pr-5 rounded-2xl w-fit"
             >{children}</div></td>
     );
 }
 
+function Heading({ children, color, colSpan }) {
+    return (
+        <>
+            <div style={{
+                color: color ? color : null,
+                padding: '5px'
+            }}
+                colSpan={colSpan ? colSpan : null}
+                className="text-2xl self-center font-bold  " >{children}</div>
+        </>
+    );
 
-function Status({ children }) {
-    const theInput = useRef(null);
+}
 
+function TableHeading({ children, color, colSpan }) {
+    return (
+        <>
+            <th style={{
+                color: color ? color : null,
+                padding: '5px'
+            }}
+                colSpan={colSpan ? colSpan : null}
+                className="text-2xl  " >{children}</th>
+        </>
+    );
+}
+
+function BulletAndCheck({ isCheck, no }) {
+
+    return (
+
+        <div
+            className="flex flex-col items-center ">
+
+            <div style={{
+                color: 'var(--greenLight)',
+                backgroundColor: 'var(--blueVeryLight)',
+
+
+            }} className=" rounded-md size-10 flex flex-col
+            items-center justify-center font-bold"
+            >
+
+                {isCheck ?
+
+                    <input
+
+                        className="size-7 " type="checkbox"></input>
+
+                    : <span className="text-[1.1rem]">{no}</span>
+                }
+            </div>
+        </div>
+
+    );
+}
+
+function TContext({ children }) {
+    return (
+        <>
+            <div className="rounded-md  ml-5">
+                {children}
+            </div>
+        </>
+    );
+}
+
+function AddAndDelete({ isAdd, classId }) {
+    return (
+        <>
+            <button className={` ${classId} size-10 rounded-full m-2 flex flex-row justify-center items-center`}>
+                <img className="size-8" src={isAdd ? "/stock/icon/plus2.png" : "/stock/icon/delete.png"}>
+                </img>
+            </button>
+        </>
+    );
+}
+
+
+function NewDescription({ children }) {
+    const padding = {
+        top: 20 + 'px',
+        bottom: 30 + 'px'
+    }
+    const cssClass = {
+        onAddAndDelete: 'onAddAndDelete',
+        transitions: 'transitionAfterEdit',
+        default: 'defaultAddDeleteBar',
+    }
+
+    const [boolEdit, setBoolEdit] = useState(false);
+    const [transitions, setTransitions] = useState(null);
+
+    function handleEdit() {
+        if (boolEdit) {
+            setBoolEdit(false);
+
+        } else {
+            setBoolEdit(true);
+        }
+    }
 
     useEffect(() => {
-
-        if (theInput) {
-            {
-                children ? theInput.current.value = children :
-                    theInput.current.value = 'no value provided'
-            }
-
-        }
+        let theTimeOut = setTimeout(() => { if (!transitions) setTransitions(cssClass.transitions) }, 10);
+        return (() => {
+            clearTimeout(theTimeOut)
+        })
     }, [])
 
+    return (
+        <>
+            <Wrapper style={{
+                border: '1px solid black'
+            }}>
 
-    return (<>
-        <CommonWrapper>
-            <div className="font-serif text-[1.4rem]
-       self-start  text-green-300 font-bold
-       relative bottom-1">
-                Status :
-            </div>
-            <input ref={theInput}
-                className=" text-[1.2rem] pl-3
-            w-[50%] min-w-72  relative bottom-2
-            border-blue-700 bg-transparent">
-            </input>
-        </CommonWrapper>
+                <div style={{
+                    minWidth: '342px',
+                    backgroundColor: 'rgba(4, 77, 28, 1)',
+                }} className="flex flex-col p-2 w-[80%]  rounded-md ">
 
-    </>);
+                    <div className="flex flex-row justify-center  relative ">
+
+                        <Heading colSpan={2} color='#d5e7f4'>Description</Heading>
+                        <button onClick={handleEdit} className="self-end p-1 mb-1 size-10 border rounded-md absolute top-0 right-0">
+                        </button>
+                    </div>
+
+                    <table style={{
+                        color: 'var(--blueVeryLight)'
+                    }} className=" self-center  m-2">
+                        <tbody>
+
+                            <tr>
+                                <td style={{
+                                    paddingBottom: padding.bottom
+                                }} width={'15%'} className="p-1 formateTd ">
+                                    <BulletAndCheck no={1} isCheck />
+                                </td>
+                                <td className="p-1 formateTd">
+                                    <TContext>{'I am ajeet Singh and i am jjjjjjj punjab, Hoshiarpur.'}</TContext>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width={'15%'} className="formateTd p-1  ">
+                                    <BulletAndCheck no={1} />
+                                </td>
+                                <td className="p-1 formateTd">
+                                    <TContext>{'I am ajeet Singh and i am from punjab, Hoshiarpur. kldjfaljaj lkfalja ldflasjf lafjslafj sadlkfjsal j aj j asdjf la'}</TContext>
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                    {boolEdit ?
+                        <div
+
+                            className={`${transitions}  mt-2 mb-2 flex flex-row justify-center border`}>
+                            <AddAndDelete isAdd classId={'theAdd'} />
+                            <AddAndDelete classId={'theDelete'} />
+                        </div>
+                        :
+                        null
+                    }
+
+                </div>
+            </Wrapper>
+        </>
+    );
 }
+
+
 
 function Discription({ children }) {
     const theInput = useRef(null);
@@ -189,7 +389,7 @@ function Discription({ children }) {
             <div className="font-serif text-[1.4rem]
          text-green-300 font-bold mb-1
        relative ">
-                Discription :
+                Description :
             </div>
             <textarea ref={theInput} readOnly
                 className="rounded-md  relative bottom-2 
@@ -371,6 +571,6 @@ function SocialMedia({ email, github, x }) {
 
 export {
     ProfileImageSection,
-    ProfileSection2, Status, Discription,
-    Skills, SocialMedia, Education, Experiance, NewProfileSection
+    ProfileSection2, Discription, NewDescription,
+    Skills, SocialMedia, NewSocialMedia, Education, Experiance, NewProfileSection
 };

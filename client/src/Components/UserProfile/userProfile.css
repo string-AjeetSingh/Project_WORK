@@ -1,0 +1,53 @@
+.transitionAfterEdit {
+    transform: translateX(-20);
+    transition: transform 500ms ease-in,
+
+}
+
+.defaultAddDeleteBar {
+    transform: translateX(-20px);
+}
+
+.onAddAndDelete {
+    transform: translateX(0px);
+}
+
+.theAdd {
+    border-radius: 50%;
+    background-color: var(--blueVeryLight);
+    transition: transform 100ms ease-out,
+        background-color 200ms ease-out,
+        border-radius 150ms ease-in-out;
+    ;
+}
+
+.theDelete {
+    border-radius: 50%;
+    background-color: var(--blueVeryLight);
+    transition: transform 100ms ease-in-out,
+        background-color 200ms ease-out,
+        border-radius 150ms ease-in-out;
+    ;
+
+}
+
+.theAdd:hover {
+    border-radius: 7%;
+    background-color: rgb(82, 172, 218, 1);
+}
+
+.theAdd:active {
+    background-color: aqua;
+}
+
+.theDelete:hover {
+    border-radius: 7%;
+    background-color: rgb(82, 172, 218, 1);
+
+
+}
+
+.formateTd {
+    vertical-align: top;
+    font-size: large;
+}
