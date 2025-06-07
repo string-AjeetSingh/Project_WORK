@@ -3,7 +3,8 @@ import {
     ProfileImageSection, NewDescription,
     ProfileSection2, Education, Experiance
     , Skills, Discription, SocialMedia,
-    NewProfileSection, NewSocialMedia
+    NewProfileSection, NewSocialMedia,
+    BlurScreen
 } from './subComponents';
 import {
     Button, GetInput,
@@ -32,6 +33,7 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
     const [sectionReport, setsectionReport] = useState([]);
     const [getInputWrapperClassName, setGIWC] = useState("");
     const [getInputSpace, setGIS] = useState('');
+    const [BlurChild, setBlurChild] = useState(null);
     const windowWidth = useResizeValue(window.innerWidth);
     const navigate = useNavigate();
 
@@ -44,6 +46,13 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
             })
             return newOne;
         })
+    }
+
+    function closeBlurChild() {
+        if (BlurChild)
+            setBlurChild(null)
+        else
+            console.log('already off blur child');
     }
 
     function returnReportFormat(index, param = {
@@ -412,13 +421,17 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
                         </div>
                     </div>
                     :
-                    <div className='p-2 flex flex-col items-center  ' >
+                    <div className=' p-2 flex flex-col items-center  ' >
                         <div style={{
                             backgroundColor: 'var(--greenLight-trans)',
                             paddingBottom: '50px'
-                        }} className='p-2  flex flex-col w-full 
-                         rounded-2xl 
+                        }} className='p-2 relative  flex flex-col w-full 
+                        rounded-2xl 
                         max-w-[900px] min-w-[360px]'>
+
+                            {BlurChild ?
+                                <BlurScreen>{BlurChild}</BlurScreen>
+                                : null}
 
                             <ProfileImageSection screen={data.userData.color} imgSrc={data.userData.img}></ProfileImageSection>
                             <br></br>
@@ -460,7 +473,7 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
                             />
                             <br></br>
                             <div className='flex flex-col'>
-                                <NewDescription>{data.userData.description}</NewDescription>
+                                <NewDescription closeBlurScreen={closeBlurChild} setBlurScreen={setBlurChild}>{data.userData.description}</NewDescription>
                                 <Discription>{data.userData.description}</Discription>
                                 <Skills>{data.userData.skills}</Skills>
                                 <Education>{data.userData.education} </Education>

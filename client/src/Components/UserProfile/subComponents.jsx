@@ -260,10 +260,14 @@ function TContext({ children }) {
     );
 }
 
-function AddAndDelete({ isAdd, classId }) {
+function AddAndDelete({ isAdd, classId, onClick }) {
     return (
         <>
-            <button className={` ${classId} size-10 rounded-full m-2 flex flex-row justify-center items-center`}>
+            <button onClick={(e) => {
+                e.preventDefault();
+                if (onClick)
+                    onClick();
+            }} className={` ${classId} size-10 rounded-full m-2 flex flex-row justify-center items-center`}>
                 <img className="size-8" src={isAdd ? "/stock/icon/plus2.png" : "/stock/icon/delete.png"}>
                 </img>
             </button>
@@ -271,8 +275,47 @@ function AddAndDelete({ isAdd, classId }) {
     );
 }
 
+function BlurScreen({ children }) {
+    return (
+        <>
+            <div style={{
+                backgroundColor: "var(--greenLight-blur)",
+                zIndex: 5,
+                top: 0,
+                left: 0,
+                width: '100vh',
+                height: '100dvh',
+            }} className="fixed h-full w-full flex flex-row justify-center items-center">
+                {children}
+            </div>
+        </>
+    );
+}
 
-function NewDescription({ children }) {
+function AddContent({ }) {
+
+    return (
+        <>
+            <div onClick={(e) => {
+                e.stopPropagation();
+            }} style={{
+                width: '70%',
+                maxWidth: "500px",
+                minWidth: "340px",
+                backgroundColor: "var(--blueVeryLight)"
+            }} className="p-2 rounded-xl">
+                <input type="text">
+                </input>
+
+                <button>
+                    Submit
+                </button>
+            </div>
+        </>
+    );
+}
+
+function NewDescription({ children, setBlurScreen, closeBlurScreen }) {
     const padding = {
         top: 20 + 'px',
         bottom: 30 + 'px'
@@ -281,10 +324,11 @@ function NewDescription({ children }) {
         onAddAndDelete: 'onAddAndDelete',
         transitions: 'transitionAfterEdit',
         default: 'defaultAddDeleteBar',
+        editButt: 'editButton'
     }
 
     const [boolEdit, setBoolEdit] = useState(false);
-    const [transitions, setTransitions] = useState(null);
+    const [Transition, setTransition] = useState({ opacity: 0, transform: 'translateX(-20px)' })
 
     function handleEdit() {
         if (boolEdit) {
@@ -295,18 +339,42 @@ function NewDescription({ children }) {
         }
     }
 
+    function handleClick() {
+        setBlurScreen(<AddContent />);
+    }
+
     useEffect(() => {
-        let theTimeOut = setTimeout(() => { if (!transitions) setTransitions(cssClass.transitions) }, 10);
+        if (!boolEdit) {
+            setTransition({ opacity: 0, transform: "translateX(-20px)" })
+            return;
+        }
+
+        let theTimeOut = setTimeout(() => {
+            setTransition({ opacity: 1, transform: 'translateX(0px)' });
+        }, 50);
         return (() => {
             clearTimeout(theTimeOut)
         })
-    }, [])
+    }, [boolEdit])
+
+    useEffect(() => {
+        if (!closeBlurScreen)
+            return;
+
+        window.addEventListener('mousedown', closeBlurScreen);
+
+        return (() => {
+            if (!closeBlurScreen)
+                return;
+            window.removeEventListener('mousedown', closeBlurScreen);
+        })
+    }, [closeBlurScreen])
+
+
 
     return (
         <>
-            <Wrapper style={{
-                border: '1px solid black'
-            }}>
+            <Wrapper >
 
                 <div style={{
                     minWidth: '342px',
@@ -316,7 +384,11 @@ function NewDescription({ children }) {
                     <div className="flex flex-row justify-center  relative ">
 
                         <Heading colSpan={2} color='#d5e7f4'>Description</Heading>
-                        <button onClick={handleEdit} className="self-end p-1 mb-1 size-10 border rounded-md absolute top-0 right-0">
+                        <button
+                            onClick={handleEdit}
+                            className={` ${cssClass.editButt} self-end p-1 mb-1 size-10 rounded-md absolute top-0 right-0`}>
+                            <img src={boolEdit ? "/stock/icon/cross.png" : "/stock/icon/edit.png"} className="w-full ">
+                            </img>
                         </button>
                     </div>
 
@@ -349,10 +421,13 @@ function NewDescription({ children }) {
                     </table>
 
                     {boolEdit ?
-                        <div
+                        <div style={{
+                            opacity: Transition.opacity,
+                            transform: Transition.transform
+                        }}
 
-                            className={`${transitions}  mt-2 mb-2 flex flex-row justify-center border`}>
-                            <AddAndDelete isAdd classId={'theAdd'} />
+                            className={`${cssClass.transitions}  mt-2 mb-2 flex flex-row justify-center `}>
+                            <AddAndDelete onClick={handleClick} isAdd classId={'theAdd'} />
                             <AddAndDelete classId={'theDelete'} />
                         </div>
                         :
@@ -571,6 +646,6 @@ function SocialMedia({ email, github, x }) {
 
 export {
     ProfileImageSection,
-    ProfileSection2, Discription, NewDescription,
+    ProfileSection2, Discription, NewDescription, BlurScreen,
     Skills, SocialMedia, NewSocialMedia, Education, Experiance, NewProfileSection
 };

@@ -2,6 +2,7 @@
   --blueVeryLight: #d5e7f4;
   --greenLight: rgba(4, 77, 28, 1);
   --greenLight-trans: rgba(4, 77, 28, 0.3);
+  --greenLight-blur: rgba(4, 77, 28, 0.6);
 }
 
 body {
