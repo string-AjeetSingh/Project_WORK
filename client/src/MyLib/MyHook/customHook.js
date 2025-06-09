@@ -8,7 +8,6 @@ function useResizeValue(params) {
 
     function handleResize() {
         setstate(window.innerWidth);
-
     }
 
     useEffect(() => {

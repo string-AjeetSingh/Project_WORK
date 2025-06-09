@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import { useResizeValue } from "../../MyLib/MyHook/customHook";
 
 
 function ProfileImageSection({ screen, imgSrc }) {
@@ -275,17 +276,35 @@ function AddAndDelete({ isAdd, classId, onClick }) {
     );
 }
 
-function BlurScreen({ children }) {
+function BlurScreen({ children, handleClick }) {
+    const screenWidth = useResizeValue(window.innerWidth)
+    const theRef = useRef(null);
+
+    useEffect(() => {
+        if (!theRef.current || !handleClick)
+            return;
+
+        theRef.current.addEventListener('mousedown', handleClick);
+
+        return (() => {
+            if (!theRef.current || !handleClick)
+                return;
+
+            theRef.current.removeEventListener('mousedown', handleClick);
+        })
+    }, [theRef])
+
     return (
         <>
-            <div style={{
-                backgroundColor: "var(--greenLight-blur)",
-                zIndex: 5,
-                top: 0,
-                left: 0,
-                width: '100vh',
-                height: '100dvh',
-            }} className="fixed h-full w-full flex flex-row justify-center items-center">
+            <div ref={theRef}
+                style={{
+                    backgroundColor: "var(--greenLight-blur)",
+                    zIndex: 5,
+                    top: 0,
+                    left: 0,
+                    width: screenWidth + 'px',
+                    height: '100dvh',
+                }} className="fixed flex flex-row justify-center items-center">
                 {children}
             </div>
         </>
@@ -293,21 +312,59 @@ function BlurScreen({ children }) {
 }
 
 function AddContent({ }) {
+    const theRef = useRef(null);
+
+    const cssClass = {
+        submit: 'submitEdit'
+    }
+
+    function stopPropagation(e) {
+        e.stopPropagation();
+    }
+
+    useEffect(() => {
+        if (!theRef.current)
+            return;
+
+        theRef.current.addEventListener('mousedown', stopPropagation);
+
+        return (() => {
+            if (!theRef.current)
+                return;
+
+            theRef.current.removeEventListener('mousedown', stopPropagation);
+
+        })
+
+    }, [theRef])
 
     return (
         <>
-            <div onClick={(e) => {
+            <div ref={theRef} onClick={(e) => {
                 e.stopPropagation();
             }} style={{
                 width: '70%',
                 maxWidth: "500px",
                 minWidth: "340px",
                 backgroundColor: "var(--blueVeryLight)"
-            }} className="p-2 rounded-xl">
-                <input type="text">
-                </input>
+            }} className="p-2 flex flex-col  rounded-xl border border-black">
 
-                <button>
+                <textarea
+                    placeholder="Write here..."
+                    style={{
+                        height: '120px',
+                        border: '2px solid',
+                        borderColor: 'var(--greenLight)',
+                        color: 'var(--greenLight)'
+                    }} className="rounded-md p-1" rows="4" cols="50">
+
+                </textarea>
+
+                <button
+                    style={{
+
+                    }}
+                    className={`${cssClass.submit} p-2 text-2xl mt-2 rounded-md  w-fit self-end `}>
                     Submit
                 </button>
             </div>
@@ -315,7 +372,7 @@ function AddContent({ }) {
     );
 }
 
-function NewDescription({ children, setBlurScreen, closeBlurScreen }) {
+function NewDescription({ children, setBlurScreen }) {
     const padding = {
         top: 20 + 'px',
         bottom: 30 + 'px'
@@ -356,21 +413,6 @@ function NewDescription({ children, setBlurScreen, closeBlurScreen }) {
             clearTimeout(theTimeOut)
         })
     }, [boolEdit])
-
-    useEffect(() => {
-        if (!closeBlurScreen)
-            return;
-
-        window.addEventListener('mousedown', closeBlurScreen);
-
-        return (() => {
-            if (!closeBlurScreen)
-                return;
-            window.removeEventListener('mousedown', closeBlurScreen);
-        })
-    }, [closeBlurScreen])
-
-
 
     return (
         <>

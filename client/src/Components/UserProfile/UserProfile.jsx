@@ -425,12 +425,12 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
                         <div style={{
                             backgroundColor: 'var(--greenLight-trans)',
                             paddingBottom: '50px'
-                        }} className='p-2 relative  flex flex-col w-full 
+                        }} className='p-2   flex flex-col w-full 
                         rounded-2xl 
                         max-w-[900px] min-w-[360px]'>
 
                             {BlurChild ?
-                                <BlurScreen>{BlurChild}</BlurScreen>
+                                <BlurScreen handleClick={closeBlurChild}>{BlurChild}</BlurScreen>
                                 : null}
 
                             <ProfileImageSection screen={data.userData.color} imgSrc={data.userData.img}></ProfileImageSection>

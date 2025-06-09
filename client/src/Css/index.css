@@ -3,6 +3,7 @@
   --greenLight: rgba(4, 77, 28, 1);
   --greenLight-trans: rgba(4, 77, 28, 0.3);
   --greenLight-blur: rgba(4, 77, 28, 0.6);
+  --greenShadow: rgb(2, 39, 14);
 }
 
 body {
