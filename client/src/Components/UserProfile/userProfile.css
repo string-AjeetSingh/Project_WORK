@@ -18,6 +18,15 @@
 
 }
 
+.btn-disabled {
+    border-radius: 20%;
+    opacity: 0.5;
+    background-color: rgb(182, 190, 182);
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+
 
 
 @media (hover: hover) and (pointer: fine) {

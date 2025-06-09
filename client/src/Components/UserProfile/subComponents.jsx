@@ -221,7 +221,45 @@ function TableHeading({ children, color, colSpan }) {
     );
 }
 
-function BulletAndCheck({ isCheck, no }) {
+function BulletAndCheck({ isCheck, no, index, setPick, pickRef }) {
+
+    function areAllFalsy(array) {
+        if (!Array.isArray(array)) return false;
+        return array.every(item => !item);
+    }
+
+
+    function handleChange(e) {
+        if (e.target.checked) {
+
+            setPick((prev) => {
+
+                if (!prev) {
+                    let newArray = [];
+                    newArray[index] = true
+                    return newArray;
+                }
+
+                prev[index] = true;
+                return [...prev];
+            })
+
+        } else
+            setPick((prev) => {
+
+                if (!prev) {
+                    return null;
+                }
+
+                prev[index] = false;
+
+                if (areAllFalsy(prev))
+                    return null;
+
+                return [...prev];
+            })
+
+    }
 
     return (
 
@@ -239,7 +277,7 @@ function BulletAndCheck({ isCheck, no }) {
 
                 {isCheck ?
 
-                    <input
+                    <input onChange={handleChange}
 
                         className="size-7 " type="checkbox"></input>
 
@@ -261,14 +299,15 @@ function TContext({ children }) {
     );
 }
 
-function AddAndDelete({ isAdd, classId, onClick }) {
+function AddAndDelete({ isAdd, classId, onClick, disabled }) {
+
     return (
         <>
-            <button onClick={(e) => {
+            <button disabled={disabled} onClick={(e) => {
                 e.preventDefault();
                 if (onClick)
                     onClick();
-            }} className={` ${classId} size-10 rounded-full m-2 flex flex-row justify-center items-center`}>
+            }} className={` ${disabled ? 'btn-disabled' : classId} size-10 rounded-full m-2 flex flex-row justify-center items-center`}>
                 <img className="size-8" src={isAdd ? "/stock/icon/plus2.png" : "/stock/icon/delete.png"}>
                 </img>
             </button>
@@ -311,8 +350,9 @@ function BlurScreen({ children, handleClick }) {
     );
 }
 
-function AddContent({ }) {
+function AddContent({ data, setData }) {
     const theRef = useRef(null);
+    const theInput = useRef('');
 
     const cssClass = {
         submit: 'submitEdit'
@@ -320,6 +360,31 @@ function AddContent({ }) {
 
     function stopPropagation(e) {
         e.stopPropagation();
+    }
+
+    function handleChange(e) {
+        theInput.current = e.target.value;
+        console.log("the input : ", theInput.current);
+    }
+
+    function handleClick() {
+        let value = theInput.current;
+
+        if (value && value.length > 0) {
+
+            console.log("✅ server request ");
+
+            if (data && setData) {
+
+                data.updated = [...data.provided, value];
+                setData(data.updated);
+                console.log('data provided :  ', data.updated);
+            }
+
+        } else {
+            alert('⚠️ Provide value to field before submit.')
+        }
+
     }
 
     useEffect(() => {
@@ -349,7 +414,7 @@ function AddContent({ }) {
                 backgroundColor: "var(--blueVeryLight)"
             }} className="p-2 flex flex-col  rounded-xl border border-black">
 
-                <textarea
+                <textarea onChange={handleChange}
                     placeholder="Write here..."
                     style={{
                         height: '120px',
@@ -360,7 +425,7 @@ function AddContent({ }) {
 
                 </textarea>
 
-                <button
+                <button onClick={handleClick}
                     style={{
 
                     }}
@@ -372,17 +437,35 @@ function AddContent({ }) {
     );
 }
 
-function NewDescription({ children, setBlurScreen }) {
+function NewDescription({ children, setBlurScreen, dataArray }) {
     const padding = {
         top: 20 + 'px',
         bottom: 30 + 'px'
     }
+    const [pick, setPick] = useState(null);   //For delete and checkbox
+    const [rows, setRows] = useState([]);
+    const [dataFromOut, setDataFromOut] = useState(dataArray);
+    const dataRef = useRef({
+        provided: null,
+        updated: null
+    })
+
     const cssClass = {
         onAddAndDelete: 'onAddAndDelete',
         transitions: 'transitionAfterEdit',
         default: 'defaultAddDeleteBar',
         editButt: 'editButton'
     }
+
+    const bulletsNo = useRef({  //No of bullets in the table.
+        no: 0,
+        reset: () => {
+            bulletsNo.current.no = 0;
+        },
+        newNo: () => {
+            return bulletsNo.current.no += 1;
+        }
+    })
 
     const [boolEdit, setBoolEdit] = useState(false);
     const [Transition, setTransition] = useState({ opacity: 0, transform: 'translateX(-20px)' })
@@ -397,12 +480,34 @@ function NewDescription({ children, setBlurScreen }) {
     }
 
     function handleClick() {
-        setBlurScreen(<AddContent />);
+        setBlurScreen(<AddContent data={dataRef.current} setData={setDataFromOut} />);
     }
+
+    function handleDelete() {
+
+        if (!Array.isArray(pick))
+            return;
+
+        let newDataArray = [...dataArray];
+
+        pick.forEach((item, index) => {
+            if (item) {
+                newDataArray[index] = false;
+            }
+
+        })
+
+        console.log('the newDataArray : ', newDataArray);
+
+        //Now server logic and response
+    }
+
 
     useEffect(() => {
         if (!boolEdit) {
             setTransition({ opacity: 0, transform: "translateX(-20px)" })
+
+            setPick(null);    //the delete must be disabled as not checked item.
             return;
         }
 
@@ -413,6 +518,56 @@ function NewDescription({ children, setBlurScreen }) {
             clearTimeout(theTimeOut)
         })
     }, [boolEdit])
+
+    useEffect(() => {
+        setDataFromOut(dataArray);
+
+    }, [dataArray])
+
+    useEffect(() => {
+        dataRef.current.provided = dataFromOut;
+    }, [dataFromOut])
+
+    useEffect(() => {
+        //Content to the table form the dataArray
+
+        if (Array.isArray(dataFromOut) && dataFromOut.length > 0) {
+            bulletsNo.current.reset();
+
+            const newRows = dataFromOut.map((item, index) => {
+                let newNo = bulletsNo.current.newNo();
+                return (<tr key={index}>
+                    <td
+                        width="15%"
+                        className="p-1 formateTd"
+                        style={{ paddingBottom: padding.bottom }}
+                    >
+                        <BulletAndCheck
+                            setPick={setPick}
+                            no={newNo}
+                            index={index}
+                            isCheck={boolEdit}
+                        />
+                    </td>
+                    <td className="p-1 formateTd">
+                        <TContext>{item}</TContext>
+                    </td>
+                </tr>)
+
+            });
+            setRows(newRows);
+        } else {
+            setRows([
+                <tr key="no-items">
+                    <td colSpan={2} className="p-1 text-gray-500 italic">
+                        No items found.
+                    </td>
+                </tr>,
+            ]);
+        }
+    }, [dataFromOut, boolEdit, padding.bottom]);
+
+
 
     return (
         <>
@@ -439,24 +594,7 @@ function NewDescription({ children, setBlurScreen }) {
                     }} className=" self-center  m-2">
                         <tbody>
 
-                            <tr>
-                                <td style={{
-                                    paddingBottom: padding.bottom
-                                }} width={'15%'} className="p-1 formateTd ">
-                                    <BulletAndCheck no={1} isCheck />
-                                </td>
-                                <td className="p-1 formateTd">
-                                    <TContext>{'I am ajeet Singh and i am jjjjjjj punjab, Hoshiarpur.'}</TContext>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width={'15%'} className="formateTd p-1  ">
-                                    <BulletAndCheck no={1} />
-                                </td>
-                                <td className="p-1 formateTd">
-                                    <TContext>{'I am ajeet Singh and i am from punjab, Hoshiarpur. kldjfaljaj lkfalja ldflasjf lafjslafj sadlkfjsal j aj j asdjf la'}</TContext>
-                                </td>
-                            </tr>
+                            {rows}
 
                         </tbody>
 
@@ -470,7 +608,7 @@ function NewDescription({ children, setBlurScreen }) {
 
                             className={`${cssClass.transitions}  mt-2 mb-2 flex flex-row justify-center `}>
                             <AddAndDelete onClick={handleClick} isAdd classId={'theAdd'} />
-                            <AddAndDelete classId={'theDelete'} />
+                            {pick ? <AddAndDelete onClick={handleDelete} classId={'theDelete'} /> : <AddAndDelete classId={'theDelete'} disabled />}
                         </div>
                         :
                         null

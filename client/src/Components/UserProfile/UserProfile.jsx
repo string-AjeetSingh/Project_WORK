@@ -473,7 +473,14 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
                             />
                             <br></br>
                             <div className='flex flex-col'>
-                                <NewDescription closeBlurScreen={closeBlurChild} setBlurScreen={setBlurChild}>{data.userData.description}</NewDescription>
+                                <NewDescription closeBlurScreen={closeBlurChild}
+                                    setBlurScreen={setBlurChild}
+                                    dataArray={[
+                                        'I am ajeet Singh and i am jjjjjjj punjab, Hoshiarpur.',
+                                        'I am ajeet Singh and i am from punjab, Hoshiarpur. kldjfaljaj lkfalja ldflasjf lafjslafj sadlkfjsal j aj j asdjf la'
+                                    ]}>
+                                    {data.userData.description}
+                                </NewDescription>
                                 <Discription>{data.userData.description}</Discription>
                                 <Skills>{data.userData.skills}</Skills>
                                 <Education>{data.userData.education} </Education>
