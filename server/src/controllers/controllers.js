@@ -5,6 +5,8 @@ const isDebugging = require('./../myLib/ifDebugging/ifDebugging');
 const alib = require('./../myLib/PracLib/alib');
 const utils = require('./../utils/utils');
 const path = require('path');
+const { json } = require('stream/consumers');
+const { type } = require('os');
 
 
 const debug = new isDebugging(parseInt(process.env.IS_DEBUGGING));
@@ -872,9 +874,165 @@ module.exports.updateUserProfile = async (req, res) => {
 
 };
 
+module.exports.updateUserProfileParts = async (req, res) => {
+
+    //Expecting json data.
+    //data.type - type to update On profile.
+
+
+    if (!req.body.data || !req.body.data?.type) {
+        res.json({ status: -2, message: "Please provide data and type to update, req.body.data" });
+        return;
+    }
+
+    if (!req.userData.email) {
+        res.json({ status: -2, message: "Please email to update, req.userData.email" });
+        return;
+    }
+
+    function serverOk(fromServer) {
+        if (fromServer.acknowledged || fromServer.modifiedCount === 1) {
+            // console.log("✅ from Server : ", fromServer);
+        }
+        else
+            throw new Error(" ❌ Problem with update operation ")
+    }
+
+    try {
+
+        const data = req.body.data;
+        const email = req.userData.email;
+        const toServer = new alib('Work', process.env.MONGOSTRING);
+        toServer.setCollection("Users")
+        const toUpdate = { userData: {}, userSocialData: {} };
+
+        if (data.type === 'description' || data.type === 'experiance' || data.type === 'education') {
+
+            let updateValue = null;
+
+            //If nothing on the data value provide empty array to server.
+            if (!data.value || data?.value?.length < 1) {
+                updateValue = [];
+            } else {
+
+                updateValue = data.value;
+
+            }
+
+            //use toServer here -
+            let fieldName = `userData.${data.type}`;
+            let update = {
+                $set: {
+                    [fieldName]: updateValue
+                }
+            }
+            let fromServer = await toServer.updateOne({ "userSocialData.email": email }, update);
+
+            serverOk(fromServer);
+
+            res.json({ status: 1, message: "Succesfully Updated" });
+            return;
+        }
+
+        if (data.type === 'socialMedia') {
+            debugger;
+            //Update socialMedia
+            let updateValue1 = data.x ? data.x : null;
+            let updateValue2 = data.github ? data.github : null;
+
+            //use toServer here -
+            let fieldName1 = `userSocialData.x`;
+            let fieldName2 = `userSocialData.github`;
+
+            let update = {
+                $set: {
+                    [fieldName1]: updateValue1,
+                    [fieldName2]: updateValue2
+                }
+            }
+
+            let fromServer = await toServer.updateOne({ "userSocialData.email": email }, update);
+
+            serverOk(fromServer);
+
+
+            debugger;
+            res.json({ status: 1, message: "Succesfully Updated" });
+            return;
+        }
+
+        if (data.type === 'basic') {
+
+            //Update basic info
+            toUpdate.userData.status = data.status ? data.status : null;
+            toUpdate.userData.title = data.title ? data.title : null;
+            toUpdate.userData.name = data.name ? data.name : null;
+
+            debugger;
+
+            // use toServer here
+            let update = {
+                $set: {
+                    "userData.status": toUpdate.userData.status,
+                    "userData.title": toUpdate.userData.title,
+                    "userData.name": toUpdate.userData.name,
+                }
+            }
+
+            let fromServer = await toServer.updateOne({ "userSocialData.email": email }, update);
+
+            serverOk(fromServer);
+
+            res.json({ status: 1, message: "Succesfully Updated" });
+            return;
+        }
+
+        if (data.type === 'skills') {    //Update Skills
+
+            let updateValue = null;
+
+            if (!data.value || data.value.length < 1) {
+                //set empty array
+                updateValue = [];
+            } else {
+                //set the value
+                updateValue = data.value;
+            }
+
+            debugger;
+            //use toServer here
+
+            let update = {
+                $set: {
+                    "userData.skills": updateValue,
+                }
+            }
+
+            let fromServer = await toServer.updateOne({ "userSocialData.email": email }, update);
+
+            serverOk(fromServer);
+
+            res.json({ status: 1, message: "Succesfully Updated" });
+            return;
+        }
+
+        //If nothing then below 
+
+        debugger;
+        res.json({ status: -2, message: 'Seems no matching types here' });
+        return;
+    }
+    catch (error) {
+        console.error(error);
+        res.json({ status: -1, message: 'Error From server : ' + error.message });
+    }
+
+}
+
+
 
 module.exports.search = async (req, res) => {
-    debug.console('from search controll -- -- -- ');
+    debug.console('from search control -- -- -- ');
     debug.console('the req.body is :', req.body);
 
     if (req.body.data) {

@@ -26,6 +26,17 @@
     cursor: not-allowed;
 }
 
+.break-text {
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+.inputHeading {
+    color: var(--greenLight);
+    font-weight: bold;
+}
+
+
 
 
 
@@ -67,6 +78,24 @@
         border-radius 150ms ease-in-out;
     ;
 
+}
+
+.spin {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 50%;
+    border-top: 2px solid var(--blueVeryLight);
+
+
+    animation: rotation 1s linear infinite;
+
+}
+
+@keyframes rotation {
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 

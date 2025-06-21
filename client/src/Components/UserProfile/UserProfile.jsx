@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import {
-    ProfileImageSection, NewDescription,
+    ProfileImageSection, BulletShow,
     ProfileSection2, Education, Experiance
     , Skills, Discription, SocialMedia,
     NewProfileSection, NewSocialMedia,
@@ -160,9 +160,8 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
                 return false;
             }
         } else {
-            alert('problem in connection i guess, unable to upload data');
+            alert('problem in connection, unable to upload data');
         }
-
 
 
     }
@@ -467,28 +466,35 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
                                 </div>
                             </button>
 
-                            <NewProfileSection name={data?.userData?.name ? data.userData.name : 'undefined'}
+                            <NewProfileSection setBlurScreen={setBlurChild} name={data?.userData?.name ? data.userData.name : 'undefined'}
                                 title={data?.userData?.title ? data?.userData?.title : 'undefined'}
                                 status={data?.userData?.status ? data?.userData?.status : 'undefined'}
+                                heading="Basic"
                             />
                             <br></br>
                             <div className='flex flex-col'>
-                                <NewDescription closeBlurScreen={closeBlurChild}
+
+                                <BulletShow type={'description'} name={"Description"} closeBlurScreen={closeBlurChild}
                                     setBlurScreen={setBlurChild}
-                                    dataArray={[
-                                        'I am ajeet Singh and i am jjjjjjj punjab, Hoshiarpur.',
-                                        'I am ajeet Singh and i am from punjab, Hoshiarpur. kldjfaljaj lkfalja ldflasjf lafjslafj sadlkfjsal j aj j asdjf la'
-                                    ]}>
-                                    {data.userData.description}
-                                </NewDescription>
-                                <Discription>{data.userData.description}</Discription>
+                                    dataArray={data.userData.description}>
+
+                                </BulletShow>
+                                <BulletShow type={'experiance'} name={"Experiance"} closeBlurScreen={closeBlurChild}
+                                    setBlurScreen={setBlurChild}
+                                    dataArray={data.userData.experiance}>
+
+                                </BulletShow>
+                                <BulletShow type={'education'} name={"Education"} closeBlurScreen={closeBlurChild}
+                                    setBlurScreen={setBlurChild}
+                                    dataArray={data.userData.education}>
+
+                                </BulletShow>
+
                                 <Skills>{data.userData.skills}</Skills>
-                                <Education>{data.userData.education} </Education>
-                                <Experiance>{data.userData.experiance}</Experiance>
                             </div>
 
 
-                            <NewSocialMedia email={data.userSocialData.email}
+                            <NewSocialMedia setBlurScreen={setBlurChild} email={data.userSocialData.email}
                                 github={data.userSocialData.github} x={data.userSocialData.x} />
 
                         </div>

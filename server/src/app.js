@@ -8,6 +8,7 @@ const path = require('path');
 
 const controllers = require('./controllers/controllers');
 const middleware = require('./middleware/middleware');
+const { getActiveResourcesInfo } = require('process');
 
 
 
@@ -141,6 +142,8 @@ aRouter.post('/updateUserProfile', middleware.authorize
     , middleware.jwtVerification, uploadToMemory.single('theImg'),
     utils.profileImgCheck
     , controllers.updateUserProfile);
+
+aRouter.post("/updateUserParts", middleware.jwtVerification, controllers.updateUserProfileParts);
 
 aRouter.post('/fetchPosts', controllers.fetchPosts);
 aRouter.get('/fetchPosts', controllers.fetchPosts);

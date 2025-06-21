@@ -100,35 +100,69 @@ function Wrapper({ children, style }) {
     );
 }
 
-function NewProfileSection({ status = 'undefined', title = 'undefined', name = 'undefined' }) {
-    return (
-        <div className=" flex flex-row justify-center mt-1   ">
+function NewProfileSection({ setBlurScreen, status = 'undefined', title = 'undefined', name = 'undefined', heading = "undefined" }) {
 
-            <table style={{
+    const cssClass = {
+        editButt: 'editButton'
+    }
+
+    function handleEdit() {
+        setBlurScreen(<AddSocialMediaAndBasic type={'basic'} />);
+    }
+    return (
+        <div className=" flex flex-col items-center  mt-1  ">
+            <div style={{
                 minWidth: '342px',
                 backgroundColor: 'rgba(4, 77, 28, 1)',
                 padding: '10px'
-            }}
-                className="  w-[80%] rounded-xl ">
-                <tbody>
+            }} className="w-[80%] rounded-xl 0">
 
-                    <tr className="" >
-                        <TableLable color={'#d5e7f4'} paddingTop={20}>Name</TableLable><TableValue color={'rgba(4, 77, 28, 1)'} backgroundColor={'#d5e7f4'} paddingTop={20}>{name}</TableValue>
-                    </tr>
-                    <tr >
-                        <TableLable color={'#d5e7f4'}>Is</TableLable><TableValue color={'rgba(4, 77, 28, 1)'} backgroundColor={'#d5e7f4'}>{title}</TableValue>
-                    </tr>
-                    <tr>
-                        <TableLable color={'#d5e7f4'} paddingBottom={20}>Status</TableLable><TableValue color={'rgba(4, 77, 28, 1)'} backgroundColor={'#d5e7f4'} paddingBottom={20}>{status}</TableValue>
-                    </tr>
-                </tbody>
-            </table>
+
+                <div style={{
+                }} className="flex flex-row justify-center  relative ">
+
+                    <Heading colSpan={2} color='#d5e7f4'>{heading}</Heading>
+                    <button onClick={handleEdit}
+
+                        className={` ${cssClass.editButt} self-end p-1 mb-1 size-10 rounded-md absolute top-0 right-0`}>
+                        <img src={"/stock/icon/edit.png"} className="w-full ">
+                        </img>
+                    </button>
+                </div>
+
+                <table style={{
+
+                }}
+                    className="  w-[80%] rounded-xl ">
+                    <tbody>
+                        <tr className="" >
+                            <TableLable color={'#d5e7f4'} paddingTop={20}>Name</TableLable><TableValue color={'rgba(4, 77, 28, 1)'} backgroundColor={'#d5e7f4'} paddingTop={20}>{name}</TableValue>
+                        </tr>
+                        <tr >
+                            <TableLable color={'#d5e7f4'}>Is</TableLable><TableValue color={'rgba(4, 77, 28, 1)'} backgroundColor={'#d5e7f4'}>{title}</TableValue>
+                        </tr>
+                        <tr>
+                            <TableLable color={'#d5e7f4'} paddingBottom={20}>Status</TableLable><TableValue color={'rgba(4, 77, 28, 1)'} backgroundColor={'#d5e7f4'} paddingBottom={20}>{status}</TableValue>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     );
 }
 
-function NewSocialMedia({ email = 'undefined', github = 'undefined', x = 'undefined' }) {
+function NewSocialMedia({ setBlurScreen, email = 'undefined', github = 'undefined', x = 'undefined' }) {
+
+    const cssClass = {
+        editButt: 'editButton'
+    }
+
+    function handleEdit() {
+        setBlurScreen(<AddSocialMediaAndBasic type={'socialMedia'} />);
+    }
+
+
     return (
         <>
             <div className=" flex flex-col items-center justify-center text-center mt-1   ">
@@ -140,17 +174,22 @@ function NewSocialMedia({ email = 'undefined', github = 'undefined', x = 'undefi
                 }}
                     className="w-[80%] rounded-xl ">
                     <thead>
-
-                        <tr >
+                        <tr>
                             <th style={{
                                 color: 'var(--greenLight)',
                                 padding: '5px'
                             }}
-                                className="text-2xl  " colSpan={2}>Social Media</th>
+                                className="text-2xl relative" colSpan={2}>Social Media
+                                <button onClick={handleEdit}
+
+                                    className={` ${cssClass.editButt} self-end p-1 mb-1 size-10 rounded-md absolute top-1 right-1`}>
+                                    <img src={"/stock/icon/edit.png"} className="w-full ">
+                                    </img>
+                                </button></th>
+
                         </tr>
                     </thead>
                     <tbody>
-
                         <tr >
                             <TableLable color={'rgba(4, 77, 28, 1)'} paddingTop={10}>Email</TableLable><TableValue color={'#8aceff'} backgroundColor={'rgba(4, 77, 28, 1)'} paddingTop={10}>{email}</TableValue>
                         </tr>
@@ -292,7 +331,7 @@ function BulletAndCheck({ isCheck, no, index, setPick, pickRef }) {
 function TContext({ children }) {
     return (
         <>
-            <div className="rounded-md  ml-5">
+            <div className="rounded-md break-text  ml-5">
                 {children}
             </div>
         </>
@@ -350,7 +389,138 @@ function BlurScreen({ children, handleClick }) {
     );
 }
 
-function AddContent({ data, setData }) {
+function AddSocialMediaAndBasic({ type = "basic", handleSubmit }) {
+    const theRef = useRef(null);
+    const theInput = useRef({ fist: "", second: "", third: "" });
+
+
+    const cssClass = {
+        submit: 'submitEdit'
+    }
+
+    function stopPropagation(e) {
+        e.stopPropagation();
+    }
+
+    function handleChange(e, inputType) {
+        if (inputType !== "first" && inputType !== "second" && inputType !== "third") {
+            console.error("Please provide valid inputType to the handleChange")
+            return;
+        }
+
+        theInput.current[inputType] = e.target.value;
+
+        console.log('the input is : ', theInput.current);
+    }
+
+
+
+
+    useEffect(() => {
+        if (!theRef.current)
+            return;
+
+        theRef.current.addEventListener('mousedown', stopPropagation);
+
+        return (() => {
+            if (!theRef.current)
+                return;
+
+            theRef.current.removeEventListener('mousedown', stopPropagation);
+
+        })
+
+    }, [theRef])
+
+    return (
+        <>
+            <div ref={theRef} onClick={(e) => {
+                e.stopPropagation();
+            }} style={{
+                width: '70%',
+                maxWidth: "500px",
+                minWidth: "340px",
+                backgroundColor: "var(--blueVeryLight)"
+            }} className="p-2 flex flex-col items-center  rounded-xl border border-black">
+
+                {/* Input 1  */}
+                <div className=" inputHeading self-start
+                ">{type === 'basic' ? "Name :" : 'X : '}</div>
+                <input onChange={(e) => {
+                    handleChange(e, 'first');
+                }
+                }
+                    placeholder="Write here..."
+                    style={{
+                        height: '50px',
+                        border: '2px solid',
+                        borderColor: 'var(--greenLight)',
+                        color: 'var(--greenLight)'
+                    }} className="rounded-md p-1 w-full">
+
+                </input>
+
+
+                {/* Input 2  */}
+                <div className=" inputHeading self-start
+                ">{type === 'basic' ? "Is :" : 'Github : '}</div>
+                <input onChange={(e) => {
+                    handleChange(e, 'second');
+                }
+                }
+                    placeholder="Write here..."
+                    style={{
+                        height: '50px',
+                        border: '2px solid',
+                        borderColor: 'var(--greenLight)',
+                        color: 'var(--greenLight)',
+                        marginTop: "5px",
+                        marginBottom: "5px",
+                    }} className="rounded-md p-1 w-full">
+
+                </input>
+
+
+                {/* Input 3  */}
+                {type === 'basic' ?
+                    <>
+                        <div className=" inputHeading self-start font-bold
+                ">Status :</div>
+                        <input onChange={(e) => {
+                            handleChange(e, 'third');
+                        }
+                        }
+                            placeholder="Write here..."
+                            style={{
+                                height: '50px',
+                                border: '2px solid',
+                                borderColor: 'var(--greenLight)',
+                                color: 'var(--greenLight)'
+                            }} className="rounded-md p-1 w-full">
+
+                        </input>
+                    </>
+
+                    :
+                    null
+                }
+
+                <button onClick={(e) => {
+                    if (handleSubmit) {
+                        handleSubmit(theInput.current);
+                    }
+                }}
+
+                    className={`${cssClass.submit} p-2 text-2xl mt-2 rounded-md  w-fit self-end `}>
+                    Submit
+                </button>
+            </div>
+        </>
+    );
+}
+
+
+function AddContent({ handleSubmit }) {
     const theRef = useRef(null);
     const theInput = useRef('');
 
@@ -364,28 +534,9 @@ function AddContent({ data, setData }) {
 
     function handleChange(e) {
         theInput.current = e.target.value;
-        console.log("the input : ", theInput.current);
     }
 
-    function handleClick() {
-        let value = theInput.current;
 
-        if (value && value.length > 0) {
-
-            console.log("✅ server request ");
-
-            if (data && setData) {
-
-                data.updated = [...data.provided, value];
-                setData(data.updated);
-                console.log('data provided :  ', data.updated);
-            }
-
-        } else {
-            alert('⚠️ Provide value to field before submit.')
-        }
-
-    }
 
     useEffect(() => {
         if (!theRef.current)
@@ -425,10 +576,12 @@ function AddContent({ data, setData }) {
 
                 </textarea>
 
-                <button onClick={handleClick}
-                    style={{
+                <button onClick={(e) => {
+                    if (handleSubmit) {
+                        handleSubmit(theInput.current);
+                    }
+                }}
 
-                    }}
                     className={`${cssClass.submit} p-2 text-2xl mt-2 rounded-md  w-fit self-end `}>
                     Submit
                 </button>
@@ -437,18 +590,20 @@ function AddContent({ data, setData }) {
     );
 }
 
-function NewDescription({ children, setBlurScreen, dataArray }) {
+function BulletShow({ name, children, setBlurScreen, dataArray, type }) {
     const padding = {
         top: 20 + 'px',
         bottom: 30 + 'px'
     }
+    const [isLoading, setIsLoading] = useState(false);
     const [pick, setPick] = useState(null);   //For delete and checkbox
     const [rows, setRows] = useState([]);
-    const [dataFromOut, setDataFromOut] = useState(dataArray);
-    const dataRef = useRef({
+    const [dataFromOut, setDataFromOut] = useState(dataArray);  //data state
+    const dataRef = useRef({   //ref of the data to share accross the components
         provided: null,
         updated: null
     })
+    const defaultDataOnlyOnce = useRef(false);
 
     const cssClass = {
         onAddAndDelete: 'onAddAndDelete',
@@ -480,15 +635,95 @@ function NewDescription({ children, setBlurScreen, dataArray }) {
     }
 
     function handleClick() {
-        setBlurScreen(<AddContent data={dataRef.current} setData={setDataFromOut} />);
+        setBlurScreen(<AddContent handleSubmit={handleAddContent} />);
     }
 
-    function handleDelete() {
+    function removeAddContent() {
+        setBlurScreen(false);
+    }
+
+    function normalizeArray(arr) {
+        return arr.filter(Boolean);
+    }
+
+    async function serverUpdate(value, type) {
+
+        try {
+            const response = await fetch(process.env.REACT_APP_SERVER_URL + "/xtServer/api/updateUserParts", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ data: { type: type, value: value } }),
+            });
+            //  console.log('the response : ', response);
+
+            if (response.status === 200) {
+                const result = await response.json();
+                //    console.log('the result : ', result);
+
+                if (!result.status === 1) {
+                    alert("⚠️ Problem with server request, message From server : " + result.message)
+                    return false;
+                }
+                return true;
+            }
+
+            return false;
+
+        } catch (error) {
+            console.error('Error posting data:', error);
+        }
+
+
+    }
+
+    async function handleAddContent(input) {
+
+        let value = input;
+        //console.log('the input : ', input);
+
+        if (value && value.length > 0) {
+
+            setIsLoading(true);
+            setBlurScreen(false);
+            //console.log("✅ server request ");
+
+            if (!dataRef?.current)
+                return
+
+            const data = dataRef.current;
+
+            data.updated = [...data.provided, value];
+
+            //console.log('the data : ', data);
+
+            let fromServer = await serverUpdate(data.updated, type);
+
+            if (!fromServer) {  //if failed the server request
+                setIsLoading(false);
+                return;
+            }
+            /* 
+        */
+            setDataFromOut([...data.updated]);
+            setIsLoading(false);
+            //  console.log('data provided :  ', data.updated);
+
+        } else {
+            alert('⚠️ Provide value to field before submit.')
+        }
+    }
+
+    async function handleDelete() {
 
         if (!Array.isArray(pick))
             return;
 
-        let newDataArray = [...dataArray];
+
+        setIsLoading(true);
+        let newDataArray = [...dataFromOut];
 
         pick.forEach((item, index) => {
             if (item) {
@@ -497,7 +732,19 @@ function NewDescription({ children, setBlurScreen, dataArray }) {
 
         })
 
-        console.log('the newDataArray : ', newDataArray);
+        newDataArray = normalizeArray(newDataArray)
+        let fromServer = await serverUpdate(newDataArray, type);
+
+        if (!fromServer) {
+            setIsLoading(false);
+            return;
+        }
+
+        setDataFromOut(newDataArray);
+        setPick(null);
+        setIsLoading(false);
+
+        //console.log('the newDataArray : ', newDataArray);
 
         //Now server logic and response
     }
@@ -520,12 +767,25 @@ function NewDescription({ children, setBlurScreen, dataArray }) {
     }, [boolEdit])
 
     useEffect(() => {
-        setDataFromOut(dataArray);
+        //Set default Data
+
+        if (defaultDataOnlyOnce.current)
+            return;
+
+        console.log("✅ Default Data set");
+        if (!dataArray)
+            setDataFromOut([]);
+
+        else
+            setDataFromOut(dataArray);
+
+        defaultDataOnlyOnce.current = true;
 
     }, [dataArray])
 
     useEffect(() => {
         dataRef.current.provided = dataFromOut;
+        console.log("the dataFromOut : ", dataFromOut);
     }, [dataFromOut])
 
     useEffect(() => {
@@ -573,14 +833,17 @@ function NewDescription({ children, setBlurScreen, dataArray }) {
         <>
             <Wrapper >
 
+
                 <div style={{
                     minWidth: '342px',
                     backgroundColor: 'rgba(4, 77, 28, 1)',
-                }} className="flex flex-col p-2 w-[80%]  rounded-md ">
+                }} className="relative flex flex-col p-2 w-[80%]  rounded-md ">
+
+                    {isLoading ? <LoadingComp /> : null}
 
                     <div className="flex flex-row justify-center  relative ">
 
-                        <Heading colSpan={2} color='#d5e7f4'>Description</Heading>
+                        <Heading colSpan={2} color='#d5e7f4'>{name}</Heading>
                         <button
                             onClick={handleEdit}
                             className={` ${cssClass.editButt} self-end p-1 mb-1 size-10 rounded-md absolute top-0 right-0`}>
@@ -620,7 +883,26 @@ function NewDescription({ children, setBlurScreen, dataArray }) {
     );
 }
 
+function LoadingComp({ }) {
+    return (
+        <>
+            <div
+                style={{
+                    width: "100%",
+                    height: "100%",
+                    top: "0px",
+                    left: "0px",
+                    zIndex: 5,
+                    backgroundColor: 'var(--greenLight-blur)'
+                }}
+                className="absolute flex flex-row justify-center items-center">
+                <div className="spin">
 
+                </div>
+            </div>
+        </>
+    );
+}
 
 function Discription({ children }) {
     const theInput = useRef(null);
@@ -826,6 +1108,6 @@ function SocialMedia({ email, github, x }) {
 
 export {
     ProfileImageSection,
-    ProfileSection2, Discription, NewDescription, BlurScreen,
+    ProfileSection2, Discription, BulletShow, BlurScreen,
     Skills, SocialMedia, NewSocialMedia, Education, Experiance, NewProfileSection
 };

@@ -88,8 +88,6 @@ function useControlLogin(isHomePage = false) {
                 if (!isHomePage) {
                     alert('You are not Login, i navigate you to the home page');
                     navigate('/');
-                } else {
-
                 }
 
             }
