@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import {
-    ProfileImageSection, BulletShow,
+    ProfileImageSection, BulletShow, NewSkills,
     ProfileSection2, Education, Experiance
     , Skills, Discription, SocialMedia,
     NewProfileSection, NewSocialMedia,
@@ -490,9 +490,9 @@ function UserProfile({ children, isAuthenticated, useAsUpdate, email, iAmReady }
 
                                 </BulletShow>
 
-                                <Skills>{data.userData.skills}</Skills>
+                                <NewSkills setBlurScreen={setBlurChild} dataArray={data.userData.skills} />
                             </div>
-
+                            <br></br>
 
                             <NewSocialMedia setBlurScreen={setBlurChild} email={data.userSocialData.email}
                                 github={data.userSocialData.github} x={data.userSocialData.x} />

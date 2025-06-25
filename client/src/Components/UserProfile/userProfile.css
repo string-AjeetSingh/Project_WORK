@@ -36,6 +36,33 @@
     font-weight: bold;
 }
 
+.skillBox {
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: var(--greenLight);
+    font-weight: bold;
+    background-color: var(--blueVeryLight);
+    border-radius: 20px;
+    margin: 5px;
+}
+
+.rounded-checkbox {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    /* Circle */
+    appearance: none;
+    -webkit-appearance: none;
+
+    background-color: white;
+    border: 2px solid var(--greenLight);
+}
+
+.rounded-checkbox:checked {
+    background-color: var(--greenLight);
+
+}
 
 
 

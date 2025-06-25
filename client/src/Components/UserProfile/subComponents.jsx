@@ -152,6 +152,269 @@ function NewProfileSection({ setBlurScreen, status = 'undefined', title = 'undef
     );
 }
 
+function NewSkills({ setBlurScreen, dataArray = [] }) {
+
+    const cssClass = {
+        editButt: 'editButton',
+        onAddAndDelete: 'onAddAndDelete',
+        transitions: 'transitionAfterEdit',
+        default: 'defaultAddDeleteBar',
+    }
+    const type = 'skills'
+
+    const defaultDataOnlyOnce = useRef(false);   // Take only the data from the parent only once.
+    const [data, setData] = useState([]);
+    const [skills, setSkills] = useState([]);
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [pick, setPick] = useState(null);   //For delete and checkbox
+
+    const dataRef = useRef({   //ref of the data to share accross the components
+        provided: null,
+        updated: null
+    })
+
+
+    const bulletsNo = useRef({  //No of bullets in the table.
+        no: 0,
+        reset: () => {
+            bulletsNo.current.no = 0;
+        },
+        newNo: () => {
+            return bulletsNo.current.no += 1;
+        }
+    })
+
+    const [boolEdit, setBoolEdit] = useState(false);
+    const [Transition, setTransition] = useState({ opacity: 0, transform: 'translateX(-20px)' })
+
+    function handleEdit() {
+        if (boolEdit) {
+            setBoolEdit(false);
+
+        } else {
+            setBoolEdit(true);
+        }
+    }
+
+    function handleClick() {
+        setBlurScreen(<AddContent handleSubmit={handleAddContent} smallInput />);
+    }
+
+    function normalizeArray(arr) {
+        return arr.filter(Boolean);
+    }
+
+    async function serverUpdate(value, type) {
+
+        try {
+            const response = await fetch(process.env.REACT_APP_SERVER_URL + "/xtServer/api/updateUserParts", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ data: { type: type, value: value } }),
+            });
+            //  console.log('the response : ', response);
+
+            if (response.status === 200) {
+                const result = await response.json();
+                //    console.log('the result : ', result);
+
+                if (!result.status === 1) {
+                    alert("⚠️ Problem with server request, message From server : " + result.message)
+                    return false;
+                }
+                return true;
+            }
+
+            return false;
+
+        } catch (error) {
+            console.error('Error posting data:', error);
+        }
+
+
+    }
+
+
+
+    async function handleAddContent(input) {
+
+        let value = input;
+        //console.log('the input : ', input);
+
+        if (value && value.length > 0) {
+
+            setIsLoading(true);
+            setBlurScreen(false);
+            //console.log("✅ server request ");
+
+            if (!dataRef?.current)
+                return
+
+            const data = dataRef.current;
+
+            data.updated = [...data.provided, value];
+
+            //console.log('the data : ', data);
+
+            let fromServer = await serverUpdate(data.updated, type);
+
+            if (!fromServer) {  //if failed the server request
+                setIsLoading(false);
+                return;
+            }
+
+            setData([...data.updated]);
+            setIsLoading(false);
+            //  console.log('data provided :  ', data.updated);
+
+        } else {
+            alert('⚠️ Provide value to field before submit.')
+        }
+    }
+
+    async function handleDelete() {
+
+        if (!Array.isArray(pick))
+            return;
+
+
+        setIsLoading(true);
+        let newDataArray = [...data];
+
+        pick.forEach((item, index) => {
+            if (item) {
+                newDataArray[index] = false;
+            }
+
+        })
+
+
+        newDataArray = normalizeArray(newDataArray)
+        let fromServer = await serverUpdate(newDataArray, type);
+
+        if (!fromServer) {
+            setIsLoading(false);
+            return;
+        }
+
+        setData(newDataArray);
+        setPick(null);
+        setIsLoading(false);
+
+
+        //Now server logic and response
+    }
+
+
+    useEffect(() => {
+        if (!boolEdit) {
+            setTransition({ opacity: 0, transform: "translateX(-20px)" })
+
+            setPick(null);    //the delete must be disabled as not checked item.
+            return;
+        }
+
+        let theTimeOut = setTimeout(() => {
+            setTransition({ opacity: 1, transform: 'translateX(0px)' });
+        }, 50);
+        return (() => {
+            clearTimeout(theTimeOut)
+        })
+    }, [boolEdit])
+
+
+    // Data should be used to show skills and it will empty array if not array from out and empty array.
+    useEffect(() => {
+
+        //Return if the data is already kept.
+        if (defaultDataOnlyOnce.current)
+            return;
+
+        if (Array.isArray(dataArray) && dataArray.length > 0) {
+            setData(dataArray); // set empty array.
+            defaultDataOnlyOnce.current = true;
+        }
+
+    }, [dataArray])
+
+    useEffect(() => {
+        console.log('the pick : ', pick);
+    }, [pick])
+
+    useEffect(() => {
+        console.log('the data is updated with new one  :', data);
+        let newArray = data.map((name, index) => (
+            <div
+                key={index}
+                className="skillBox p-4 bg-blue-500 text-white rounded shadow flex flex-row items-center"
+            >
+                {boolEdit ?
+                    <>
+                        <BulletAndCheck setPick={setPick} index={index} onlyCheck />
+                        <div>{name}</div>
+                    </>
+                    : name}
+            </div>
+        ))
+        setSkills(newArray)
+    }, [data, boolEdit])
+
+    useEffect(() => {
+        dataRef.current.provided = data;
+    }, [data])
+
+
+    return (
+        <div className=" flex flex-col items-center  mt-1  ">
+            <div style={{
+                minWidth: '342px',
+                backgroundColor: 'rgba(4, 77, 28, 1)',
+                padding: '10px'
+            }} className="w-[80%] rounded-xl  relative">
+
+                {isLoading ? <LoadingComp /> : null}
+
+                <div style={{
+                }} className="flex flex-row justify-center  relative ">
+
+                    <Heading colSpan={2} color='#d5e7f4'>{"Skills"}</Heading>
+                    <button onClick={handleEdit}
+
+                        className={` ${cssClass.editButt} self-end p-1 mb-1 size-10 rounded-md absolute top-0 right-0`}>
+                        <img src={"/stock/icon/edit.png"} className="w-full ">
+                        </img>
+                    </button>
+                </div>
+
+                {/*Skills Box  */}
+                <div className="flex flex-wrap gap-2 p-4">
+                    {skills}
+                </div>
+
+                {boolEdit ?
+                    <div style={{
+                        opacity: Transition.opacity,
+                        transform: Transition.transform
+                    }}
+
+                        className={`${cssClass.transitions}  mt-2 mb-2 flex flex-row justify-center `}>
+                        <AddAndDelete isAdd onClick={handleClick} classId={'theAdd'} />
+                        {pick ? <AddAndDelete onClick={handleDelete} classId={'theDelete'} /> : <AddAndDelete classId={'theDelete'} disabled />}
+                    </div>
+                    :
+                    null
+                }
+
+            </div>
+        </div>
+
+    );
+}
+
 function NewSocialMedia({ setBlurScreen, email = 'undefined', github = 'undefined', x = 'undefined' }) {
 
     const cssClass = {
@@ -260,7 +523,7 @@ function TableHeading({ children, color, colSpan }) {
     );
 }
 
-function BulletAndCheck({ isCheck, no, index, setPick, pickRef }) {
+function BulletAndCheck({ onlyCheck, isCheck, no, index, setPick }) {
 
     function areAllFalsy(array) {
         if (!Array.isArray(array)) return false;
@@ -301,30 +564,41 @@ function BulletAndCheck({ isCheck, no, index, setPick, pickRef }) {
     }
 
     return (
+        <>
+            {onlyCheck ?
 
-        <div
-            className="flex flex-col items-center ">
+                <input onChange={handleChange} style={{
+                    marginRight: '5px',
+                }}
 
-            <div style={{
-                color: 'var(--greenLight)',
-                backgroundColor: 'var(--blueVeryLight)',
+                    className="size-7 rounded-checkbox  " type="checkbox"></input>
+                :
+
+                <div
+                    className="flex flex-col items-center ">
+
+                    <div style={{
+                        color: 'var(--greenLight)',
+                        backgroundColor: 'var(--blueVeryLight)',
 
 
-            }} className=" rounded-md size-10 flex flex-col
+                    }} className=" rounded-md size-10 flex flex-col
             items-center justify-center font-bold"
-            >
+                    >
 
-                {isCheck ?
+                        {isCheck ?
 
-                    <input onChange={handleChange}
+                            <input onChange={handleChange}
 
-                        className="size-7 " type="checkbox"></input>
+                                className="size-7 " type="checkbox"></input>
 
-                    : <span className="text-[1.1rem]">{no}</span>
-                }
-            </div>
-        </div>
+                            : <span className="text-[1.1rem]">{no}</span>
+                        }
+                    </div>
+                </div>
 
+            }
+        </>
     );
 }
 
@@ -520,7 +794,7 @@ function AddSocialMediaAndBasic({ type = "basic", handleSubmit }) {
 }
 
 
-function AddContent({ handleSubmit }) {
+function AddContent({ handleSubmit, smallInput }) {
     const theRef = useRef(null);
     const theInput = useRef('');
 
@@ -547,7 +821,6 @@ function AddContent({ handleSubmit }) {
         return (() => {
             if (!theRef.current)
                 return;
-
             theRef.current.removeEventListener('mousedown', stopPropagation);
 
         })
@@ -565,16 +838,28 @@ function AddContent({ handleSubmit }) {
                 backgroundColor: "var(--blueVeryLight)"
             }} className="p-2 flex flex-col  rounded-xl border border-black">
 
-                <textarea onChange={handleChange}
-                    placeholder="Write here..."
-                    style={{
-                        height: '120px',
-                        border: '2px solid',
-                        borderColor: 'var(--greenLight)',
-                        color: 'var(--greenLight)'
-                    }} className="rounded-md p-1" rows="4" cols="50">
+                {smallInput ?
+                    <input onChange={handleChange}
+                        placeholder="A Skill here..."
+                        style={{
+                            border: '2px solid',
+                            borderColor: 'var(--greenLight)',
+                            color: 'var(--greenLight)'
+                        }} className="rounded-md p-1" >
 
-                </textarea>
+                    </input>
+                    :
+                    <textarea onChange={handleChange}
+                        placeholder="Write here..."
+                        style={{
+                            height: '120px',
+                            border: '2px solid',
+                            borderColor: 'var(--greenLight)',
+                            color: 'var(--greenLight)'
+                        }} className="rounded-md p-1" rows="4" cols="50">
+
+                    </textarea>
+                }
 
                 <button onClick={(e) => {
                     if (handleSubmit) {
@@ -1107,7 +1392,7 @@ function SocialMedia({ email, github, x }) {
 }
 
 export {
-    ProfileImageSection,
+    ProfileImageSection, NewSkills,
     ProfileSection2, Discription, BulletShow, BlurScreen,
     Skills, SocialMedia, NewSocialMedia, Education, Experiance, NewProfileSection
 };
