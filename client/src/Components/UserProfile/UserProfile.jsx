@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import {
     ProfileImageSection, BulletShow, NewSkills,
-    ProfileSection2, Education, Experiance
-    , Skills, Discription, SocialMedia,
     NewProfileSection, NewSocialMedia,
     BlurScreen
 } from './subComponents';

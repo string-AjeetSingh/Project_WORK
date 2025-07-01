@@ -1,6 +1,7 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext, createContext } from "react";
 import { useResizeValue } from "../../MyLib/MyHook/customHook";
 
+const localContext = createContext();
 
 function ProfileImageSection({ screen, imgSrc }) {
 
@@ -106,9 +107,96 @@ function NewProfileSection({ setBlurScreen, status = 'undefined', title = 'undef
         editButt: 'editButton'
     }
 
+    const type = 'basic';
+
+
+    const [dataFromOut, setDataFromOut] = useState({ name: null, status: null, is: null });
+    const dataFormOutRef = useRef({ provided: null, updated: null });
+
+    const [isLoading, setIsLoading] = useState(false);
+
     function handleEdit() {
-        setBlurScreen(<AddSocialMediaAndBasic type={'basic'} />);
+        let data = dataFormOutRef.current.provided;
+        setBlurScreen(<AddSocialMediaAndBasic handleSubmit={handleSubmit} first={'Name'} firstDefault={data.name} secondDefault={data.is} second={"Is"} third={'Status'} thirdDefault={data.status} />);
     }
+
+
+    async function serverUpdate(name, title, status, type) {
+
+        try {
+            const response = await fetch(process.env.REACT_APP_SERVER_URL + "/xtServer/api/updateUserParts", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ data: { type: type, name: name, title: title, status: status } }),
+            });
+            //  console.log('the response : ', response);
+
+            if (response.status === 200) {
+                const result = await response.json();
+                //    console.log('the result : ', result);
+
+                if (!result.status === 1) {
+                    alert("⚠️ Problem with server request, message From server : " + result.message)
+                    return false;
+                }
+                return true;
+            }
+
+            return false;
+
+        } catch (error) {
+            console.error('Error posting data:', error);
+        }
+
+
+    }
+
+    async function handleSubmit(inputObj) {
+
+        setBlurScreen(false);
+
+        let dataRef = dataFormOutRef.current;
+        //setIsLoading(true);
+
+        if (inputObj.first === dataRef.provided.name && inputObj.second === dataRef.provided.is && inputObj.third === dataRef.provided.status) {
+            // Here source for the values are not changed.
+            alert('⚠️ No Changes, as the fields are not modified ');
+            return;
+        }
+
+        //Create update
+        dataRef.updated = { ...dataRef.provided, name: inputObj.first, is: inputObj.second, status: inputObj.third };
+
+
+        //Server call.
+        let fromServer = await serverUpdate(dataRef.updated.name, dataRef.updated.is, dataRef.updated.status, type);
+
+        setIsLoading(false);
+        if (!fromServer) {  //if failed the server request
+            return;
+        }
+
+        //Server call ok, then : 
+        setDataFromOut(dataRef.updated);
+
+    }
+
+    useEffect(() => {
+        //Update data from the out once. After this we will use dataFromOut state for updating the data.
+        setDataFromOut({
+            name: name, is: title, status: status
+        })
+    }, [status, title, name])
+
+    useEffect(() => {
+        //Update the Ref.
+        dataFormOutRef.current.provided = dataFromOut;
+        console.log('the datafromoutRef : ', dataFormOutRef.current);
+    }, [dataFromOut])
+
     return (
         <div className=" flex flex-col items-center  mt-1  ">
             <div style={{
@@ -136,13 +224,13 @@ function NewProfileSection({ setBlurScreen, status = 'undefined', title = 'undef
                     className="  w-[80%] rounded-xl ">
                     <tbody>
                         <tr className="" >
-                            <TableLable color={'#d5e7f4'} paddingTop={20}>Name</TableLable><TableValue color={'rgba(4, 77, 28, 1)'} backgroundColor={'#d5e7f4'} paddingTop={20}>{name}</TableValue>
+                            <TableLable color={'#d5e7f4'} paddingTop={20}>Name</TableLable><TableValue color={'rgba(4, 77, 28, 1)'} backgroundColor={'#d5e7f4'} paddingTop={20}>{dataFromOut.name}</TableValue>
                         </tr>
                         <tr >
-                            <TableLable color={'#d5e7f4'}>Is</TableLable><TableValue color={'rgba(4, 77, 28, 1)'} backgroundColor={'#d5e7f4'}>{title}</TableValue>
+                            <TableLable color={'#d5e7f4'}>Is</TableLable><TableValue color={'rgba(4, 77, 28, 1)'} backgroundColor={'#d5e7f4'}>{dataFromOut.is}</TableValue>
                         </tr>
                         <tr>
-                            <TableLable color={'#d5e7f4'} paddingBottom={20}>Status</TableLable><TableValue color={'rgba(4, 77, 28, 1)'} backgroundColor={'#d5e7f4'} paddingBottom={20}>{status}</TableValue>
+                            <TableLable color={'#d5e7f4'} paddingBottom={20}>Status</TableLable><TableValue color={'rgba(4, 77, 28, 1)'} backgroundColor={'#d5e7f4'} paddingBottom={20}>{dataFromOut.status}</TableValue>
                         </tr>
                     </tbody>
                 </table>
@@ -162,6 +250,8 @@ function NewSkills({ setBlurScreen, dataArray = [] }) {
     }
     const type = 'skills'
 
+    const [checkAll, setCheckAll] = useState(false);
+
     const defaultDataOnlyOnce = useRef(false);   // Take only the data from the parent only once.
     const [data, setData] = useState([]);
     const [skills, setSkills] = useState([]);
@@ -175,13 +265,13 @@ function NewSkills({ setBlurScreen, dataArray = [] }) {
     })
 
 
-    const bulletsNo = useRef({  //No of bullets in the table.
+    const newNo = useRef({  //No of bullets in the table.
         no: 0,
         reset: () => {
-            bulletsNo.current.no = 0;
+            newNo.current.no = 0;
         },
-        newNo: () => {
-            return bulletsNo.current.no += 1;
+        genNewNo: () => {
+            return newNo.current.no += 1;
         }
     })
 
@@ -197,13 +287,20 @@ function NewSkills({ setBlurScreen, dataArray = [] }) {
         }
     }
 
+    function normalizeTheDeletWork() {
+        setPick(null);       //off the delete button.
+        setCheckAll(newNo.current.genNewNo()); //communicate to uncheck checkboxs
+    }
+
     function handleClick() {
+        normalizeTheDeletWork();
         setBlurScreen(<AddContent handleSubmit={handleAddContent} smallInput />);
     }
 
     function normalizeArray(arr) {
         return arr.filter(Boolean);
     }
+
 
     async function serverUpdate(value, type) {
 
@@ -303,6 +400,7 @@ function NewSkills({ setBlurScreen, dataArray = [] }) {
 
         setData(newDataArray);
         setPick(null);
+        setCheckAll(newNo.current.genNewNo());
         setIsLoading(false);
 
 
@@ -346,22 +444,9 @@ function NewSkills({ setBlurScreen, dataArray = [] }) {
     }, [pick])
 
     useEffect(() => {
-        console.log('the data is updated with new one  :', data);
-        let newArray = data.map((name, index) => (
-            <div
-                key={index}
-                className="skillBox p-4 bg-blue-500 text-white rounded shadow flex flex-row items-center"
-            >
-                {boolEdit ?
-                    <>
-                        <BulletAndCheck setPick={setPick} index={index} onlyCheck />
-                        <div>{name}</div>
-                    </>
-                    : name}
-            </div>
-        ))
-        setSkills(newArray)
-    }, [data, boolEdit])
+        console.log('form the outer the check all is : ', checkAll);
+
+    }, [data, boolEdit, checkAll])
 
     useEffect(() => {
         dataRef.current.provided = data;
@@ -391,9 +476,26 @@ function NewSkills({ setBlurScreen, dataArray = [] }) {
                 </div>
 
                 {/*Skills Box  */}
-                <div className="flex flex-wrap gap-2 p-4">
-                    {skills}
-                </div>
+                <localContext.Provider value={{ checkAll }}>
+
+                    <div className="flex flex-wrap gap-2 p-4">
+
+                        {data.map((name, index) => (
+                            <div
+
+                                className="skillBox p-4 bg-blue-500 text-white rounded shadow flex flex-row items-center"
+                            >
+                                {boolEdit ?
+                                    <>
+
+                                        <BulletAndCheck forceCheck={checkAll} setPick={setPick} index={index} onlyCheck />
+                                        <div>{name}</div>
+                                    </>
+                                    : name}
+                            </div>
+                        ))}
+                    </div>
+                </localContext.Provider>
 
                 {boolEdit ?
                     <div style={{
@@ -421,14 +523,103 @@ function NewSocialMedia({ setBlurScreen, email = 'undefined', github = 'undefine
         editButt: 'editButton'
     }
 
+    const [dataFromOut, setDataFromOut] = useState({ x: null, github: null, email: null });
+    const dataFormOutRef = useRef({ provided: null, updated: null });
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const type = 'socialMedia';
+
     function handleEdit() {
-        setBlurScreen(<AddSocialMediaAndBasic type={'socialMedia'} />);
+        let data = dataFormOutRef.current.provided;
+        setBlurScreen(<AddSocialMediaAndBasic handleSubmit={handleSubmit} first={'X'} firstDefault={data.x} secondDefault={data.github} second={"Github"} />);
     }
+
+    async function serverUpdate(x, github, type) {
+
+        try {
+            const response = await fetch(process.env.REACT_APP_SERVER_URL + "/xtServer/api/updateUserParts", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include',
+                body: JSON.stringify({ data: { type: type, x: x, github: github } }),
+            });
+            //  console.log('the response : ', response);
+
+            if (response.status === 200) {
+                const result = await response.json();
+                //    console.log('the result : ', result);
+
+                if (!result.status === 1) {
+                    alert("⚠️ Problem with server request, message From server : " + result.message)
+                    return false;
+                }
+                return true;
+            }
+
+            return false;
+
+        } catch (error) {
+            console.error('Error posting data:', error);
+        }
+
+
+    }
+
+    async function handleSubmit(inputObj) {
+
+        setBlurScreen(false);
+
+        let dataRef = dataFormOutRef.current;
+        //setIsLoading(true);
+
+        if (inputObj.first === dataRef.provided.x && inputObj.second === dataRef.provided.github) {
+            // Here source for the values are not changed.
+            alert('⚠️ No Changes, as the fields are not modified ');
+            return;
+        }
+
+        //Create update
+        dataRef.updated = { ...dataRef.provided, x: inputObj.first, github: inputObj.second };
+
+
+        //Server call.
+        let fromServer = await serverUpdate(x = dataRef.updated.x, github = dataRef.updated.github, type);
+
+        setIsLoading(false);
+        if (!fromServer) {  //if failed the server request
+            return;
+        }
+
+        //Server call ok, then : 
+        setDataFromOut(dataRef.updated);
+
+    }
+
+
+
+    useEffect(() => {
+        //Update data from the out once. After this we will use dataFromOut state for updating the data.
+
+        setDataFromOut({
+            email: email, x: x, github: github
+        })
+    }, [email, x, github])
+
+    useEffect(() => {
+        //Update the Ref.
+        dataFormOutRef.current.provided = dataFromOut;
+        console.log('the datafromoutRef : ', dataFormOutRef.current);
+    }, [dataFromOut])
 
 
     return (
         <>
-            <div className=" flex flex-col items-center justify-center text-center mt-1   ">
+            <div className="  flex flex-col items-center justify-center text-center mt-1 relative   ">
+
+                {isLoading ? <LoadingComp /> : null}
 
                 <table style={{
                     minWidth: '342px',
@@ -454,13 +645,13 @@ function NewSocialMedia({ setBlurScreen, email = 'undefined', github = 'undefine
                     </thead>
                     <tbody>
                         <tr >
-                            <TableLable color={'rgba(4, 77, 28, 1)'} paddingTop={10}>Email</TableLable><TableValue color={'#8aceff'} backgroundColor={'rgba(4, 77, 28, 1)'} paddingTop={10}>{email}</TableValue>
+                            <TableLable color={'rgba(4, 77, 28, 1)'} paddingTop={10}>Email</TableLable><TableValue color={'#8aceff'} backgroundColor={'rgba(4, 77, 28, 1)'} paddingTop={10}>{dataFromOut.email}</TableValue>
                         </tr>
                         <tr >
-                            <TableLable color={'rgba(4, 77, 28, 1)'}>X</TableLable><TableValue color={'#8aceff'} backgroundColor={'rgba(4, 77, 28, 1)'}>{x}</TableValue>
+                            <TableLable color={'rgba(4, 77, 28, 1)'}>X</TableLable><TableValue color={'#8aceff'} backgroundColor={'rgba(4, 77, 28, 1)'}>{dataFromOut.x}</TableValue>
                         </tr>
                         <tr>
-                            <TableLable color={'rgba(4, 77, 28, 1)'} paddingBottom={20}>Github</TableLable><TableValue color={'#8aceff'} backgroundColor={'rgba(4, 77, 28, 1)'} paddingBottom={20}>{github}</TableValue>
+                            <TableLable color={'rgba(4, 77, 28, 1)'} paddingBottom={20}>Github</TableLable><TableValue color={'#8aceff'} backgroundColor={'rgba(4, 77, 28, 1)'} paddingBottom={20}>{dataFromOut.github}</TableValue>
                         </tr>
                     </tbody>
                 </table>
@@ -523,7 +714,11 @@ function TableHeading({ children, color, colSpan }) {
     );
 }
 
-function BulletAndCheck({ onlyCheck, isCheck, no, index, setPick }) {
+function BulletAndCheck({ forceCheck, onlyCheck, isCheck, no, index, setPick, i_am_using_context }) {
+
+    const [check, setCheck] = useState(false);
+    const context = useContext(localContext);
+
 
     function areAllFalsy(array) {
         if (!Array.isArray(array)) return false;
@@ -532,8 +727,10 @@ function BulletAndCheck({ onlyCheck, isCheck, no, index, setPick }) {
 
 
     function handleChange(e) {
-        if (e.target.checked) {
+        console.log("check handle change ");
+        setCheck(e.target.checked);
 
+        if (e.target.checked) {
             setPick((prev) => {
 
                 if (!prev) {
@@ -563,11 +760,22 @@ function BulletAndCheck({ onlyCheck, isCheck, no, index, setPick }) {
 
     }
 
+    useEffect(() => {
+        console.log('the force check is : ', forceCheck);
+        setCheck(false);
+
+    }, [forceCheck])
+
+    useEffect(() => {
+        if (isCheck === false)
+            setCheck(false);
+    }, [isCheck])
+
     return (
         <>
             {onlyCheck ?
 
-                <input onChange={handleChange} style={{
+                <input checked={check} onChange={handleChange} style={{
                     marginRight: '5px',
                 }}
 
@@ -582,15 +790,15 @@ function BulletAndCheck({ onlyCheck, isCheck, no, index, setPick }) {
                         backgroundColor: 'var(--blueVeryLight)',
 
 
-                    }} className=" rounded-md size-10 flex flex-col
+                    }} className="rounded-md size-10 flex flex-col
             items-center justify-center font-bold"
                     >
 
                         {isCheck ?
 
-                            <input onChange={handleChange}
+                            <input checked={check} onChange={handleChange}
 
-                                className="size-7 " type="checkbox"></input>
+                                className="size-7 rounded-checkbox-medium" type="checkbox"></input>
 
                             : <span className="text-[1.1rem]">{no}</span>
                         }
@@ -663,9 +871,14 @@ function BlurScreen({ children, handleClick }) {
     );
 }
 
-function AddSocialMediaAndBasic({ type = "basic", handleSubmit }) {
+function AddSocialMediaAndBasic({ first, second, third, firstDefault, secondDefault, thirdDefault, handleSubmit }) {
+
+    // Props first , seconds, third is use to formate theInput object. 
+    // Whatever you active you can expect the object paramter to the handleSubmit , will contain it.
+    // If you give name to first , then the name you give, you will see it on the input and on submit contain in the object as paramter {first  : 'Input Value'}.
+
     const theRef = useRef(null);
-    const theInput = useRef({ fist: "", second: "", third: "" });
+    const [theInput, setInput] = useState({ first: '', second: '', third: "" });
 
 
     const cssClass = {
@@ -676,18 +889,47 @@ function AddSocialMediaAndBasic({ type = "basic", handleSubmit }) {
         e.stopPropagation();
     }
 
+    const emptyStringsToUndefined = (obj) => {
+        const result = { ...obj };
+        for (const key in result) {
+            if (result[key] === '') {
+                result[key] = 'undefined';
+            }
+        }
+        return result;
+    };
+
+
     function handleChange(e, inputType) {
         if (inputType !== "first" && inputType !== "second" && inputType !== "third") {
             console.error("Please provide valid inputType to the handleChange")
             return;
         }
 
-        theInput.current[inputType] = e.target.value;
-
-        console.log('the input is : ', theInput.current);
+        setInput({ ...theInput, [inputType]: e.target.value });
     }
 
+    useEffect(() => {
 
+        let newObj = { ...theInput };
+
+        if (firstDefault) {
+            newObj.first = firstDefault;
+        }
+
+        if (secondDefault) {
+            newObj.second = secondDefault;
+        }
+
+        if (thirdDefault) {
+            newObj.third = thirdDefault;
+        }
+
+        setInput(newObj);
+    }, [firstDefault, secondDefault, thirdDefault])
+
+    useEffect(() => {
+    }, [theInput])
 
 
     useEffect(() => {
@@ -717,53 +959,71 @@ function AddSocialMediaAndBasic({ type = "basic", handleSubmit }) {
                 backgroundColor: "var(--blueVeryLight)"
             }} className="p-2 flex flex-col items-center  rounded-xl border border-black">
 
-                {/* Input 1  */}
-                <div className=" inputHeading self-start
-                ">{type === 'basic' ? "Name :" : 'X : '}</div>
-                <input onChange={(e) => {
-                    handleChange(e, 'first');
-                }
-                }
-                    placeholder="Write here..."
-                    style={{
-                        height: '50px',
-                        border: '2px solid',
-                        borderColor: 'var(--greenLight)',
-                        color: 'var(--greenLight)'
-                    }} className="rounded-md p-1 w-full">
 
-                </input>
+                {/* Input 1st  */}
+                {first ?
+                    <>
+                        <div className=" inputHeading self-start
+                ">{first}</div>
+                        <input onChange={(e) => {
+                            handleChange(e, 'first');
+                        }
+                        }
+                            value={theInput.first}
+                            placeholder="Write here..."
+                            style={{
+                                height: '50px',
+                                border: '2px solid',
+                                borderColor: 'var(--greenLight)',
+                                color: 'var(--greenLight)'
+                            }} className="rounded-md p-1 w-full">
+
+                        </input>
+
+                    </>
+                    :
+                    null
+                }
 
 
                 {/* Input 2  */}
-                <div className=" inputHeading self-start
-                ">{type === 'basic' ? "Is :" : 'Github : '}</div>
-                <input onChange={(e) => {
-                    handleChange(e, 'second');
-                }
-                }
-                    placeholder="Write here..."
-                    style={{
-                        height: '50px',
-                        border: '2px solid',
-                        borderColor: 'var(--greenLight)',
-                        color: 'var(--greenLight)',
-                        marginTop: "5px",
-                        marginBottom: "5px",
-                    }} className="rounded-md p-1 w-full">
+                {second ?
+                    <>
+                        <div className=" inputHeading self-start
+                ">{second}</div>
+                        <input onChange={(e) => {
+                            handleChange(e, 'second');
+                        }
+                        }
+                            value={theInput.second}
+                            placeholder="Write here..."
+                            style={{
+                                height: '50px',
+                                border: '2px solid',
+                                borderColor: 'var(--greenLight)',
+                                color: 'var(--greenLight)',
+                                marginTop: "5px",
+                                marginBottom: "5px",
+                            }} className="rounded-md p-1 w-full">
 
-                </input>
+                        </input>
+
+                    </>
+                    :
+                    null
+                }
 
 
                 {/* Input 3  */}
-                {type === 'basic' ?
+                {third ?
                     <>
                         <div className=" inputHeading self-start font-bold
-                ">Status :</div>
+                ">{third}</div>
                         <input onChange={(e) => {
                             handleChange(e, 'third');
                         }
                         }
+                            value={theInput.third}
                             placeholder="Write here..."
                             style={{
                                 height: '50px',
@@ -781,7 +1041,9 @@ function AddSocialMediaAndBasic({ type = "basic", handleSubmit }) {
 
                 <button onClick={(e) => {
                     if (handleSubmit) {
-                        handleSubmit(theInput.current);
+                        let out = emptyStringsToUndefined(theInput);
+                        console.log('out is : ', out);
+                        handleSubmit(out);
                     }
                 }}
 
@@ -883,6 +1145,7 @@ function BulletShow({ name, children, setBlurScreen, dataArray, type }) {
     const [isLoading, setIsLoading] = useState(false);
     const [pick, setPick] = useState(null);   //For delete and checkbox
     const [rows, setRows] = useState([]);
+    const [checkAll, setCheckAll] = useState(false);
     const [dataFromOut, setDataFromOut] = useState(dataArray);  //data state
     const dataRef = useRef({   //ref of the data to share accross the components
         provided: null,
@@ -906,6 +1169,15 @@ function BulletShow({ name, children, setBlurScreen, dataArray, type }) {
             return bulletsNo.current.no += 1;
         }
     })
+    const newNo = useRef({  // New no for communication to BulletAndCheck comp to false the checked.
+        no: 0,
+        reset: () => {
+            newNo.current.no = 0;
+        },
+        genNewNo: () => {
+            return newNo.current.no += 1;
+        }
+    })
 
     const [boolEdit, setBoolEdit] = useState(false);
     const [Transition, setTransition] = useState({ opacity: 0, transform: 'translateX(-20px)' })
@@ -920,12 +1192,16 @@ function BulletShow({ name, children, setBlurScreen, dataArray, type }) {
     }
 
     function handleClick() {
+        normalizeTheDeletWork();
         setBlurScreen(<AddContent handleSubmit={handleAddContent} />);
     }
 
-    function removeAddContent() {
-        setBlurScreen(false);
+    function normalizeTheDeletWork() {
+        setPick(null);       //off the delete button.
+        setCheckAll(newNo.current.genNewNo()); //communicate to uncheck checkboxs
     }
+
+
 
     function normalizeArray(arr) {
         return arr.filter(Boolean);
@@ -1027,6 +1303,7 @@ function BulletShow({ name, children, setBlurScreen, dataArray, type }) {
 
         setDataFromOut(newDataArray);
         setPick(null);
+        setCheckAll(newNo.current.genNewNo());
         setIsLoading(false);
 
         //console.log('the newDataArray : ', newDataArray);
@@ -1088,6 +1365,7 @@ function BulletShow({ name, children, setBlurScreen, dataArray, type }) {
                         style={{ paddingBottom: padding.bottom }}
                     >
                         <BulletAndCheck
+                            forceCheck={checkAll}
                             setPick={setPick}
                             no={newNo}
                             index={index}
@@ -1180,7 +1458,7 @@ function LoadingComp({ }) {
                     zIndex: 5,
                     backgroundColor: 'var(--greenLight-blur)'
                 }}
-                className="absolute flex flex-row justify-center items-center">
+                className="rounded-md absolute flex flex-row justify-center items-center">
                 <div className="spin">
 
                 </div>
@@ -1189,173 +1467,7 @@ function LoadingComp({ }) {
     );
 }
 
-function Discription({ children }) {
-    const theInput = useRef(null);
 
-
-    useEffect(() => {
-
-        if (theInput) {
-            {
-                children ? theInput.current.value = children :
-                    theInput.current.value = 'no value provided'
-            }
-
-        }
-    }, [])
-
-
-    return (<>
-
-        <CommonWrapper>
-            <div className="font-serif text-[1.4rem]
-         text-green-300 font-bold mb-1
-       relative ">
-                Description :
-            </div>
-            <textarea ref={theInput} readOnly
-                className="rounded-md  relative bottom-2 
-              w-[45%] min-w-72 h-48 pl-2 pr-2 text-[1.1rem]
-            border-green-800 bg-transparent">
-            </textarea>
-
-        </CommonWrapper>
-
-
-    </>);
-}
-
-function Experiance({ children }) {
-
-    const theInput = useRef(null);
-
-
-    useEffect(() => {
-
-        if (theInput) {
-            {
-                children ? theInput.current.value = children :
-                    theInput.current.value = 'no value provided'
-            }
-
-        }
-    }, [])
-    return (<>
-
-        <CommonWrapper>
-            <div className="font-serif text-[1.4rem]
-       self-start text-green-300 font-bold
-       relative bottom-1">
-                Experiance
-            </div>
-            <textarea ref={theInput} readOnly
-                className="rounded-xl relative bottom-2
-              w-[45%] min-w-72 h-64 pl-3
-            border-blue-700 bg-transparent">
-            </textarea>
-
-        </CommonWrapper>
-
-
-    </>);
-}
-
-function Education({ children }) {
-
-    const theInput = useRef(null);
-
-
-    useEffect(() => {
-
-        if (theInput) {
-            {
-                children ? theInput.current.value = children :
-                    theInput.current.value = 'no value provided'
-            }
-
-        }
-    }, [])
-
-    return (<>
-
-        <CommonWrapper>
-            <div className="font-serif text-[1.4rem]
-       self-start  text-green-300 font-bold
-       relative bottom-1">
-                Education
-            </div>
-            <textarea ref={theInput} readOnly
-                className="rounded-xl relative bottom-2
-              w-[45%] min-w-72 h-32 pl-3
-            border-blue-700 bg-transparent">
-            </textarea>
-
-        </CommonWrapper>
-
-
-    </>);
-}
-
-function Skills({ children }) {
-
-
-
-    if (!(children instanceof Array)) {
-        //console.error("the children must be a array");
-        return (
-            <>
-                {null}
-            </>
-        );
-
-    }
-    else {
-        return (<>
-            <CommonWrapper>
-                <div className="font-serif text-[1.3rem]
-           self-start text-green-300 font-bold
-           relative bottom-1">
-                    Skills
-                </div>
-                <div
-                    className="flex flex-row flex-wrap p-2
-                rounded-xl border
-                  w-[45%] min-w-72  h-40 
-                border-green-800 bg-transparent">
-
-                    {children.length > 0 ? children.map((item) => {
-                        return <SkillsCards>{item}</SkillsCards>
-                    }) : <SkillsCards>No skills mentioned</SkillsCards>}
-
-                </div>
-            </CommonWrapper>
-
-        </>);
-    }
-
-
-}
-
-function SkillsCards({ children }) {
-    return (<>
-
-        <div className=" h-fit w-fit font-bold
-    rounded-md p-2 m-1 border-blue-600 border
-    text-blue-400 bg-blue-900">
-            {children}
-        </div>
-    </>);
-}
-
-function CommonWrapper({ children }) {
-    return (<>
-        <div className="flex-col m-1 
-        p-2 rounded-xl
-        text-green-200 ">
-            {children}
-        </div>
-    </>);
-}
 
 
 
@@ -1393,6 +1505,6 @@ function SocialMedia({ email, github, x }) {
 
 export {
     ProfileImageSection, NewSkills,
-    ProfileSection2, Discription, BulletShow, BlurScreen,
-    Skills, SocialMedia, NewSocialMedia, Education, Experiance, NewProfileSection
+    ProfileSection2, BulletShow, BlurScreen,
+    SocialMedia, NewSocialMedia, NewProfileSection
 };
